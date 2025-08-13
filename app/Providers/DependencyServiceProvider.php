@@ -11,13 +11,11 @@ class DependencyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $bindings = [
-            // ^ ===================== Repository ================================
-            // \App\Repositories\Admin\AdminRepositoryInterface::class => \App\Repositories\Admin\AdminRepository::class,
+        $repositories = [];
 
-            // ^ ===================== Services ===================================
-            // \App\Services\User\UserServiceInterface::class => \App\Services\User\UserService::class
-        ];
+        $services = [];
+
+        $bindings = array_merge($repositories, $services);
 
         foreach ($bindings as $interface => $implementation) {
             $this->app->bind($interface, $implementation);
