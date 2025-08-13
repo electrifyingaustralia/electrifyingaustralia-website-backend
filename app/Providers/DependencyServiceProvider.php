@@ -11,9 +11,13 @@ class DependencyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $repositories = [];
+        $repositories = [
+            \App\Repositories\Team\TeamRepositoryInterface::class => \App\Repositories\Team\TeamRepository::class,
+        ];
 
-        $services = [];
+        $services = [
+            \App\Services\Team\TeamServiceInterface::class => \App\Services\Team\TeamService::class,
+        ];
 
         $bindings = array_merge($repositories, $services);
 
