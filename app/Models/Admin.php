@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Admin extends Model
+class Admin extends Authenticatable
 {
     protected $fillable = [
         'name',
@@ -18,11 +18,8 @@ class Admin extends Model
         'remember_token',
     ];
 
-    protected function casts()
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts =
+    [
+        'email_verified_at' => 'datetime',
+    ];
 }
