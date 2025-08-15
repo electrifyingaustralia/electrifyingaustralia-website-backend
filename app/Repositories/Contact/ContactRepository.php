@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Repositories\AdminAuth;
+namespace App\Repositories\Contact;
 
-use App\Repositories\AdminAuth\AdminAuthRepositoryInterface;
+use App\Repositories\Contact\ContactRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Admin;
+use App\Models\Contact;
 
-class AdminAuthRepository implements AdminAuthRepositoryInterface
+class ContactRepository implements ContactRepositoryInterface
 {
     public function __construct()
     {
         //
     }
 
-    public function query(): Builder
-    {
-        return Admin::query();
+    public function query(): Builder{
+        return Contact::query();
     }
 
     public function get(array $columns = ["*"], int $perPage = 15): object
@@ -23,38 +22,33 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface
         return $this->query()->select($columns)->paginate($perPage);
     }
 
-    public function all(): object
+    public function all() : object
     {
         return $this->query()->all();
     }
 
-    public function list(): object
+    public function list() : object
     {
         return $this->query()->get();
     }
 
-    public function find(int $id): object
+    public function find(int $id) : object
     {
         return $this->query()->findOrFail($id);
     }
 
-    public function findByEmail(string $email): object
-    {
-        return $this->query()->where('email', $email)->firstOrFail();
-    }
-
-    public function view(int $id): object
+    public function view(int $id) : object
     {
         $instance = $this->find($id);
         return $instance;
     }
 
-    public function create(array $data): object
+    public function create(array $data) : object
     {
-        return Admin::create($data);
+        return Contact::create($data);
     }
 
-    public function update(int $id, array $data): object
+    public function update(int $id, array $data) : object
     {
         $instance = $this->find($id);
         $instance->update($data);
@@ -63,7 +57,7 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface
 
     public function exists(int | array $id): bool
     {
-        if (is_array($id)) {
+        if(is_array($id)){
             return $this->query()->where($id)->exists();
         }
 
@@ -73,6 +67,7 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface
     public function delete(int $id): bool
     {
         $instance = $this->find($id);
-        return $instance->delete();
+        return true;
     }
+
 }

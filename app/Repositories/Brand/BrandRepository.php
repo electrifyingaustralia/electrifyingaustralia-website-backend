@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories\AdminAuth;
+namespace App\Repositories\Brand;
 
-use App\Repositories\AdminAuth\AdminAuthRepositoryInterface;
+use App\Repositories\Brand\BrandRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Admin;
+use App\Models\Brand;
 
-class AdminAuthRepository implements AdminAuthRepositoryInterface
+class BrandRepository implements BrandRepositoryInterface
 {
     public function __construct()
     {
@@ -15,7 +15,7 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface
 
     public function query(): Builder
     {
-        return Admin::query();
+        return Brand::query();
     }
 
     public function get(array $columns = ["*"], int $perPage = 15): object
@@ -38,11 +38,6 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface
         return $this->query()->findOrFail($id);
     }
 
-    public function findByEmail(string $email): object
-    {
-        return $this->query()->where('email', $email)->firstOrFail();
-    }
-
     public function view(int $id): object
     {
         $instance = $this->find($id);
@@ -51,7 +46,7 @@ class AdminAuthRepository implements AdminAuthRepositoryInterface
 
     public function create(array $data): object
     {
-        return Admin::create($data);
+        return Brand::create($data);
     }
 
     public function update(int $id, array $data): object
