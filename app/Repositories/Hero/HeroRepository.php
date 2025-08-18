@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories\Contact;
+namespace App\Repositories\Hero;
 
-use App\Repositories\Contact\ContactRepositoryInterface;
+use App\Repositories\Hero\HeroRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Contact;
+use App\Models\Hero;
 
-class ContactRepository implements ContactRepositoryInterface
+class HeroRepository implements HeroRepositoryInterface
 {
     public function __construct()
     {
@@ -15,7 +15,7 @@ class ContactRepository implements ContactRepositoryInterface
 
     public function query(): Builder
     {
-        return Contact::query();
+        return Hero::query();
     }
 
     public function get(array $columns = ["*"], int $perPage = 15): object
@@ -46,7 +46,7 @@ class ContactRepository implements ContactRepositoryInterface
 
     public function create(array $data): object
     {
-        return Contact::create($data);
+        return Hero::create($data);
     }
 
     public function update(int $id, array $data): object

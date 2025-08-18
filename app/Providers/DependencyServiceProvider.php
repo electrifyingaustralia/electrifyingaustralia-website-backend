@@ -16,6 +16,7 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Repositories\Team\TeamRepositoryInterface::class => \App\Repositories\Team\TeamRepository::class,
             \App\Repositories\Brand\BrandRepositoryInterface::class => \App\Repositories\Brand\BrandRepository::class,
             \App\Repositories\Contact\ContactRepositoryInterface::class => \App\Repositories\Contact\ContactRepository::class,
+            \App\Repositories\Hero\HeroRepositoryInterface::class => \App\Repositories\Hero\HeroRepository::class,
         ];
 
         $services = [
@@ -24,6 +25,7 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Services\Admin\AdminServiceInterface::class => \App\Services\Admin\AdminService::class,
             \App\Services\Brand\BrandServiceInterface::class => \App\Services\Brand\BrandService::class,
             \App\Services\Contact\ContactServiceInterface::class => \App\Services\Contact\ContactService::class,
+            \App\Services\Hero\HeroServiceInterface::class => \App\Services\Hero\HeroService::class,
         ];
 
         $bindings = array_merge($repositories, $services);
