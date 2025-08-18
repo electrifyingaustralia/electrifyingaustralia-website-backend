@@ -18,8 +18,27 @@
      <main
          class="text-base bg-body-bg text-body font-public dark:text-zink-100 dark:bg-zink-800 group-data-[skin=bordered]:bg-body-bordered group-data-[skin=bordered]:dark:bg-zink-700"
          __processed_47f564f6-d9c6-4174-af4a-f0b5aa6f8d77__="true" cz-shortcut-listen="true">
-         @include('backend.layouts.slidebar.slidebar')
-         @include('backend.layouts.partials.cart.side-panel-button')
+         {{-- @include('backend.layouts.partials.master') --}}
+         <div class="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
+             @include('backend.layouts.partials.sidebar')
+             <!-- Left Sidebar End -->
+             <div id="sidebar-overlay" class="absolute inset-0 z-[1002] bg-slate-500/30 hidden"></div>
+             {{-- left side header  import --}}
+             @include('backend.layouts.partials.top_bar')
+             {{-- card side import --}}
+             {{-- @include('backend.layouts.partials.cart-item') --}}
+             @include('backend.layouts.partials.dark_mode')
+             <div class="relative min-h-screen group-data-[sidebar-size=sm]:min-h-sm">
+                 <div
+                     class="group-data-[sidebar-size=lg]:ltr:md:ml-vertical-menu group-data-[sidebar-size=lg]:rtl:md:mr-vertical-menu group-data-[sidebar-size=md]:ltr:ml-vertical-menu-md group-data-[sidebar-size=md]:rtl:mr-vertical-menu-md group-data-[sidebar-size=sm]:ltr:ml-vertical-menu-sm group-data-[sidebar-size=sm]:rtl:mr-vertical-menu-sm pt-[calc(theme('spacing.header')_*_1)] pb-[calc(theme('spacing.header')_*_0.8)] px-4 group-data-[navbar=bordered]:pt-[calc(theme('spacing.header')_*_1.3)] group-data-[navbar=hidden]:pt-0 group-data-[layout=horizontal]:mx-auto group-data-[layout=horizontal]:max-w-screen-2xl group-data-[layout=horizontal]:px-0 group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:ltr:md:ml-auto group-data-[layout=horizontal]:group-data-[sidebar-size=lg]:rtl:md:mr-auto group-data-[layout=horizontal]:md:pt-[calc(theme('spacing.header')_*_1.6)] group-data-[layout=horizontal]:px-3 group-data-[layout=horizontal]:group-data-[navbar=hidden]:pt-[calc(theme('spacing.header')_*_0.9)]">
+                     <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto mt-5">
+                         @yield('contents')
+                     </div>
+                 </div>
+                 @include('backend.layouts.partials.footer')
+             </div>
+         </div>
+
      </main>
      <script src="{{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}"></script>
      <script src="{{ asset('assets/libs/@popperjs/core/umd/popper.min.js') }}"></script>
