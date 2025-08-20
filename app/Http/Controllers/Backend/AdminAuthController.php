@@ -12,20 +12,20 @@ class AdminAuthController extends Controller
 {
     public function __construct(protected AdminAuthServiceInterface $adminAuthService) {}
 
-    public function showRegisterFrom()
-    {
-        return view();
-    }
+    // public function showRegisterFrom()
+    // {
+    //     return view();
+    // }
 
-    public function register(RegisterRequest $request)
-    {
-        $data = $request->validated();
-        $this->adminAuthService->register($data);
-    }
+    // public function register(RegisterRequest $request)
+    // {
+    //     $data = $request->validated();
+    //     $this->adminAuthService->register($data);
+    // }
 
-    public function showLoginFrom()
+    public function showLoginForm()
     {
-        return view();
+        return view('backend.layouts.auth.login');
     }
 
     public function login(LoginRequest $request)
@@ -37,7 +37,7 @@ class AdminAuthController extends Controller
         $loginSuccess = $this->adminAuthService->login($credentials, $remember);
 
         if ($loginSuccess) {
-            return redirect()->route('');
+            return redirect()->route('admin.dashboard');
         }
 
         return redirect()->back()->withErrors([
@@ -48,6 +48,6 @@ class AdminAuthController extends Controller
     public function logout()
     {
         $this->adminAuthService->logout();
-        return redirect()->route('');
+        return redirect()->route('admin.login');
     }
 }

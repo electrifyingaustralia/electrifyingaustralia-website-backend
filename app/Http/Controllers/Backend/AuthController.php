@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\LoginRequest;
 use App\Http\Requests\Backend\RegisterRequest;
-use App\Services\Auth\AuthServiceInterface;
+use App\Services\AdminAuthService\AdminAuthServiceInterface;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function __construct(protected AuthServiceInterface $authService) {}
+    public function __construct(protected AdminAuthServiceInterface $authService) {}
 
     public function showRegisterFrom()
     {
@@ -45,6 +45,6 @@ class AuthController extends Controller
     public function logout()
     {
         $this->authService->logout();
-        return redirect()->route('');
+        return redirect()->route('admin.login');
     }
 }

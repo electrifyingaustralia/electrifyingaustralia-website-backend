@@ -10,7 +10,7 @@
      <meta content="Themesdesign" name="author">
      <link rel="shortcut icon" href="{{ asset('assets/images/Electrifyingonebackend.png') }}">
      <link rel="stylesheet" href="{{ asset('assets/css/tailwind2.css') }}">
-     @vite(['resources/css/app.css', 'resources/js/app.js'])
+     @vite('resources/css/app.css')
      @stack('styles')
  </head>
 
@@ -24,7 +24,7 @@
              <!-- Left Sidebar End -->
              <div id="sidebar-overlay" class="absolute inset-0 z-[1002] bg-slate-500/30 hidden"></div>
              {{-- left side header  import --}}
-             @include('backend.layouts.partials.top_bar')
+             @include('backend.layouts.partials.topbar')
              {{-- card side import --}}
              {{-- @include('backend.layouts.partials.cart-item') --}}
              @include('backend.layouts.partials.dark_mode')
@@ -48,8 +48,6 @@
      <script src="{{ asset('assets/libs/lucide/umd/lucide.js') }}"></script>
      <script src="{{ asset('assets/js/tailwick.bundle.js') }}"></script>
 
-     <!-- apexchart js -->
-     <script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
 
      <!-- dashboard ecommerce init js -->
      <script src="{{ asset('assets/js/pages/dashboards-ecommerce.init.js') }}"></script>

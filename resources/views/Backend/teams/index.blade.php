@@ -18,18 +18,18 @@
                             <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                             </svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">Admin Users</span>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">All Teams</span>
                         </div>
                     </li>
                 </ol>
             </nav>
 
             <!-- Add User Button -->
-            <a href="{{ route('admin.users.create') }}" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <a href="{{ route('admin.teams.create') }}" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                 </svg>
-                Add User
+                Add Teams
             </a>
         </div>
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
@@ -39,33 +39,38 @@
                 <tr>
                     <th class="px-6 py-3">Name</th>
                     <th class="px-6 py-3">Email</th>
-                    <th class="px-6 py-3">Joined At</th>
+                    <th class="px-6 py-3">Phone</th>
+                    <th class="px-6 py-3">Designation</th>
+                    <th class="px-6 py-3">Active</th>
                     <th class="px-6 py-3">Actions</th>
                 </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    @foreach($admins as $admin)
+                    @forelse($teams as $team)
                         <tr>
                             <td class="px-6 py-4 font-medium text-gray-900">
                                 <div class="flex items-center">
-                                    @if($admin->avatar)
-                                        <img class="h-5 w-5 rounded-full object-cover mr-3"
-                                            src="{{ asset('storage/' . $admin->avatar) }}"
-                                            alt="{{ $admin->name }}">
+                                    @if($team->avatar)
+                                        <img class="h-15 w-20 rounded-lg object-cover mr-3"
+                                            src="{{ asset('storage/' . $team->avatar) }}"
+                                            alt="{{ $team->avatar }}">
                                     @else
                                         <div class="h-5 w-5 flex items-center justify-center mr-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                         </div>
                                     @endif
                                     <div>
-                                        {{ $admin->name }}
+                                        {{ $team->name }}
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">{{ $admin->email }}</td>
-                            <td class="px-6 py-4">{{ $admin->created_at->format('Y-m-d') }}</td>
-                            <td class="px-6 py-4 flex gap-x-2">
-                                <a href="{{ route('admin.users.edit', $admin->id) }}" class="text-blue-500 hover:text-blue-700">
+                            <td class="px-6 py-4">{{ $team->email }}</td>
+                            <td class="px-6 py-4">{{ $team->phone }}</td>
+                            <td class="px-6 py-4">{{ $team->designation }}</td>
+                            {{-- * Badge --}}
+                            <td class="px-6 py-4">{{ $team->is_active }}</td>
+                            <td class="px-6 py-8 flex gap-x-2">
+                                <a href="{{ route('admin.brands.edit', $team->id) }}" class="text-blue-500 hover:text-blue-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700 ml-2.5"
                                         viewBox="0 0 348.882 348.882">
                                         <path
@@ -76,7 +81,7 @@
                                         data-original="#000000" />
                                     </svg>
                                 </a>
-                                <button class="text-red-500 hover:text-red-700" type="button" onclick=" openDeleteModal({{ $admin->id }})">
+                                <button class="text-red-500 hover:text-red-700" type="button" onclick=" openDeleteModal({{ $team->id }})">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
                                         <path
                                         d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
@@ -87,7 +92,13 @@
                                 </button>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center font-bold text-gray-500">
+                                No Team Member found.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
             </div>
@@ -101,7 +112,7 @@
             id="deleteModalContent">
             <div class="p-6">
                 <h2 class="text-lg font-semibold text-gray-800">Confirm Delete</h2>
-                <p class="mt-2 text-gray-600">Are you sure you want to delete this user? This action cannot be undone.</p>
+                <p class="mt-2 text-gray-600">Are you sure you want to delete this team member? This action cannot be undone.</p>
 
                 <div class="mt-6 flex justify-end space-x-3">
                     <button onclick="closeDeleteModal()"
@@ -129,7 +140,7 @@
     function openDeleteModal(id) {
         currentDeleteId = id;
         const form = document.getElementById('deleteForm');
-        form.action = `/admin/users/${id}`; // Adjust route as needed
+        form.action = `/admin/brands/${id}`; // Adjust route as needed
         document.getElementById('deleteModal').classList.remove('hidden');
     }
 

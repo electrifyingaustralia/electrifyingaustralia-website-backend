@@ -17,12 +17,13 @@ class BrandCreateRequest extends BaseRequest
                 'required',
                 'image',
                 'mimes:jpeg,png,jpg,gif,svg,webp',
+                'max:10240',
             ],
 
             'link' => [
                 'nullable',
                 'url',
-                'mimes:jpeg,png,jpg,gif,svg,webp',
+                'max:255',
             ],
         ];
     }

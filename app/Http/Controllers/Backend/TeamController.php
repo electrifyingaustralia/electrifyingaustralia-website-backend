@@ -15,12 +15,13 @@ class TeamController extends Controller
     public function index()
     {
         $teams = $this->teamService->getTeamMembers();
-        return view();
+
+        return view('Backend.teams.index', compact('teams'));
     }
 
     public function create()
     {
-        return view();
+        return view('backend.teams.create');
     }
 
     public function store(TeamCreateRequest $request)

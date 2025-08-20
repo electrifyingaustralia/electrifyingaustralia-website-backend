@@ -148,17 +148,21 @@
                                             class="inline-flex items-center justify-center w-auto h-5 ltr:ml-2 rtl:mr-2 px-1 text-[12px] font-medium border rounded text-white bg-sky-500 border-sky-500">Pro</span></a>
                                 </li>
                                 <li class="pt-2 mt-2 border-t border-slate-200 dark:border-zink-500">
-                                    <a class="block ltr:pr-4 rtl:pl-4 py-1.5 text-base font-medium transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:text-custom-500 focus:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:focus:text-custom-500"
-                                        href="auth-logout-basic.html"><svg xmlns="http://www.w3.org/2000/svg"
-                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round" data-lucide="log-out"
-                                            class="lucide lucide-log-out inline-block size-4 ltr:mr-2 rtl:ml-2">
-                                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                            <polyline points="16 17 21 12 16 7"></polyline>
-                                            <line x1="21" x2="9" y1="12" y2="12">
-                                            </line>
-                                        </svg> Sign Out</a>
+                                    <form method="POST" action="{{ route('admin.logout') }}" class="inline">
+                                        @csrf
+                                        <button
+                                            type="submit"
+                                            class="block w-full text-left ltr:pr-4 rtl:pl-4 py-1.5 text-base font-medium transition-all duration-200 ease-linear text-slate-600 hover:!text-teal-500 focus:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:focus:text-custom-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                data-lucide="log-out" class="lucide lucide-log-out inline-block size-4 ltr:mr-2 rtl:ml-2">
+                                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                                <polyline points="16 17 21 12 16 7"></polyline>
+                                                <line x1="21" x2="9" y1="12" y2="12"></line>
+                                            </svg>
+                                            Sign Out
+                                        </button>
+                                    </form>
                                 </li>
                             </ul>
                         </div>
