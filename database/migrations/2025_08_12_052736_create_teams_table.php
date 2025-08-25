@@ -22,7 +22,7 @@ return new class extends Migration
 
             $table->string('designation')->nullable();
 
-            $table->string('avatar')->nullable();
+            $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
 
             $table->string('title')->nullable();
 

@@ -11,20 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->id();
 
             $table->string('name');
 
-            $table->string('email')->unique();
+            $table->string('email');
 
-            $table->timestamp('email_verified_at')->nullable();
+            $table->tinyInteger('rating');
 
-            $table->string('password');
+            $table->text('comment');
 
-            $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
-
-            $table->rememberToken();
+            $table->boolean('is_approved')->default(false);
 
             $table->timestamps();
         });
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admins');
+        Schema::dropIfExists('reviews');
     }
 };

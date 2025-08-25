@@ -22,4 +22,16 @@ class Admin extends Authenticatable
     [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $appends = ['media_url'];
+
+    public function media()
+    {
+        return $this->belongsTo(MediaLibrary::class);
+    }
+
+    public function getMediaUrlAttribute(): ?string
+    {
+        return $this->media?->url;
+    }
 }

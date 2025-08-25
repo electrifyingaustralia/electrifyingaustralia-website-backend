@@ -11,20 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::create('solution_cards', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name');
+            $table->string('title');
 
-            $table->string('email')->unique();
+            $table->text('description');
 
-            $table->timestamp('email_verified_at')->nullable();
+            $table->text('bold_info');
 
-            $table->string('password');
+            $table->text('extra_info');
 
-            $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
-
-            $table->rememberToken();
+            $table->integer('card_order')->default(0);
 
             $table->timestamps();
         });
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admins');
+        Schema::dropIfExists('solution_cards');
     }
 };

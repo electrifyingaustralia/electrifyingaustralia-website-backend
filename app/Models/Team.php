@@ -8,12 +8,15 @@ class Team extends Model
 {
     protected $guarded = [];
 
-    protected $appends = 'avatar_url';
+    protected $appends = ['media_url'];
 
-    public function getAvatarUrlAttribute()
+    public function media()
     {
-        if (!isset($this->attributes["avatar"])) return null;
+        return $this->belongsTo(MediaLibrary::class);
+    }
 
-        return getAssetFileUrl("teams", $this->attributes['avatar']);
+    public function getMediaUrlAttribute(): ?string
+    {
+        return $this->media?->url;
     }
 }

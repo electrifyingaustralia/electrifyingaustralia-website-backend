@@ -11,12 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('heroes', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->id();
 
-            $table->string('title');
+            $table->string('title')->nullable();
 
-            $table->text('subtitle')->nullable();
+            $table->string('subtitle')->nullable();
+
+            $table->longText('description')->nullable();
+
+            $table->string('solar_panel')->nullable();
+
+            $table->string('inverter')->nullable();
+
+            $table->string('type', 50)->default('commercial');
+
+            $table->string('location', 50)->nullable();
 
             $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
 
@@ -31,6 +41,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('heroes');
+        Schema::dropIfExists('projects');
     }
 };
