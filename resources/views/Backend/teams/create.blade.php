@@ -23,7 +23,7 @@
                 </ol>
             </nav>
 
-            <a href="{{ route('admin.brands.all') }}" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500">
+            <a href="{{ route('admin.teams.all') }}" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>
@@ -34,7 +34,6 @@
         <div class="bg-white shadow-md rounded-lg overflow-hidden px-8 pb-6">
             <form action="{{ route('admin.teams.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
-
                 <div>
                     <label for="avatar" class="block text-sm font-medium text-gray-700">Avatar</label>
                     <div class="mt-1 flex items-center">
@@ -53,149 +52,164 @@
                         </div>
                     </div>
                 </div>
+                <div class="flex gap-3">
 
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                    <div class="mt-1">
-                        <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('name')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
+                    <div class="w-1/2">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                        <div class="mt-1">
+                            <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            >
+                            @error('name')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
-                </div>
 
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <div class="mt-1">
-                        <input type="text" name="email" id="email" value="{{ old('email') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('email')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
+                    <div class="w-1/2">
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <div class="mt-1">
+                            <input type="text" name="email" id="email" value="{{ old('email') }}" required
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            >
+                            @error('email')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-                    <div class="mt-1">
-                        <input type="text" name="phone" id="phone" value="{{ old('phone') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('phone')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
+                <div class="flex gap-3">
+                    <div class="w-1/2">
+                        <label for="designation" class="block text-sm font-medium text-gray-700">Designation</label>
+                        <div class="mt-1">
+                            <input type="text" name="designation" id="designation" value="{{ old('designation') }}" required
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            >
+                            @error('designation')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="w-1/2">
+                        <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                        <div class="mt-1">
+                            <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            >
+                            @error('phone')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <label for="designation" class="block text-sm font-medium text-gray-700">Designation</label>
-                    <div class="mt-1">
-                        <input type="text" name="designation" id="designation" value="{{ old('designation') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('designation')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
+                <div class="flex gap-3">
+                    <div class="w-1/2">
+                        <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                        <div class="mt-1">
+                            <input type="text" name="title" id="title" value="{{ old('title') }}"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            >
+                            @error('title')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="w-1/2">
+                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <div class="mt-1">
+                            <input type="text" name="description" id="description" value="{{ old('description') }}"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            >
+                            @error('description')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                    <div class="mt-1">
-                        <input type="text" name="title" id="title" value="{{ old('title') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('title')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
+                <div class="flex gap-3">
+                    <div class="w-1/2">
+                        <label for="website" class="block text-sm font-medium text-gray-700">Website</label>
+                        <div class="mt-1">
+                            <input type="text" name="website" id="website" value="{{ old('website') }}"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            >
+                            @error('website')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="w-1/2">
+                        <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                        <div class="mt-1">
+                            <select name="status" id="status"
+                                class="block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm
+                                    focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                                <option value="1" selected>Active</option>
+                                <option value="0" >Inactive</option>
+                            </select>
+                            @error('status')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                    <div class="mt-1">
-                        <input type="text" name="description" id="description" value="{{ old('description') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('description')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
+                <div class="flex gap-3">
+                    <div class="w-1/2">
+                        <label for="facebook_link" class="block text-sm font-medium text-gray-700">Facebook Link</label>
+                        <div class="mt-1">
+                            <input type="text" name="facebook_link" id="facebook_link" value="{{ old('facebook_link') }}"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            >
+                            @error('facebook_link')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="w-1/2">
+                        <label for="twitter_link" class="block text-sm font-medium text-gray-700">Twitter Link</label>
+                        <div class="mt-1">
+                            <input type="text" name="twitter_link" id="twitter_link" value="{{ old('twitter_link') }}"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            >
+                            @error('twitter_link')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <label for="website" class="block text-sm font-medium text-gray-700">Website</label>
-                    <div class="mt-1">
-                        <input type="text" name="website" id="website" value="{{ old('website') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('website')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
+                <div class="flex gap-3">
+                    <div class="w-1/3">
+                        <label for="instagram_link" class="block text-sm font-medium text-gray-700">Instagram Link</label>
+                        <div class="mt-1">
+                            <input type="text" name="instagram_link" id="instagram_link" value="{{ old('instagram_link') }}"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            >
+                            @error('instagram_link')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <label for="is_active" class="block text-sm font-medium text-gray-700">Active</label>
-                    <div class="mt-1">
-                        <input type="text" name="is_active" id="is_active" value="{{ old('is_active') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('is_active')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
+                    <div class="w-1/3">
+                        <label for="pinterest_link" class="block text-sm font-medium text-gray-700">Pinterest Link</label>
+                        <div class="mt-1">
+                            <input type="text" name="pinterest_link" id="pinterest_link" value="{{ old('pinterest_link') }}"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            >
+                            @error('pinterest_link')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <label for="twitter_link" class="block text-sm font-medium text-gray-700">Twitter Link</label>
-                    <div class="mt-1">
-                        <input type="text" name="twitter_link" id="twitter_link" value="{{ old('twitter_link') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('twitter_link')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-                <div>
-                    <label for="instagram_link" class="block text-sm font-medium text-gray-700">Instagram Link</label>
-                    <div class="mt-1">
-                        <input type="text" name="instagram_link" id="instagram_link" value="{{ old('instagram_link') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('instagram_link')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-                <div>
-                    <label for="facebook_link" class="block text-sm font-medium text-gray-700">Facebook Link</label>
-                    <div class="mt-1">
-                        <input type="text" name="facebook_link" id="facebook_link" value="{{ old('facebook_link') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('facebook_link')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-                <div>
-                    <label for="pinterest_link" class="block text-sm font-medium text-gray-700">Pinterest Link</label>
-                    <div class="mt-1">
-                        <input type="text" name="pinterest_link" id="pinterest_link" value="{{ old('pinterest_link') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('pinterest_link')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-                <div>
-                    <label for="youtube_link" class="block text-sm font-medium text-gray-700">Youtube Link</label>
-                    <div class="mt-1">
-                        <input type="text" name="youtube_link" id="youtube_link" value="{{ old('youtube_link') }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('youtube_link')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
+                    <div class="w-1/3">
+                        <label for="youtube_link" class="block text-sm font-medium text-gray-700">Youtube Link</label>
+                        <div class="mt-1">
+                            <input type="text" name="youtube_link" id="youtube_link" value="{{ old('youtube_link') }}"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                            >
+                            @error('youtube_link')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
                 <div class="">
@@ -204,7 +218,7 @@
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
-                        Create Brand
+                        Create Team Member
                     </button>
                 </div>
             </form>

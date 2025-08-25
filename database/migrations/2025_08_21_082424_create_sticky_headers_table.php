@@ -11,18 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create('sticky_headers', function (Blueprint $table) {
             $table->id();
-
-            $table->string('name');
-
-            $table->string('link')->nullable();
-
-            $table->unsignedBigInteger('logo_id')->nullable();
-
+            $table->string('title');
             $table->timestamps();
-
-            $table->foreign('logo_id')->references('id')->on('media_libraries')->onDelete('set null');
         });
     }
 
@@ -31,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('sticky_headers');
     }
 };

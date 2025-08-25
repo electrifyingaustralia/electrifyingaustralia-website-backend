@@ -9,25 +9,25 @@ class BrandUpdateRequest extends FormRequest
 {
     public function rules(): array
     {
+        $brandId = $this->route('brand') ?? $this->route('id');
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('brands', 'name')->ignore($this->brand),
+                Rule::unique('brands', 'name')->ignore($brandId),
             ],
 
-            'logo' => [
-                'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,webp,svg',
-                'max:10240',
+            'logo_id' => [
+                'required',
+                'integer',
+                'exists:media_libraries,id'
             ],
 
             'link' => [
                 'nullable',
                 'url',
-                'max:255',
+                'max:500',
             ],
         ];
     }

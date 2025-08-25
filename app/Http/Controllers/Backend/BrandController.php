@@ -13,9 +13,11 @@ class BrandController extends Controller
 {
     public function __construct(protected BrandServiceInterface $brandService) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $brands = $this->brandService->getBrands();
+        $brands = $this->brandService->paginateListBrands(['*'], 15, [
+            'search' => $request->get('search'),
+        ]);
         return view('Backend.brands.index', compact('brands'));
     }
 
@@ -27,19 +29,17 @@ class BrandController extends Controller
     public function store(BrandCreateRequest $request)
     {
         $data = $request->validated();
-        if ($request->hasFile('logo')) {
-            $data['logo'] = $this->uploadLogo($request->file('logo'));
-        }
+        $this->brandService->createBrand(
+            $data,
+            $request->hasFile('logo') ? $request->file('logo') : null
+        );
 
-        $this->brandService->createBrand($data);
-
-        return redirect()->route('admin.brands.all')->with('success', 'Brand created successfully!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Brand created successfully',
+            'redirect' => route('admin.brands.all')
+        ]);
     }
-
-    // public function show()
-    // {
-    //     //
-    // }
 
     public function edit($id)
     {
@@ -49,31 +49,19 @@ class BrandController extends Controller
 
     public function update(BrandUpdateRequest $request, $id)
     {
-        $data = $request->validated();
-        $brand = $this->brandService->findBrand($id);
-        if ($request->hasFile('logo')) {
-            if ($brand->logo) {
-                Storage::disk('public')->delete($brand->logo);
-            }
-            $data['logo'] = $this->uploadLogo($request->file('logo'));
-        } else {
-            $data['logo'] = $brand->logo;
-        }
 
-        $this->brandService->updateBrand($id, $data);
-        return redirect()->route('admin.brands.all')->with('success', 'Brand Updated Successfully');
+        $this->brandService->updateBrand($id, $request->validated(), $request->file('logo'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Brand updated successfully',
+            'redirect' => route('admin.brands.all')
+        ]);
     }
 
     public function destroy($id)
     {
-        $brand = $this->brandService->findBrand($id);
-        if ($brand->logo) Storage::disk('public')->delete($brand->logo);
         $this->brandService->deleteBrand($id);
-        return redirect()->route('admin.brands.all')->with('success', 'Brand deleted successfully!');
-    }
 
-    protected function uploadLogo($file): string
-    {
-        return $file->store('brands', 'public');
+        return redirect()->route('admin.brands.all');
     }
 }

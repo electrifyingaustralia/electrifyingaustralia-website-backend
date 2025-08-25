@@ -13,17 +13,16 @@ class BrandCreateRequest extends BaseRequest
                 'max:255'
             ],
 
-            'logo' => [
+            'logo_id' => [
                 'required',
-                'image',
-                'mimes:jpeg,png,jpg,gif,svg,webp',
-                'max:10240',
+                'integer',
+                'exists:media_libraries,id'
             ],
 
             'link' => [
                 'nullable',
                 'url',
-                'max:255',
+                'max:500',
             ],
         ];
     }

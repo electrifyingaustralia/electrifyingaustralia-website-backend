@@ -4,24 +4,29 @@ namespace App\Services\Brand;
 
 use App\Repositories\Brand\BrandRepositoryInterface;
 use App\Services\Brand\BrandServiceInterface;
+use App\Services\MediaLibrary\MediaLibraryServiceInterface;
+use Illuminate\Http\UploadedFile;
 
 class BrandService implements BrandServiceInterface
 {
-    public function __construct(protected BrandRepositoryInterface $brandRepository) {}
+    public function __construct(
+        protected BrandRepositoryInterface $brandRepository,
+        protected MediaLibraryServiceInterface $mediaLibrary
+    ) {}
 
-    public function getBrands(array $columns = ['*'], int $perPage = 15): object
+    public function paginateListBrands(array $columns = ['*'], int $perPage = 15, array $filters = []): object
     {
-        return $this->brandRepository->get($columns, $perPage);
+        return $this->brandRepository->get($columns, $perPage, $filters);
     }
 
-    public function getAllBrands(): object
+    public function createBrand(array $data, ?UploadedFile $logo = null): object
     {
-        return $this->brandRepository->all();
-    }
+        if ($logo) {
+            $media = $this->mediaLibrary->upload($logo);
+            $data['logo_id'] = $media->id;
+        }
 
-    public function getBrandsList(): object
-    {
-        return $this->brandRepository->list();
+        return $this->brandRepository->create($data);
     }
 
     public function findBrand(int $id): object
@@ -29,13 +34,18 @@ class BrandService implements BrandServiceInterface
         return $this->brandRepository->find($id);
     }
 
-    public function createBrand(array $data): object
+    public function updateBrand(int $id, array $data, ?UploadedFile $logo = null): object
     {
-        return $this->brandRepository->create($data);
-    }
+        $brand = $this->brandRepository->find($id);
+        if ($logo) {
+            if ($brand->logo_id) {
+                $this->mediaLibrary->delete($brand->logo_id);
+            }
 
-    public function updateBrand(int $id, array $data): object
-    {
+            $media = $this->mediaLibrary->upload($logo);
+            $data['logo_id'] = $media->id;
+        }
+
         return $this->brandRepository->update($id, $data);
     }
 

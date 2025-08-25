@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories\Brand;
+namespace App\Repositories\MediaLibrary;
 
-use App\Repositories\Brand\BrandRepositoryInterface;
+use App\Repositories\MediaLibrary\MediaLibraryRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Brand;
+use App\Models\MediaLibrary;
 
-class BrandRepository implements BrandRepositoryInterface
+class MediaLibraryRepository implements MediaLibraryRepositoryInterface
 {
     public function __construct()
     {
@@ -15,7 +15,7 @@ class BrandRepository implements BrandRepositoryInterface
 
     public function query(): Builder
     {
-        return Brand::query()->with('logo');
+        return MediaLibrary::query();
     }
 
     public function get(array $columns = ["*"], int $perPage = 15, array $filters = []): object
@@ -47,7 +47,7 @@ class BrandRepository implements BrandRepositoryInterface
 
     public function create(array $data): object
     {
-        return Brand::create($data);
+        return MediaLibrary::create($data);
     }
 
     public function update(int $id, array $data): object
@@ -74,11 +74,16 @@ class BrandRepository implements BrandRepositoryInterface
 
     private function applyFilters(Builder $q, array $filters): Builder
     {
+        if (!empty($filters['type'])) {
+            $q->where('file_type', $filters['type']);
+        }
         if (!empty($filters['search'])) {
             $term = '%' . $filters['search'] . '%';
-            $q->where('name', 'like', $term);
+            $q->where(function ($sub) use ($term) {
+                $sub->where('original_name', 'like', $term)
+                    ->orWhere('file_name', 'like', $term);
+            });
         }
-
         return $q;
     }
 }

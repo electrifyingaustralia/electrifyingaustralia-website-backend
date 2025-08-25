@@ -41,7 +41,7 @@
                     <th class="px-6 py-3">Email</th>
                     <th class="px-6 py-3">Phone</th>
                     <th class="px-6 py-3">Designation</th>
-                    <th class="px-6 py-3">Active</th>
+                    <th class="px-6 py-3">Status</th>
                     <th class="px-6 py-3">Actions</th>
                 </tr>
                 </thead>
@@ -68,9 +68,9 @@
                             <td class="px-6 py-4">{{ $team->phone }}</td>
                             <td class="px-6 py-4">{{ $team->designation }}</td>
                             {{-- * Badge --}}
-                            <td class="px-6 py-4">{{ $team->is_active }}</td>
+                            <td class="px-6 py-4">{{ $team->status }}</td>
                             <td class="px-6 py-8 flex gap-x-2">
-                                <a href="{{ route('admin.brands.edit', $team->id) }}" class="text-blue-500 hover:text-blue-700">
+                                <a href="{{ route('admin.teams.edit', $team->id) }}" class="text-blue-500 hover:text-blue-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700 ml-2.5"
                                         viewBox="0 0 348.882 348.882">
                                         <path

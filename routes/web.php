@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\AdminAuthController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\MediaLibraryController;
 use App\Http\Controllers\Backend\TeamController;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -20,9 +21,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 
     Route::middleware('admin.auth')->group(function () {
+
         // ! Dashboard
         Route::controller(DashboardController::class)->group(function () {
             Route::get('/dashboard', 'index')->name('dashboard');
+        });
+
+        // ! Media Library
+        Route::controller(MediaLibraryController::class)->name('media.')->group(function () {
+            Route::get('/media', 'index')->name('all');
+            Route::get('/media/ajax', 'ajaxIndex')->name('ajax.all');
+            Route::post('/media', 'store')->name('store');
+            Route::delete('/media/{id}', 'destroy')->name('destroy');
         });
 
         // ! Admin Users
@@ -34,6 +44,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/users/{id}',  'update')->name('update');
             Route::delete('/users/{id}',  'destroy')->name('delete');
         });
+
         // ! Brands
         Route::controller(BrandController::class)->name('brands.')->group(function () {
             Route::get('/brands', 'index')->name('all');
@@ -43,6 +54,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/brands/{id}',  'update')->name('update');
             Route::delete('/brands/{id}',  'destroy')->name('delete');
         });
+
         // ! Teams
         Route::controller(TeamController::class)->name('teams.')->group(function () {
             Route::get('/teams', 'index')->name('all');

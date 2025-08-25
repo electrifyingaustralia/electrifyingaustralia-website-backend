@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('media_libraries', function (Blueprint $table) {
+            $table->id();
+            $table->string('file_name');
+            $table->string('original_name');
+            $table->string('file_path', 500)->unique();
+            $table->string('disk')->default('public');
+            $table->string('file_type');
+            $table->string('mime_type');
+            $table->unsignedBigInteger('file_size');
+            $table->timestamps();
+
+            $table->index(['file_type', 'created_at']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('media_libraries');
+    }
+};

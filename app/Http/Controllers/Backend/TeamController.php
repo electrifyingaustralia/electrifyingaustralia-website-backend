@@ -28,10 +28,10 @@ class TeamController extends Controller
     {
         $data = $request->validated();
         if ($request->hasFile('avatar')) {
-            //
+            $data['avatar'] = $this->uploadAvatar($request->file('avatar'));
         }
         $this->teamService->createTeamMember($data);
-        return redirect();
+        return redirect()->route('admin.teams.all')->with('success', 'Team member created successfully!');
     }
 
     public function show($id)
@@ -43,7 +43,7 @@ class TeamController extends Controller
     public function edit($id)
     {
         $team = $this->teamService->findTeamMember($id);
-        return view();
+        return view('backend.teams.edit', compact('team'));
     }
 
     public function update(TeamUpdateRequest $request, $id)
@@ -62,5 +62,10 @@ class TeamController extends Controller
     {
         $this->teamService->deleteTeamMember($id);
         return redirect();
+    }
+
+    protected function uploadAvatar($file): string
+    {
+        return $file->store('teams', 'public');
     }
 }

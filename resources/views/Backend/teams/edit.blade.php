@@ -26,7 +26,7 @@
                             <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                             </svg>
-                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">{{ $brand->name }}</span>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">{{ $team->name }}</span>
                         </div>
                     </li>
                 </ol>
@@ -41,7 +41,7 @@
             </a>
         </div>
         <div class="bg-white shadow-md rounded-lg overflow-hidden px-8 pb-6">
-            <form action="{{ route('admin.brands.update', $brand->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <form action="{{ route('admin.teams.update', $team->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 @method('PUT')
                 <div>
@@ -66,22 +66,10 @@
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                     <div class="mt-1">
-                        <input type="text" name="name" id="name" value="{{ old('name', $brand->name) }}" required
+                        <input type="text" name="name" id="name" value="{{ old('name', $team->name) }}" required
                             class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                         >
                         @error('name')
-                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Link</label>
-                    <div class="mt-1">
-                        <input type="text" name="link" id="link" value="{{ old('email', $brand->link) }}" required
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                        >
-                        @error('link')
                             <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
                     </div>

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories\Brand;
+namespace App\Repositories\MediaLibrary;
 
 use Illuminate\Database\Eloquent\Builder;
 
-interface BrandRepositoryInterface
+interface MediaLibraryRepositoryInterface
 {
     public function query(): Builder;
     public function get(array $columns = ["*"], int $perPage = 15, array $filters = []): object;
@@ -14,6 +14,6 @@ interface BrandRepositoryInterface
     public function view(int $id): object;
     public function create(array $data): object;
     public function update(int $id, array $data): object;
-    public function exists(int | array $id): bool;
+    public function exists(int $id): bool;
     public function delete(int $id): bool;
 }

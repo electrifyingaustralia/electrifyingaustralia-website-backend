@@ -47,6 +47,16 @@
                         </a>
                     </li>
                     <li class="relative mb-2">
+                        <a href="{{ route('admin.media.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.media*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                            <i
+                                data-lucide="image"
+                                class="text-sm"
+                            >
+                            </i>
+                            <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Media</span>
+                        </a>
+                    </li>
+                    <li class="relative mb-2">
                         <a href="{{ route('admin.users.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.users*') ? '!text-teal-500 bg-teal-50' : '' }}">
                             <i
                                 data-lucide="users"
