@@ -20,7 +20,7 @@ return new class extends Migration
 
             $table->string('bold_info');
 
-            $table->foreignId('media_id')->constrained('media_libraries')->nullOnDelete();
+            $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
 
             $table->boolean('is_active')->default(true);
 

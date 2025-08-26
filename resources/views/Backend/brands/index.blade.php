@@ -106,12 +106,12 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-4 text-center font-bold text-gray-500">
+                            <td colspan="4" class="px-6 py-4 text-center font-medium text-gray-700">
                                 <div class="flex flex-col items-center justify-center gap-x-4 py-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
-                                    <span class="pt-2">No Brand found.</span>
+                                    <span class="pt-2 text-lg">No Brand found.</span>
                                 </div>
-                                <span>Upload your first file to get started!</span>
+                                <span class="text-gray-500">Upload your first file to get started!</span>
                             </td>
                         </tr>
                     @endforelse
