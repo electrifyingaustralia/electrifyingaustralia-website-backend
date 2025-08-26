@@ -18,6 +18,17 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Repositories\Contact\ContactRepositoryInterface::class => \App\Repositories\Contact\ContactRepository::class,
             \App\Repositories\Hero\HeroRepositoryInterface::class => \App\Repositories\Hero\HeroRepository::class,
             \App\Repositories\MediaLibrary\MediaLibraryRepositoryInterface::class => \App\Repositories\MediaLibrary\MediaLibraryRepository::class,
+            \App\Repositories\AwardRepository\AwardRepositoryRepositoryInterface::class => \App\Repositories\AwardRepository\AwardRepositoryRepository::class,
+            \App\Repositories\Award\AwardRepositoryInterface::class => \App\Repositories\Award\AwardRepository::class,
+            \App\Repositories\Benefit\BenefitRepositoryInterface::class => \App\Repositories\Benefit\BenefitRepository::class,
+            \App\Repositories\Blog\BlogRepositoryInterface::class => \App\Repositories\Blog\BlogRepository::class,
+            \App\Repositories\Event\EventRepositoryInterface::class => \App\Repositories\Event\EventRepository::class,
+            \App\Repositories\Faq\FaqRepositoryInterface::class => \App\Repositories\Faq\FaqRepository::class,
+            \App\Repositories\Project\ProjectRepositoryInterface::class => \App\Repositories\Project\ProjectRepository::class,
+            \App\Repositories\Review\ReviewRepositoryInterface::class => \App\Repositories\Review\ReviewRepository::class,
+            \App\Repositories\Solution\SolutionRepositoryInterface::class => \App\Repositories\Solution\SolutionRepository::class,
+            \App\Repositories\StikeyHeader\StikeyHeaderRepositoryInterface::class => \App\Repositories\StikeyHeader\StikeyHeaderRepository::class,
+            \App\Repositories\StickeyHeader\StickeyHeaderRepositoryInterface::class => \App\Repositories\StickeyHeader\StickeyHeaderRepository::class,
         ];
 
         $services = [
@@ -28,6 +39,15 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Services\Contact\ContactServiceInterface::class => \App\Services\Contact\ContactService::class,
             \App\Services\Hero\HeroServiceInterface::class => \App\Services\Hero\HeroService::class,
             \App\Services\MediaLibrary\MediaLibraryServiceInterface::class => \App\Services\MediaLibrary\MediaLibraryService::class,
+            \App\Services\Award\AwardServiceInterface::class => \App\Services\Award\AwardService::class,
+            \App\Services\Benefit\BenefitServiceInterface::class => \App\Services\Benefit\BenefitService::class,
+            \App\Services\Blog\BlogServiceInterface::class => \App\Services\Blog\BlogService::class,
+            \App\Services\Event\EventServiceInterface::class => \App\Services\Event\EventService::class,
+            \App\Services\Faq\FaqServiceInterface::class => \App\Services\Faq\FaqService::class,
+            \App\Services\Project\ProjectServiceInterface::class => \App\Services\Project\ProjectService::class,
+            \App\Services\Review\ReviewServiceInterface::class => \App\Services\Review\ReviewService::class,
+            \App\Services\Solution\SolutionServiceInterface::class => \App\Services\Solution\SolutionService::class,
+            \App\Services\StikeyHeader\StikeyHeaderServiceInterface::class => \App\Services\StikeyHeader\StikeyHeaderService::class,
         ];
 
         $bindings = array_merge($repositories, $services);
