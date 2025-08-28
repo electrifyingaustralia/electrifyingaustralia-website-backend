@@ -24,3 +24,14 @@ function getAssetFileUrl(string $folder, string | null $filename = null, $defaul
 
     return null;
 }
+
+
+if (! function_exists('formatFileSize')) {
+    function formatFileSize($bytes, $decimals = 2)
+    {
+        $size = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $factor = floor((strlen($bytes) - 1) / 3);
+
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . ' ' . $size[$factor];
+    }
+}

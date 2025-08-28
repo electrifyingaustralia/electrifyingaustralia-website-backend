@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\Backend\AdminAuthController;
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\MediaLibraryController;
+use App\Http\Controllers\Backend\StickyHeaderController;
 use App\Http\Controllers\Backend\TeamController;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +48,25 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/users/{id}',  'destroy')->name('delete');
         });
 
+        // ! Sticky Header
+        Route::controller(StickyHeaderController::class)->name('sticky-header.')->group(function () {
+            Route::get('/sticky-header', 'index')->name('all');
+            Route::post('/sticky-header', 'store')->name('store');
+            Route::get('/sticky-header/{id}/edit',  'edit')->name('edit');
+            Route::put('/sticky-header/{id}',  'update')->name('update');
+            Route::delete('/sticky-header/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Blog
+        Route::controller(BlogController::class)->name('blog.')->group(function () {
+            Route::get('/blog', 'index')->name('all');
+            Route::get('/blog/create', 'create')->name('create');
+            Route::post('/blog', 'store')->name('store');
+            Route::get('/blog/{id}/edit',  'edit')->name('edit');
+            Route::put('/blog/{id}',  'update')->name('update');
+            Route::delete('/blog/{id}',  'destroy')->name('delete');
+        });
+
         // ! Brands
         Route::controller(BrandController::class)->name('brands.')->group(function () {
             Route::get('/brands', 'index')->name('all');
@@ -63,6 +85,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/teams/{id}/edit',  'edit')->name('edit');
             Route::put('/teams/{id}',  'update')->name('update');
             Route::delete('/teams/{id}',  'destroy')->name('delete');
+        });
+
+        // ! FAQ
+        Route::controller(FaqController::class)->name('faq.')->group(function () {
+            Route::get('/faq', 'index')->name('all');
+            Route::post('/faq', 'store')->name('store');
+            Route::get('/faq/{id}/edit',  'edit')->name('edit');
+            Route::get('/faq/{id}',  'show')->name('show');
+            Route::put('/faq/{id}',  'update')->name('update');
+            Route::delete('/faq/{id}',  'destroy')->name('delete');
         });
     });
 });

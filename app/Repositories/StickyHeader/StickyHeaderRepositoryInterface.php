@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories\StickeyHeader;
+namespace App\Repositories\StickyHeader;
 
 use Illuminate\Database\Eloquent\Builder;
 
-interface StickeyHeaderRepositoryInterface
+interface StickyHeaderRepositoryInterface
 {
     public function query(): Builder;
     public function get(array $columns = ["*"], int $perPage = 15): object;

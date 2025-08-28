@@ -12,6 +12,11 @@ class MediaLibraryService implements MediaLibraryServiceInterface
 {
     public function __construct(private MediaLibraryRepositoryInterface $mediaLibrary) {}
 
+    public function query()
+    {
+        return $this->mediaLibrary->query();
+    }
+
     public function paginateList(int $perPage = 24, array $filters = [])
     {
         return $this->mediaLibrary->get(['*'], $perPage, $filters);

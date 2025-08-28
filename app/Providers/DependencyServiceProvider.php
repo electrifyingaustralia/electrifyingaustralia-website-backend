@@ -18,7 +18,6 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Repositories\Contact\ContactRepositoryInterface::class => \App\Repositories\Contact\ContactRepository::class,
             \App\Repositories\Hero\HeroRepositoryInterface::class => \App\Repositories\Hero\HeroRepository::class,
             \App\Repositories\MediaLibrary\MediaLibraryRepositoryInterface::class => \App\Repositories\MediaLibrary\MediaLibraryRepository::class,
-            \App\Repositories\AwardRepository\AwardRepositoryRepositoryInterface::class => \App\Repositories\AwardRepository\AwardRepositoryRepository::class,
             \App\Repositories\Award\AwardRepositoryInterface::class => \App\Repositories\Award\AwardRepository::class,
             \App\Repositories\Benefit\BenefitRepositoryInterface::class => \App\Repositories\Benefit\BenefitRepository::class,
             \App\Repositories\Blog\BlogRepositoryInterface::class => \App\Repositories\Blog\BlogRepository::class,
@@ -27,8 +26,7 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Repositories\Project\ProjectRepositoryInterface::class => \App\Repositories\Project\ProjectRepository::class,
             \App\Repositories\Review\ReviewRepositoryInterface::class => \App\Repositories\Review\ReviewRepository::class,
             \App\Repositories\Solution\SolutionRepositoryInterface::class => \App\Repositories\Solution\SolutionRepository::class,
-            \App\Repositories\StikeyHeader\StikeyHeaderRepositoryInterface::class => \App\Repositories\StikeyHeader\StikeyHeaderRepository::class,
-            \App\Repositories\StickeyHeader\StickeyHeaderRepositoryInterface::class => \App\Repositories\StickeyHeader\StickeyHeaderRepository::class,
+            \App\Repositories\StickyHeader\StickyHeaderRepositoryInterface::class => \App\Repositories\StickyHeader\StickyHeaderRepository::class,
         ];
 
         $services = [
@@ -47,7 +45,7 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Services\Project\ProjectServiceInterface::class => \App\Services\Project\ProjectService::class,
             \App\Services\Review\ReviewServiceInterface::class => \App\Services\Review\ReviewService::class,
             \App\Services\Solution\SolutionServiceInterface::class => \App\Services\Solution\SolutionService::class,
-            \App\Services\StikeyHeader\StikeyHeaderServiceInterface::class => \App\Services\StikeyHeader\StikeyHeaderService::class,
+            \App\Services\StickyHeader\StickyHeaderServiceInterface::class => \App\Services\StickyHeader\StickyHeaderService::class,
         ];
 
         $bindings = array_merge($repositories, $services);

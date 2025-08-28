@@ -62,6 +62,6 @@ class BrandController extends Controller
     {
         $this->brandService->deleteBrand($id);
 
-        return redirect()->route('admin.brands.all');
+        return redirect()->route('admin.brands.all')->with('success', 'Brand Deleted Successfully!');
     }
 }

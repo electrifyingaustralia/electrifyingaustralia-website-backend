@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Repositories\StickeyHeader;
+namespace App\Repositories\StickyHeader;
 
-use App\Repositories\StickeyHeader\StickeyHeaderRepositoryInterface;
+use App\Repositories\StickyHeader\StickyHeaderRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\StickeyHeader;
+use App\Models\StickyHeader;
 
-class StickeyHeaderRepository implements StickeyHeaderRepositoryInterface
+class StickyHeaderRepository implements StickyHeaderRepositoryInterface
 {
     public function __construct()
     {
         //
     }
 
-    public function query(): Builder{
-        return StickeyHeader::query();
+    public function query(): Builder
+    {
+        return StickyHeader::query();
     }
 
     public function get(array $columns = ["*"], int $perPage = 15): object
@@ -22,33 +23,33 @@ class StickeyHeaderRepository implements StickeyHeaderRepositoryInterface
         return $this->query()->select($columns)->paginate($perPage);
     }
 
-    public function all() : object
+    public function all(): object
     {
         return $this->query()->all();
     }
 
-    public function list() : object
+    public function list(): object
     {
         return $this->query()->get();
     }
 
-    public function find(int $id) : object
+    public function find(int $id): object
     {
         return $this->query()->findOrFail($id);
     }
 
-    public function view(int $id) : object
+    public function view(int $id): object
     {
         $instance = $this->find($id);
         return $instance;
     }
 
-    public function create(array $data) : object
+    public function create(array $data): object
     {
-        return StickeyHeader::create($data);
+        return StickyHeader::create($data);
     }
 
-    public function update(int $id, array $data) : object
+    public function update(int $id, array $data): object
     {
         $instance = $this->find($id);
         $instance->update($data);
@@ -57,7 +58,7 @@ class StickeyHeaderRepository implements StickeyHeaderRepositoryInterface
 
     public function exists(int | array $id): bool
     {
-        if(is_array($id)){
+        if (is_array($id)) {
             return $this->query()->where($id)->exists();
         }
 
@@ -67,7 +68,6 @@ class StickeyHeaderRepository implements StickeyHeaderRepositoryInterface
     public function delete(int $id): bool
     {
         $instance = $this->find($id);
-        return true;
+        return (bool) $instance->delete();
     }
-
 }

@@ -37,7 +37,7 @@
 
                 <!-- Media Grid -->
                 <div class="bg-white p-4 rounded-lg shadow">
-                    <div id="media-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div id="media-grid" class="grid !grid-cols-2 sm:!grid-cols-3 md:!grid-cols-4 lg:!grid-cols-6 !gap-4">
                         <!-- Media items will be loaded here via AJAX -->
                     </div>
 
@@ -193,7 +193,7 @@
 
             if (media.is_image) {
                 mediaContent = `
-                    <img src="${media.url}" alt="${media.original_name}" class="w-full h-40 object-cover">
+                    <img src="${media.url}" alt="${media.original_name}" class="w-full h-40 object-scale-down">
                 `;
             } else if (media.is_video) {
                 mediaContent = `

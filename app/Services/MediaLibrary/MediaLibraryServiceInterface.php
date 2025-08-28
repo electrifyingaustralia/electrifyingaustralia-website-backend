@@ -9,6 +9,8 @@ interface MediaLibraryServiceInterface
 {
     public function paginateList(int $perPage = 24, array $filters = []);
 
+    public function query();
+
     public function upload(UploadedFile $file, string $disk = 'public'): MediaLibrary;
 
     public function delete(int $id): bool;
