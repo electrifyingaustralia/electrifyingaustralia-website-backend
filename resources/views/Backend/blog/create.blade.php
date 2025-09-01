@@ -1,7 +1,11 @@
 @extends('Backend.layouts.app')
 @section('contents')
+@push('styles')
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
+@endpush
 <div class="flex-1 p-6">
     <div class="max-w-5xl mx-auto">
+        <!-- Breadcrumb and navigation code remains the same -->
         <div class="flex justify-between items-center mb-5" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-2">
                 <li class="inline-flex items-center">
@@ -17,119 +21,179 @@
                         <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                         </svg>
-                        <span class="ml-1 text-lg font-medium text-gray-500 md:ml-2">Edit Brand</span>
-                    </div>
-                </li>
-                <li aria-current="page">
-                    <div class="flex items-center">
-                        <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                        </svg>
-                        <span class="ml-1 text-lg font-medium text-gray-500 md:ml-2">{{$brand->name}}</span>
+                        <span class="ml-1 text-lg font-medium text-gray-500 md:ml-2">Create New Blog</span>
                     </div>
                 </li>
             </ol>
-            <a href="{{ route('admin.brands.all') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
+            <a href="{{ route('admin.blog.all') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
                 <div class="flex items-center gap-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-                    <span>Back to Brands</span>
+                    <span>Back to Blogs</span>
                 </div>
             </a>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow">
-            <form id="brand-form" action="{{ route('admin.brands.update', $brand->id) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
+        <form id="blog-form" action="{{ route('admin.blog.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="flex flex-col lg:!flex-row gap-6">
+                <div class="w-full lg:!w-2/3">
+                    <!-- Sticky Headers Table -->
+                    <div class="bg-white p-6 rounded-lg shadow">
 
-                <div class="grid grid-cols-1 gap-6">
-                    <!-- Brand Name -->
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Brand Name <span class="text-red-600">*</span></label>
-                        <input
-                            type="text" id="name" name="name" value="{{ old('name', $brand->name) }}" required
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                            placeholder="Enter brand name"
-                        />
-                        @error('name')
-                            <p class="!text-red-600 text-sm">{{$message}}</p>
-                        @enderror
-                    </div>
+                            <div class="grid grid-cols-1 gap-6">
+                                <div>
+                                    <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Blog title <span class="text-red-600">*</span></label>
+                                    <input
+                                        type="text" id="title" name="title" required
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                        placeholder="Enter blog title"
+                                    />
+                                    @error('title')
+                                        <p class="!text-red-600 text-sm">{{$message}}</p>
+                                    @enderror
+                                </div>
 
-                    <!-- Brand Link -->
-                    <div>
-                        <label for="link" class="block text-sm font-medium text-gray-700 mb-2">Website Link</label>
-                        <input
-                            type="url" id="link" name="link" value="{{ old('link', $brand->link) }}"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                            placeholder="https://example.com"
-                        />
-                        @error('link')
-                            <p class="!text-red-600 text-sm">{{$message}}</p>
-                        @enderror
-                    </div>
+                                <div>
+                                    <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">Blog Subtitle <span class="text-red-600">*</span></label>
+                                    <input
+                                        type="text" id="subtitle" name="subtitle" required
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                        placeholder="Enter blog subtitle"
+                                    />
+                                    @error('subtitle')
+                                        <p class="!text-red-600 text-sm">{{$message}}</p>
+                                    @enderror
+                                </div>
 
-                    <!-- Logo Selection -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Brand Logo <span class="text-red-600">*</span></label>
+                                <div>
+                                    <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Blog Description
+                                    </label>
 
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <!-- Logo Preview -->
-                            <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
-                                @if($brand->logo)
-                                    <img src="{{ $brand->logo->url }}" alt="{{ $brand->name }}" class="w-full h-full object-cover rounded-lg">
-                                @else
-                                    <div class="text-center text-gray-400">
-                                        <i class="fas fa-image text-2xl mb-2"></i>
-                                        <p class="text-xs">No logo selected</p>
+                                    <textarea
+                                        id="summernote"
+                                        name="description"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    >{{ old('description') }}</textarea>
+
+                                    @error('description')
+                                        <p class="!text-red-600 text-sm">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="is_active" class="block text-sm font-medium text-gray-700 mb-1">Blog Status</label>
+                                    <select name="is_active" id="is_active" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                        <option value="1" selected>Active</option>
+                                        <option value="0" >Inactive</option>
+                                    </select>
+                                </div>
+
+                                <!-- Logo Selection -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Blog Media</label>
+
+                                    <div class="flex flex-col sm:flex-row gap-4">
+                                        <!-- Logo Preview -->
+                                        <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
+                                            <div class="text-center text-gray-400">
+                                                <p class="text-xs">No media selected</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Logo Actions -->
+                                        <div class="flex flex-col justify-center gap-2">
+                                            <button type="button" id="open-media-library" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg">
+                                                <div class="flex items-center gap-x-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-icon lucide-upload"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+                                                    <span>Upload New Media</span>
+                                                </div>
+                                            </button>
+
+                                            <input type="hidden" id="selected-media-id" name="media_id">
+                                        </div>
                                     </div>
-                                @endif
-                            </div>
 
-                            <!-- Logo Actions -->
-                            <div class="flex flex-col justify-center gap-2">
-                                <button type="button" id="open-media-library" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg">
-                                    <div class="flex items-center gap-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-icon lucide-upload"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
-                                        <span>Change Logo</span>
-                                    </div>
-                                </button>
-
-                                <input type="hidden" id="selected-media-id" name="logo_id" value="{{ old('logo_id', $brand->logo_id) }}">
-                            </div>
-                        </div>
-
-                        <!-- Selected Logo Info -->
-                        <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg {{ $brand->logo ? '' : 'hidden' }}">
-                            @if($brand->logo)
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <img id="selected-logo-preview" src="{{ $brand->logo->url }}" alt="Selected logo" class="w-12 h-12 object-cover rounded">
-                                    <div>
-                                        <p id="selected-logo-name" class="text-sm font-medium">{{ $brand->logo->original_name }}</p>
-                                        <p id="selected-logo-size" class="text-xs text-gray-500">{{ formatFileSize($brand->logo->file_size) }}</p>
+                                    <!-- Selected Logo Info -->
+                                    <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg hidden">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-3">
+                                                <img id="selected-logo-preview" src="" alt="Selected logo" class="w-12 h-12 object-cover rounded">
+                                                <div>
+                                                    <p id="selected-logo-name" class="text-sm font-medium"></p>
+                                                    <p id="selected-logo-size" class="text-xs text-gray-500"></p>
+                                                </div>
+                                            </div>
+                                            <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            </div>
+                    </div>
+                </div>
+                <!-- Right Column - Form -->
+                <div class="w-full lg:!w-1/3">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="grid grid-cols-1 gap-6">
+                            <div>
+                                <label for="facebook_link" class="block text-sm font-medium text-gray-700 mb-2">Facebook Link</label>
+                                <input
+                                    type="text" id="facebook_link" name="facebook_link"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    placeholder="Enter blog facebook link"
+                                />
+                                @error('facebook_link')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="twitter_link" class="block text-sm font-medium text-gray-700 mb-2">Twitter Link</label>
+                                <input
+                                    type="text" id="twitter_link" name="twitter_link"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    placeholder="Enter blog twitter link"
+                                />
+                                @error('twitter_link')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="linkedin_link" class="block text-sm font-medium text-gray-700 mb-2">Linkedin Link</label>
+                                <input
+                                    type="text" id="linkedin_link" name="linkedin_link"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    placeholder="Enter blog linkedin link"
+                                />
+                                @error('linkedin_link')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="youtube_link" class="block text-sm font-medium text-gray-700 mb-2">Youtube Link</label>
+                                <input
+                                    type="text" id="youtube_link" name="youtube_link"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    placeholder="Enter blog youtube link"
+                                />
+                                @error('youtube_link')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <!-- Form Actions -->
+                            <div class="mt-4 flex justify-end space-x-3">
+                                <button type="submit" class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
+                                    <div class="flex items-center gap-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save-icon lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
+                                        <span>Create Blog</span>
+                                    </div>
                                 </button>
                             </div>
-                            @endif
                         </div>
                     </div>
                 </div>
-
-                <!-- Form Actions -->
-                <div class="mt-8 flex justify-end space-x-3">
-                    <button type="submit" class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
-                        <div class="flex items-center gap-x-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save-icon lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
-                            <span>Update Brand</span>
-                        </div>
-                    </button>
-                </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -156,7 +220,7 @@
         </div>
 
         <!-- Tab Content -->
-        <div class="flex-1 overflow-auto min-h-[35rem]">
+        <div class="flex-1 overflow-auto min-h-[30rem]">
             <!-- Upload Tab -->
             <div id="upload-tab-content" class="p-6">
                 <div id="upload-area" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center relative">
@@ -167,7 +231,7 @@
                             </div>
                         </div>
                         <p class="text-sm text-gray-600 mb-4">Drag & drop your logo here or click to browse</p>
-                        <input type="file" id="modal-logo-upload" accept="image/*" class="hidden">
+                        <input type="file" id="modal-logo-upload" class="hidden">
                         <label for="modal-logo-upload" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg cursor-pointer">
                             <i class="fas fa-upload mr-2"></i> Browse Files
                         </label>
@@ -222,7 +286,7 @@
                 Cancel
             </button>
             <button id="confirm-selection" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg" disabled>
-                Select Logo
+                Select Media
             </button>
         </div>
     </div>
@@ -263,18 +327,6 @@ $(document).ready(function() {
     let currentTab = 'upload';
     let mediaLibraryItems = [];
     let isUploading = false;
-
-    // Initialize with existing logo data if available
-    @if($brand->logo)
-    selectedMedia = {
-        id: {{ $brand->logo_id }},
-        url: '{{ $brand->logo->url }}',
-        name: '{{ $brand->logo->original_name }}',
-        size: {{ $brand->logo->file_size }},
-        file: null,
-        type: 'library'
-    };
-    @endif
 
     // ========== UPLOAD TAB FUNCTIONS ==========
     function setupDragAndDrop() {
@@ -468,14 +520,11 @@ $(document).ready(function() {
         `);
 
         $.ajax({
-            url: '{{ route("admin.media.ajax.all") }}?perPage=24&type=image',
-            method: 'GET',
+            url: '{{ route("admin.media.ajax.all") }}?perPage=15',
             headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-Requested-With': 'XMLHttpRequest'
             },
             success: function(data) {
-                console.log('Media library response:', data);
                 if (data.data && data.data.length > 0) {
                     mediaLibraryItems = data.data;
                     renderMediaLibrary(data.data);
@@ -496,13 +545,12 @@ $(document).ready(function() {
         let html = '<div class="grid !grid-cols-2 sm:!grid-cols-3 md:!grid-cols-4 lg:!grid-cols-6 !gap-4">';
 
         $.each(mediaItems, function(index, media) {
-            const isSelected = selectedMedia && selectedMedia.id === media.id;
             html += `
-                <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md ${isSelected ? 'selected' : ''}"
+                <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md"
                      data-index="${index}">
                     <img src="${media.url}" alt="${media.original_name}" class="w-full h-24 object-scale-down">
                     <div class="p-2">
-                        <p class="text-xs font-medium truncate">${media.original_name}</p>
+                        <p class="text-xs text-center font-medium truncate">${media.original_name}</p>
                     </div>
                 </div>
             `;
@@ -605,12 +653,14 @@ $(document).ready(function() {
         switchTab('upload');
         setupDragAndDrop();
 
+        selectedMedia = null;
         updateConfirmButtonState();
         updateUploadButtonState();
     }
 
     function closeMediaLibrary() {
         $('#media-library-modal').addClass('hidden');
+        selectedMedia = null;
         updateConfirmButtonState();
         updateUploadButtonState();
         clearUploadPreview();
@@ -677,9 +727,9 @@ $(document).ready(function() {
     $('#confirm-selection').on('click', confirmMediaSelection);
     $('#remove-selected-logo').on('click', removeSelectedLogo);
 
-    // Form Submission - SINGLE HANDLER to prevent duplicate submissions
-    $('#brand-form').on('submit', function(e) {
-        e.preventDefault();
+    // Form Submission
+    $('#blog-form').on('submit', function(e) {
+                e.preventDefault();
 
         var form = $(this);
         var formData = new FormData(this);
@@ -699,13 +749,13 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     // Store the success message in localStorage
-                    localStorage.setItem('toastr_success', response.message);
+                    localStorage.setItem('toastr_success', response.message) || '{{ route('admin.blog.all') }}';
 
                     // Redirect to index page
-                    window.location.href = response.redirect || '{{ route('admin.brands.all') }}';
+                    window.location.href = response.redirect;
                 } else {
                     toastr.error(response.message || 'An error occurred');
-                    $('button[type="submit"]').prop('disabled', false).text('Update Brand');
+                    $('button[type="submit"]').prop('disabled', false).text('Create Brand');
                 }
             },
             error: function(xhr) {
@@ -725,14 +775,30 @@ $(document).ready(function() {
                     toastr.error('An error occurred. Please try again.');
                 }
 
-                $('button[type="submit"]').prop('disabled', false).text('Update Brand');
+                $('button[type="submit"]').prop('disabled', false).text('Create Brand');
             }
         });
     });
-
-    // Initialize on page load
-    updateConfirmButtonState();
-    updateUploadButtonState();
 });
 </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                placeholder: 'Write your blog description here...',
+                tabsize: 2,
+                height: 100,
+                toolbar: [
+                // basic editing tools
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link']], //
+                ['view', ['codeview', 'help']]
+            ]
+            });
+        });
+    </script>
 @endpush

@@ -36,48 +36,56 @@
                         class="px-4 py-2 text-vertical-menu-item group-data-[sidebar=dark]:text-vertical-menu-item-dark group-data-[sidebar=brand]:text-vertical-menu-item-brand group-data-[sidebar=modern]:text-vertical-menu-item-modern uppercase font-medium text-[11px] cursor-default tracking-wider group-data-[sidebar-size=sm]:hidden group-data-[layout=horizontal]:hidden inline-block group-data-[sidebar-size=md]:block group-data-[sidebar-size=md]:underline group-data-[sidebar-size=md]:text-center group-data-[sidebar=dark]:dark:text-zink-200">
                         <span data-key="t-menu">Menu</span>
                     </li>
+
                     <li class="relative mb-2">
                         <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.dashboard') ? '!text-teal-500 bg-teal-50' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-monitor-dot-icon lucide-monitor-dot"><path d="M12 17v4"/><path d="M22 12.307V15a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8.693"/><path d="M8 21h8"/><circle cx="19" cy="6" r="3"/></svg>
                             <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Dashboard</span>
                         </a>
                     </li>
+
                     <li class="relative mb-2">
                         <a href="{{ route('admin.media.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.media*') ? '!text-teal-500 bg-teal-50' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-images-icon lucide-images"><path d="m22 11-1.296-1.296a2.4 2.4 0 0 0-3.408 0L11 16"/><path d="M4 8a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2"/><circle cx="13" cy="7" r="1" fill="currentColor"/><rect x="8" y="2" width="14" height="14" rx="2"/></svg>
                             <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Media</span>
                         </a>
                     </li>
+
                     <li class="relative mb-2">
                         <a href="{{ route('admin.users.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.users*') ? '!text-teal-500 bg-teal-50' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-icon lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
                             <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Users</span>
                         </a>
                     </li>
-                    <li class="relative mb-2">
-                        <a href="{{ route('admin.sticky-header.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.sticky-header*') ? '!text-teal-500 bg-teal-50' : '' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-anchor-icon lucide-anchor"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><circle cx="12" cy="5" r="3"/></svg>
-                            <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Sticky Header</span>
-                        </a>
-                    </li>
-                    <li class="relative mb-2">
-                        <a href="{{ route('admin.blog.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.blog*') ? '!text-teal-500 bg-teal-50' : '' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open-icon lucide-book-open"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
-                            <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Blog</span>
-                        </a>
-                    </li>
+
                     <li class="relative mb-2">
                         <a href="{{ route('admin.brands.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.brands*') ? '!text-teal-500 bg-teal-50' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-codesandbox-icon lucide-codesandbox"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" x2="12" y1="22.08" y2="12"/></svg>
                             <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Brands</span>
                         </a>
                     </li>
+
+                    <li class="relative mb-2">
+                        <a href="{{ route('admin.sticky-header.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.sticky-header*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-anchor-icon lucide-anchor"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><circle cx="12" cy="5" r="3"/></svg>
+                            <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Sticky Header</span>
+                        </a>
+                    </li>
+
+                    <li class="relative mb-2">
+                        <a href="{{ route('admin.blog.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.blog*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open-icon lucide-book-open"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+                            <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Blog</span>
+                        </a>
+                    </li>
+
                     <li class="relative mb-2">
                         <a href="{{ route('admin.teams.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.teams*') ? '!text-teal-500 bg-teal-50' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-handshake-icon lucide-handshake"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
-                            <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Teams</span>
+                            <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Team Members</span>
                         </a>
                     </li>
+
                     <li class="relative mb-2">
                         <a href="{{ route('admin.faq.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.faq*') ? '!text-teal-500 bg-teal-50' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-question-mark-icon lucide-circle-question-mark"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>

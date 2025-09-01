@@ -42,23 +42,26 @@ class BlogService implements BlogServiceInterface
         return $this->blogRepository->find($id);
     }
 
-    public function updateBlog(int $id, array $data, ?UploadedFile $media = null): object
+    public function updateBlog(int $id, array $data): object
     {
-        $blog = $this->blogRepository->find($id);
+        // $blog = $this->blogRepository->find($id);
 
-        if ($media) {
-            $existingMedia = $this->mediaLibrary->query()->where('original_name', $media->getClientOriginalName())->first();
-
-            if ($existingMedia) {
-                $data['media_id'] = $existingMedia->id;
+        // Handle media_id from form data
+        if (isset($data['media_id'])) {
+            if (empty($data['media_id']) || $data['media_id'] === 'null') {
+                $data['media_id'] = null;
             } else {
-                // if ($blog->media_id) {
-                //     $this->mediaLibrary->delete($blog->media_id);
-                // }
-
-                $uploaded = $this->mediaLibrary->upload($media);
-                $data['media_id'] = $uploaded->id;
+                // Verify the selected media exists
+                $existingMedia = $this->mediaLibrary->findMedia($data['media_id']);
+                if (!$existingMedia) {
+                    $data['media_id'] = null;
+                }
             }
+        }
+
+        // Ensure boolean values
+        if (isset($data['is_active'])) {
+            $data['is_active'] = (bool)$data['is_active'];
         }
 
         return $this->blogRepository->update($id, $data);

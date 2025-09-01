@@ -107,12 +107,6 @@
 
                 <!-- Form Actions -->
                 <div class="mt-8 flex justify-end space-x-3">
-                    <a href="{{ route('admin.brands.all') }}" class="!bg-gray-600 hover:!bg-gray-700 text-white px-6 py-2 rounded-lg">
-                        <div class="flex items-center gap-x-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                            <span>Cancel</span>
-                        </div>
-                    </a>
                     <button type="submit" class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
                         <div class="flex items-center gap-x-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save-icon lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
@@ -163,7 +157,7 @@
                         <label for="modal-logo-upload" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg cursor-pointer">
                             <i class="fas fa-upload mr-2"></i> Browse Files
                         </label>
-                        <p class="text-xs text-gray-500 mt-3">Supported formats: JPG, PNG, GIF, SVG • Max size: 10MB</p>
+                        {{-- <p class="text-xs text-gray-500 mt-3">Supported formats: JPG, PNG, GIF, SVG • Max size: 10MB</p> --}}
                     </div>
 
                     <div id="upload-preview" class="upload-content hidden">
@@ -306,16 +300,6 @@ $(document).ready(function() {
     }
 
     function validateAndProcessFile(file) {
-        if (!file.type.startsWith('image/')) {
-            alert('Please select an image file (JPG, PNG, GIF, SVG)');
-            return;
-        }
-
-        if (file.size > 10 * 1024 * 1024) {
-            alert('File size must be less than 10MB');
-            return;
-        }
-
         const reader = new FileReader();
         reader.onload = function(e) {
             showUploadPreview(file, e.target.result);

@@ -38,9 +38,9 @@ class BrandService implements BrandServiceInterface
     {
         $brand = $this->brandRepository->find($id);
         if ($logo) {
-            if ($brand->logo_id) {
-                $this->mediaLibrary->delete($brand->logo_id);
-            }
+            // if ($brand->logo_id) {
+            //     $this->mediaLibrary->delete($brand->logo_id);
+            // }
 
             $media = $this->mediaLibrary->upload($logo);
             $data['logo_id'] = $media->id;

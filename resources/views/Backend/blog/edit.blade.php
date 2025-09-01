@@ -1,5 +1,8 @@
 @extends('Backend.layouts.app')
 @section('contents')
+@push('styles')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
+@endpush
 <div class="flex-1 p-6">
     <div class="max-w-5xl mx-auto">
         <div class="flex justify-between items-center mb-5" aria-label="Breadcrumb">
@@ -17,119 +20,203 @@
                         <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                         </svg>
-                        <span class="ml-1 text-lg font-medium text-gray-500 md:ml-2">Edit Brand</span>
+                        <span class="ml-1 text-lg font-medium text-gray-500 md:ml-2">Edit Blog</span>
                     </div>
                 </li>
-                <li aria-current="page">
+                <li aria-current="page" class="hidden lg:block">
                     <div class="flex items-center">
                         <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                         </svg>
-                        <span class="ml-1 text-lg font-medium text-gray-500 md:ml-2">{{$brand->name}}</span>
+                        <span class="ml-1 text-lg font-medium text-gray-500 md:ml-2 truncate lg:!max-w-[15rem]">{{$blog->title}}</span>
                     </div>
                 </li>
             </ol>
-            <a href="{{ route('admin.brands.all') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
+            <a href="{{ route('admin.blog.all') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
                 <div class="flex items-center gap-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-                    <span>Back to Brands</span>
+                    <span>Back to Blog</span>
                 </div>
             </a>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow">
-            <form id="brand-form" action="{{ route('admin.brands.update', $brand->id) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
+        <form id="blog-form" action="{{ route('admin.blog.update', $blog->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="flex flex-col lg:!flex-row gap-6">
+                <div class="w-full lg:!w-2/3">
+                    <!-- Sticky Headers Table -->
+                    <div class="bg-white p-6 rounded-lg shadow">
 
-                <div class="grid grid-cols-1 gap-6">
-                    <!-- Brand Name -->
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Brand Name <span class="text-red-600">*</span></label>
-                        <input
-                            type="text" id="name" name="name" value="{{ old('name', $brand->name) }}" required
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                            placeholder="Enter brand name"
-                        />
-                        @error('name')
-                            <p class="!text-red-600 text-sm">{{$message}}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Brand Link -->
-                    <div>
-                        <label for="link" class="block text-sm font-medium text-gray-700 mb-2">Website Link</label>
-                        <input
-                            type="url" id="link" name="link" value="{{ old('link', $brand->link) }}"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                            placeholder="https://example.com"
-                        />
-                        @error('link')
-                            <p class="!text-red-600 text-sm">{{$message}}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Logo Selection -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Brand Logo <span class="text-red-600">*</span></label>
-
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <!-- Logo Preview -->
-                            <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
-                                @if($brand->logo)
-                                    <img src="{{ $brand->logo->url }}" alt="{{ $brand->name }}" class="w-full h-full object-cover rounded-lg">
-                                @else
-                                    <div class="text-center text-gray-400">
-                                        <i class="fas fa-image text-2xl mb-2"></i>
-                                        <p class="text-xs">No logo selected</p>
-                                    </div>
-                                @endif
+                        <div class="grid grid-cols-1 gap-6">
+                            <div>
+                                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Blog title <span class="text-red-600">*</span></label>
+                                <input
+                                    type="text" id="title" name="title" required
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    value="{{old('title', $blog->title)}}"
+                                    placeholder="Enter blog title"
+                                />
+                                @error('title')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
                             </div>
 
-                            <!-- Logo Actions -->
-                            <div class="flex flex-col justify-center gap-2">
-                                <button type="button" id="open-media-library" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg">
-                                    <div class="flex items-center gap-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-icon lucide-upload"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
-                                        <span>Change Logo</span>
-                                    </div>
-                                </button>
-
-                                <input type="hidden" id="selected-media-id" name="logo_id" value="{{ old('logo_id', $brand->logo_id) }}">
+                            <div>
+                                <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">Blog Subtitle <span class="text-red-600">*</span></label>
+                                <input
+                                    type="text" id="subtitle" name="subtitle" required
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    value="{{old('subtitle', $blog->subtitle)}}"
+                                    placeholder="Enter blog subtitle"
+                                />
+                                @error('subtitle')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
                             </div>
-                        </div>
 
-                        <!-- Selected Logo Info -->
-                        <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg {{ $brand->logo ? '' : 'hidden' }}">
-                            @if($brand->logo)
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-3">
-                                    <img id="selected-logo-preview" src="{{ $brand->logo->url }}" alt="Selected logo" class="w-12 h-12 object-cover rounded">
-                                    <div>
-                                        <p id="selected-logo-name" class="text-sm font-medium">{{ $brand->logo->original_name }}</p>
-                                        <p id="selected-logo-size" class="text-xs text-gray-500">{{ formatFileSize($brand->logo->file_size) }}</p>
+                            <div>
+                                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Blog Description
+                                </label>
+
+                                <textarea
+                                    id="summernote"
+                                    name="description"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                >{!! old('description', $blog->description) !!}</textarea>
+
+                                @error('description')
+                                    <p class="!text-red-600 text-sm">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="is_active" class="block text-sm font-medium text-gray-700 mb-1">Blog Status</label>
+                                <select name="is_active" id="is_active"
+                                    class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+
+                                    <option value="1" {{ old('is_active', $blog->is_active) == 1 ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ old('is_active', $blog->is_active) == 0 ? 'selected' : '' }}>Inactive</option>
+                                </select>
+                            </div>
+
+                            <!-- Logo Selection -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Blog Media <span class="text-red-600">*</span></label>
+
+                                <div class="flex flex-col sm:flex-row gap-4">
+                                    <!-- Logo Preview -->
+                                    <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
+                                        @if($blog->media)
+                                            <img src="{{ $blog->media->url }}" alt="{{ $blog->title }}" class="w-full h-full object-cover rounded-lg">
+                                        @else
+                                            <div class="text-center text-gray-400">
+                                                <i class="fas fa-image text-2xl mb-2"></i>
+                                                <p class="text-xs">No media selected</p>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <!-- Logo Actions -->
+                                    <div class="flex flex-col justify-center gap-2">
+                                        <button type="button" id="open-media-library" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg">
+                                            <div class="flex items-center gap-x-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-icon lucide-upload"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+                                                <span>Change Media</span>
+                                            </div>
+                                        </button>
+
+                                        <input type="hidden" id="selected-media-id" name="media_id" value="{{ old('media_id', $blog->media_id) }}">
                                     </div>
                                 </div>
-                                <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                                </button>
+
+                                <!-- Selected Logo Info -->
+                                <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg {{ $blog->media ? '' : 'hidden' }}">
+                                    @if($blog->media)
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-3">
+                                            <img id="selected-logo-preview" src="{{ $blog->media->url }}" alt="Selected logo" class="w-12 h-12 object-cover rounded">
+                                            <div>
+                                                <p id="selected-logo-name" class="text-sm font-medium">{{ $blog->media->original_name }}</p>
+                                                <p id="selected-logo-size" class="text-xs text-gray-500">{{ formatFileSize($blog->media->file_size) }}</p>
+                                            </div>
+                                        </div>
+                                        <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                        </button>
+                                    </div>
+                                    @endif
+                                </div>
                             </div>
-                            @endif
                         </div>
                     </div>
                 </div>
-
-                <!-- Form Actions -->
-                <div class="mt-8 flex justify-end space-x-3">
-                    <button type="submit" class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
-                        <div class="flex items-center gap-x-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save-icon lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
-                            <span>Update Brand</span>
+                <!-- Right Column - Form -->
+                <div class="w-full lg:!w-1/3">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="grid grid-cols-1 gap-6">
+                            <div>
+                                <label for="facebook_link" class="block text-sm font-medium text-gray-700 mb-2">Facebook Link</label>
+                                <input
+                                    type="text" id="facebook_link" name="facebook_link"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    value="{{old('facebook_link', $blog->facebook_link)}}"
+                                    placeholder="Enter blog facebook link"
+                                />
+                                @error('facebook_link')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="twitter_link" class="block text-sm font-medium text-gray-700 mb-2">Twitter Link</label>
+                                <input
+                                    type="text" id="twitter_link" name="twitter_link"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    value="{{old('twitter_link', $blog->twitter_link)}}"
+                                    placeholder="Enter blog twitter link"
+                                />
+                                @error('twitter_link')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="linkedin_link" class="block text-sm font-medium text-gray-700 mb-2">Linkedin Link</label>
+                                <input
+                                    type="text" id="linkedin_link" name="linkedin_link"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    value="{{old('linkedin_link', $blog->linkedin_link)}}"
+                                    placeholder="Enter blog linkedin link"
+                                />
+                                @error('linkedin_link')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="youtube_link" class="block text-sm font-medium text-gray-700 mb-2">Youtube Link</label>
+                                <input
+                                    type="text" id="youtube_link" name="youtube_link"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    value="{{old('youtube_link', $blog->youtube_link)}}"
+                                    placeholder="Enter blog youtube link"
+                                />
+                                @error('youtube_link')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <!-- Form Actions -->
+                            <div class="mt-4 flex justify-end space-x-3">
+                                <button type="submit" class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
+                                    <div class="flex items-center gap-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save-icon lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
+                                        <span>Update Blog</span>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
-                    </button>
+                    </div>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -137,7 +224,7 @@
 <div id="media-library-modal" class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50 p-4">
     <div class="bg-white rounded-lg w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
         <div class="flex justify-between items-center p-6 border-b">
-            <h3 class="text-lg font-medium">Upload or Select Logo</h3>
+            <h3 class="text-lg font-medium">Upload or Select Media</h3>
             <button id="close-media-library" class="text-gray-400 hover:text-gray-600">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
             </button>
@@ -166,8 +253,8 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="m-auto text-center" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                             </div>
                         </div>
-                        <p class="text-sm text-gray-600 mb-4">Drag & drop your logo here or click to browse</p>
-                        <input type="file" id="modal-logo-upload" accept="image/*" class="hidden">
+                        <p class="text-sm text-gray-600 mb-4">Drag & drop your media here or click to browse</p>
+                        <input type="file" id="modal-logo-upload" class="hidden">
                         <label for="modal-logo-upload" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg cursor-pointer">
                             <i class="fas fa-upload mr-2"></i> Browse Files
                         </label>
@@ -222,7 +309,7 @@
                 Cancel
             </button>
             <button id="confirm-selection" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg" disabled>
-                Select Logo
+                Select Media
             </button>
         </div>
     </div>
@@ -265,12 +352,12 @@ $(document).ready(function() {
     let isUploading = false;
 
     // Initialize with existing logo data if available
-    @if($brand->logo)
+    @if($blog->media)
     selectedMedia = {
-        id: {{ $brand->logo_id }},
-        url: '{{ $brand->logo->url }}',
-        name: '{{ $brand->logo->original_name }}',
-        size: {{ $brand->logo->file_size }},
+        id: {{ $blog->media_id }},
+        url: '{{ $blog->media->url }}',
+        name: '{{ $blog->media->original_name }}',
+        size: {{ $blog->media->file_size }},
         file: null,
         type: 'library'
     };
@@ -448,9 +535,9 @@ $(document).ready(function() {
                 updateUploadButtonState();
             },
             error: function(error) {
-                console.error('Error uploading logo:', error);
+                console.error('Error uploading media:', error);
                 $('#upload-status').text('Upload failed!');
-                alert('Error uploading logo');
+                alert('Error uploading media');
                 isUploading = false;
                 updateUploadButtonState();
             }
@@ -468,7 +555,7 @@ $(document).ready(function() {
         `);
 
         $.ajax({
-            url: '{{ route("admin.media.ajax.all") }}?perPage=24&type=image',
+            url: '{{ route("admin.media.ajax.all") }}?perPage=15',
             method: 'GET',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -544,7 +631,7 @@ $(document).ready(function() {
             <div class="text-center py-12">
                 <i class="fas fa-folder-open text-gray-400 text-4xl mb-4"></i>
                 <h3 class="text-lg font-medium text-gray-700">No media files found</h3>
-                <p class="text-gray-500 mt-2">Upload images to use as logos</p>
+                <p class="text-gray-500 mt-2">Upload images to use as media</p>
             </div>
         `);
     }
@@ -618,7 +705,7 @@ $(document).ready(function() {
 
     function confirmMediaSelection() {
         if (!selectedMedia) {
-            alert('Please select a logo first');
+            alert('Please select a media first');
             return;
         }
 
@@ -644,7 +731,7 @@ $(document).ready(function() {
         $('#logo-preview').html(`
             <div class="text-center text-gray-400">
                 <i class="fas fa-image text-2xl mb-2"></i>
-                <p class="text-xs">No logo selected</p>
+                <p class="text-xs">No media selected</p>
             </div>
         `);
 
@@ -678,61 +765,137 @@ $(document).ready(function() {
     $('#remove-selected-logo').on('click', removeSelectedLogo);
 
     // Form Submission - SINGLE HANDLER to prevent duplicate submissions
-    $('#brand-form').on('submit', function(e) {
-        e.preventDefault();
+    // $('#blog-form').on('submit', function(e) {
+    //     e.preventDefault();
 
-        var form = $(this);
-        var formData = new FormData(this);
+    //     var form = $(this);
+    //     var formData = new FormData(this);
 
-        $.ajax({
-            url: form.attr('action'),
-            type: form.attr('method'),
-            data: formData,
-            processData: false,
-            contentType: false,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            beforeSend: function() {
-                $('button[type="submit"]').prop('disabled', true).text('Processing...');
-            },
-            success: function(response) {
-                if (response.success) {
-                    // Store the success message in localStorage
-                    localStorage.setItem('toastr_success', response.message);
+    //     $.ajax({
+    //         url: form.attr('action'),
+    //         type: form.attr('method'),
+    //         data: formData,
+    //         processData: false,
+    //         contentType: false,
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //         beforeSend: function() {
+    //             $('button[type="submit"]').prop('disabled', true).text('Processing...');
+    //         },
+    //         success: function(response) {
+    //             if (response.success) {
+    //                 // Store the success message in localStorage
+    //                 localStorage.setItem('toastr_success', response.message);
 
-                    // Redirect to index page
-                    window.location.href = response.redirect || '{{ route('admin.brands.all') }}';
-                } else {
-                    toastr.error(response.message || 'An error occurred');
-                    $('button[type="submit"]').prop('disabled', false).text('Update Brand');
-                }
-            },
-            error: function(xhr) {
-                // Handle errors
-                if (xhr.status === 422) {
-                    var errors = xhr.responseJSON.errors;
-                    var errorMessage = 'Please fix the following errors:<br>';
+    //                 // Redirect to index page
+    //                 window.location.href = response.redirect || '{{ route('admin.blog.all') }}';
+    //             } else {
+    //                 toastr.error(response.message || 'An error occurred');
+    //                 $('button[type="submit"]').prop('disabled', false).text('Update Blog');
+    //             }
+    //         },
+    //         error: function(xhr) {
+    //             // Handle errors
+    //             if (xhr.status === 422) {
+    //                 var errors = xhr.responseJSON.errors;
+    //                 var errorMessage = 'Please fix the following errors:<br>';
 
-                    for (var field in errors) {
-                        if (errors.hasOwnProperty(field)) {
-                            errorMessage += '- ' + errors[field].join('<br>') + '<br>';
-                        }
-                    }
+    //                 for (var field in errors) {
+    //                     if (errors.hasOwnProperty(field)) {
+    //                         errorMessage += '- ' + errors[field].join('<br>') + '<br>';
+    //                     }
+    //                 }
 
-                    toastr.error(errorMessage);
-                } else {
-                    toastr.error('An error occurred. Please try again.');
-                }
+    //                 toastr.error(errorMessage);
+    //             } else {
+    //                 toastr.error('An error occurred. Please try again.');
+    //             }
 
-                $('button[type="submit"]').prop('disabled', false).text('Update Brand');
+    //             $('button[type="submit"]').prop('disabled', false).text('Update Blog');
+    //         }
+    //     });
+    // });
+
+    $('#blog-form').on('submit', function(e) {
+    e.preventDefault();
+
+    // Update Summernote content before form submission
+    $('#summernote').val($('#summernote').summernote('code'));
+
+    var form = $(this);
+    var formData = new FormData(this);
+
+    console.log('FormData contents:');
+    for (var pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+    }
+
+    $.ajax({
+        url: form.attr('action'),
+        type: form.attr('method'),
+        data: formData,
+        processData: false,
+        contentType: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        beforeSend: function() {
+            $('button[type="submit"]').prop('disabled', true).text('Processing...');
+        },
+        success: function(response) {
+            if (response.success) {
+                localStorage.setItem('toastr_success', response.message);
+                window.location.href = response.redirect || '{{ route('admin.blog.all') }}';
+            } else {
+                toastr.error(response.message || 'An error occurred');
+                $('button[type="submit"]').prop('disabled', false).text('Update Blog');
             }
-        });
+        },
+        error: function(xhr) {
+            console.log('Error details:', xhr);
+            console.log('Response:', xhr.responseJSON);
+
+            if (xhr.status === 422) {
+                var errors = xhr.responseJSON.errors;
+                var errorMessage = 'Validation errors:<br>';
+                for (var field in errors) {
+                    errorMessage += '- ' + errors[field].join('<br>') + '<br>';
+                }
+                toastr.error(errorMessage);
+            } else {
+                toastr.error('Error: ' + (xhr.responseJSON?.message || 'Please check console'));
+            }
+            $('button[type="submit"]').prop('disabled', false).text('Update Blog');
+        }
     });
+});
 
     // Initialize on page load
     updateConfirmButtonState();
     updateUploadButtonState();
 });
 </script>
+
+</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                placeholder: 'Write your blog description here...',
+                tabsize: 2,
+                height: 100,
+                toolbar: [
+                // basic editing tools
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link']], //
+                ['view', ['codeview', 'help']]
+            ]
+            });
+        });
+    </script>
 @endpush

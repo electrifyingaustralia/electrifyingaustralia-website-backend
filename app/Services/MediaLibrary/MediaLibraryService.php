@@ -22,6 +22,11 @@ class MediaLibraryService implements MediaLibraryServiceInterface
         return $this->mediaLibrary->get(['*'], $perPage, $filters);
     }
 
+    public function findMedia($id)
+    {
+        return $this->mediaLibrary->find($id);
+    }
+
     public function upload(UploadedFile $file, string $disk = 'public'): MediaLibrary
     {
         $mime = $file->getMimeType();

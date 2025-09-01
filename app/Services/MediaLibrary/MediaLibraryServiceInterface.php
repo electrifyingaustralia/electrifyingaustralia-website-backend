@@ -11,6 +11,8 @@ interface MediaLibraryServiceInterface
 
     public function query();
 
+    public function findMedia(int $id);
+
     public function upload(UploadedFile $file, string $disk = 'public'): MediaLibrary;
 
     public function delete(int $id): bool;
