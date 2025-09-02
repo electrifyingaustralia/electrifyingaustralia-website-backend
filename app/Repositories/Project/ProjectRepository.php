@@ -13,42 +13,43 @@ class ProjectRepository implements ProjectRepositoryInterface
         //
     }
 
-    public function query(): Builder{
+    public function query(): Builder
+    {
         return Project::query();
     }
 
-    public function get(array $columns = ["*"], int $perPage = 15): object
+    public function get(array $columns = ["*"], int $perPage = 15, array $filters = []): object
     {
         return $this->query()->select($columns)->paginate($perPage);
     }
 
-    public function all() : object
+    public function all(): object
     {
         return $this->query()->all();
     }
 
-    public function list() : object
+    public function list(): object
     {
         return $this->query()->get();
     }
 
-    public function find(int $id) : object
+    public function find(int $id): object
     {
         return $this->query()->findOrFail($id);
     }
 
-    public function view(int $id) : object
+    public function view(int $id): object
     {
         $instance = $this->find($id);
         return $instance;
     }
 
-    public function create(array $data) : object
+    public function create(array $data): object
     {
         return Project::create($data);
     }
 
-    public function update(int $id, array $data) : object
+    public function update(int $id, array $data): object
     {
         $instance = $this->find($id);
         $instance->update($data);
@@ -57,7 +58,7 @@ class ProjectRepository implements ProjectRepositoryInterface
 
     public function exists(int | array $id): bool
     {
-        if(is_array($id)){
+        if (is_array($id)) {
             return $this->query()->where($id)->exists();
         }
 
@@ -67,7 +68,6 @@ class ProjectRepository implements ProjectRepositoryInterface
     public function delete(int $id): bool
     {
         $instance = $this->find($id);
-        return true;
+        return (bool) $instance->delete();
     }
-
 }

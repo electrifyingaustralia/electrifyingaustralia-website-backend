@@ -18,11 +18,9 @@ return new class extends Migration
 
             $table->string('subtitle');
 
-            $table->longText('description');
+            $table->longText('description')->nullable();
 
             $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
-
-            $table->string('type', 50);
 
             $table->boolean('is_active')->default(true);
 

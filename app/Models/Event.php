@@ -12,7 +12,7 @@ class Event extends Model
 
     public function media()
     {
-        return $this->belongsTo(MediaLibrary::class);
+        return $this->belongsTo(MediaLibrary::class, 'media_id');
     }
 
     public function getMediaUrlAttribute(): ?string

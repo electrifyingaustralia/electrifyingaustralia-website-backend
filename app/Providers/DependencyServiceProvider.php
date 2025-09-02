@@ -27,6 +27,7 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Repositories\Review\ReviewRepositoryInterface::class => \App\Repositories\Review\ReviewRepository::class,
             \App\Repositories\Solution\SolutionRepositoryInterface::class => \App\Repositories\Solution\SolutionRepository::class,
             \App\Repositories\StickyHeader\StickyHeaderRepositoryInterface::class => \App\Repositories\StickyHeader\StickyHeaderRepository::class,
+            \App\Repositories\Package\PackageRepositoryInterface::class => \App\Repositories\Package\PackageRepository::class,
         ];
 
         $services = [
@@ -46,6 +47,7 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Services\Review\ReviewServiceInterface::class => \App\Services\Review\ReviewService::class,
             \App\Services\Solution\SolutionServiceInterface::class => \App\Services\Solution\SolutionService::class,
             \App\Services\StickyHeader\StickyHeaderServiceInterface::class => \App\Services\StickyHeader\StickyHeaderService::class,
+            \App\Services\Package\PackageServiceInterface::class => \App\Services\Package\PackageService::class,
         ];
 
         $bindings = array_merge($repositories, $services);

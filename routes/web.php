@@ -5,8 +5,11 @@ use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\EventController;
 use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\MediaLibraryController;
+use App\Http\Controllers\Backend\PackageController;
+use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\StickyHeaderController;
 use App\Http\Controllers\Backend\TeamController;
 use Illuminate\Routing\Router;
@@ -95,6 +98,39 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/faq/{id}',  'show')->name('show');
             Route::put('/faq/{id}',  'update')->name('update');
             Route::delete('/faq/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Event
+        Route::controller(EventController::class)->name('event.')->group(function () {
+            Route::get('/event', 'index')->name('all');
+            Route::get('/event/create', 'create')->name('create');
+            Route::post('/event', 'store')->name('store');
+            Route::get('/event/{id}/edit',  'edit')->name('edit');
+            Route::get('/event/{id}',  'show')->name('show');
+            Route::put('/event/{id}',  'update')->name('update');
+            Route::delete('/event/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Project
+        Route::controller(ProjectController::class)->name('project.')->group(function () {
+            Route::get('/project', 'index')->name('all');
+            Route::get('/project/create', 'create')->name('create');
+            Route::post('/project', 'store')->name('store');
+            Route::get('/project/{id}/edit',  'edit')->name('edit');
+            Route::get('/project/{id}',  'show')->name('show');
+            Route::put('/project/{id}',  'update')->name('update');
+            Route::delete('/project/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Package
+        Route::controller(PackageController::class)->name('package.')->group(function () {
+            Route::get('/package', 'index')->name('all');
+            Route::get('/package/create', 'create')->name('create');
+            Route::post('/package', 'store')->name('store');
+            Route::get('/package/{id}/edit',  'edit')->name('edit');
+            Route::get('/package/{id}',  'show')->name('show');
+            Route::put('/package/{id}',  'update')->name('update');
+            Route::delete('/package/{id}',  'destroy')->name('delete');
         });
     });
 });

@@ -11,17 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('solutions', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-
-            $table->string('title');
-
-            $table->text('subtitle');
-
-            $table->string('type', 50);
-
-            $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
-
             $table->timestamps();
         });
     }
@@ -31,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('solutions');
+        Schema::dropIfExists('products');
     }
 };

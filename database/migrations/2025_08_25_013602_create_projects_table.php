@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
 
-            $table->string('title')->nullable();
+            $table->string('title');
 
-            $table->string('subtitle')->nullable();
+            $table->string('subtitle');
 
             $table->longText('description')->nullable();
 
@@ -26,11 +26,9 @@ return new class extends Migration
 
             $table->string('type', 50)->default('commercial');
 
-            $table->string('location', 50)->nullable();
+            $table->string('location', 255)->nullable();
 
             $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
-
-            $table->boolean('is_active')->default(true);
 
             $table->timestamps();
         });

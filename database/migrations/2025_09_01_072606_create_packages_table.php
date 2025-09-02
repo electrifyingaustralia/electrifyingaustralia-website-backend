@@ -11,17 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('solutions', function (Blueprint $table) {
+        Schema::create('packages', function (Blueprint $table) {
             $table->id();
-
-            $table->string('title');
-
+            $table->string('name');
             $table->text('subtitle');
-
-            $table->string('type', 50);
-
-            $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
-
+            $table->boolean('is_best_deal')->default(false);
             $table->timestamps();
         });
     }
@@ -31,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('solutions');
+        Schema::dropIfExists('packages');
     }
 };

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories\Event;
+namespace App\Repositories\Package;
 
-use App\Repositories\Event\EventRepositoryInterface;
+use App\Repositories\Package\PackageRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Event;
+use App\Models\Package;
 
-class EventRepository implements EventRepositoryInterface
+class PackageRepository implements PackageRepositoryInterface
 {
     public function __construct()
     {
@@ -15,12 +15,12 @@ class EventRepository implements EventRepositoryInterface
 
     public function query(): Builder
     {
-        return Event::query();
+        return Package::query();
     }
 
-    public function get(array $columns = ["*"], int $perPage = 15, array $filters = []): object
+    public function get(array $columns = ["*"], int $perPage = 18): object
     {
-        return $this->query()->select($columns)->paginate($perPage);
+        return $this->query()->with('features')->select($columns)->paginate($perPage);
     }
 
     public function all(): object
@@ -46,7 +46,7 @@ class EventRepository implements EventRepositoryInterface
 
     public function create(array $data): object
     {
-        return Event::create($data);
+        return Package::create($data);
     }
 
     public function update(int $id, array $data): object

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Repositories\Event;
+namespace App\Repositories\Package;
 
 use Illuminate\Database\Eloquent\Builder;
 
-interface EventRepositoryInterface
+interface PackageRepositoryInterface
 {
     public function query(): Builder;
-    public function get(array $columns = ["*"], int $perPage = 15, array $filters = []): object;
+    public function get(array $columns = ["*"], int $perPage = 18): object;
     public function all(): object;
     public function list(): object;
     public function find(int $id): object;
