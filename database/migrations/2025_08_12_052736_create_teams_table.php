@@ -18,17 +18,13 @@ return new class extends Migration
 
             $table->string('email');
 
-            $table->string('phone')->nullable();
+            $table->string('designation');
 
-            $table->string('designation')->nullable();
+            $table->string('phone')->nullable();
 
             $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
 
-            $table->string('title')->nullable();
-
             $table->longText('description')->nullable();
-
-            $table->text('website')->nullable();
 
             $table->boolean('status')->default(true);
 
@@ -39,6 +35,8 @@ return new class extends Migration
             $table->string('facebook_link')->nullable();
 
             $table->string('pinterest_link')->nullable();
+
+            $table->string('linkedin_link')->nullable();
 
             $table->string('youtube_link')->nullable();
 
