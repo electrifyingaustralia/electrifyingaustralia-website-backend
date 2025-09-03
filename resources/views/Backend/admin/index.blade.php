@@ -24,7 +24,7 @@
                 <a href="{{ route('admin.users.create') }}" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg">
                     <div class="flex gap-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                        <span>Add User</span>
+                        <span>Add Admin User</span>
                     </div>
                 </a>
             </div>
@@ -45,12 +45,12 @@
                             <tr>
                                 <td class="px-6 py-4 font-medium text-gray-900">
                                     <div class="flex items-center">
-                                        @if($admin->avatar)
-                                            <img class="h-5 w-5 rounded-full object-cover mr-3"
-                                                src="{{ asset('storage/' . $admin->avatar) }}"
+                                        @if($admin->media_url)
+                                            <img class="h-10 w-10 rounded-full object-cover mr-3"
+                                                src="{{ $admin->media_url }}"
                                                 alt="{{ $admin->name }}">
                                         @else
-                                            <div class="h-5 w-5 flex items-center justify-center mr-3">
+                                            <div class="h-10 w-10 flex items-center justify-center mr-3 bg-gray-100 rounded-full">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                             </div>
                                         @endif

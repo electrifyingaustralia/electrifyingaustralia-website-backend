@@ -25,7 +25,7 @@
             <a href="{{ route('admin.teams.all') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
                 <div class="flex items-center gap-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-                    <span>Back to Teams</span>
+                    <span>Back to All Team Members</span>
                 </div>
             </a>
         </div>
@@ -93,6 +93,7 @@
                                     <textarea
                                         name="description"
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                        placeholder="Enter team member description"
                                     >{{ old('description') }}</textarea>
 
                                     @error('description')
@@ -159,7 +160,7 @@
                             <div>
                                 <label for="facebook_link" class="block text-sm font-medium text-gray-700 mb-2">Facebook Link</label>
                                 <input
-                                    type="text" id="facebook_link" name="facebook_link"
+                                    type="url" id="facebook_link" name="facebook_link"
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                     placeholder="Enter facebook link"
                                 />
@@ -170,7 +171,7 @@
                             <div>
                                 <label for="twitter_link" class="block text-sm font-medium text-gray-700 mb-2">Twitter Link</label>
                                 <input
-                                    type="text" id="twitter_link" name="twitter_link"
+                                    type="url" id="twitter_link" name="twitter_link"
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                     placeholder="Enter twitter link"
                                 />
@@ -181,7 +182,7 @@
                             <div>
                                 <label for="linkedin_link" class="block text-sm font-medium text-gray-700 mb-2">Linkedin Link</label>
                                 <input
-                                    type="text" id="linkedin_link" name="linkedin_link"
+                                    type="url" id="linkedin_link" name="linkedin_link"
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                     placeholder="Enter linkedin link"
                                 />
@@ -192,7 +193,7 @@
                             <div>
                                 <label for="pinterest_link" class="block text-sm font-medium text-gray-700 mb-2">Pinterest Link</label>
                                 <input
-                                    type="text" id="pinterest_link" name="pinterest_link"
+                                    type="url" id="pinterest_link" name="pinterest_link"
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                     placeholder="Enter linkedin link"
                                 />
@@ -203,7 +204,7 @@
                             <div>
                                 <label for="youtube_link" class="block text-sm font-medium text-gray-700 mb-2">Youtube Link</label>
                                 <input
-                                    type="text" id="youtube_link" name="youtube_link"
+                                    type="url" id="youtube_link" name="youtube_link"
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                     placeholder="Enter youtube link"
                                 />
@@ -786,7 +787,7 @@ $(document).ready(function() {
                     window.location.href = response.redirect;
                 } else {
                     toastr.error(response.message || 'An error occurred');
-                    $('button[type="submit"]').prop('disabled', false).text('Create Brand');
+                    $('button[type="submit"]').prop('disabled', false).text('Create Team Member');
                 }
             },
             error: function(xhr) {
@@ -806,7 +807,7 @@ $(document).ready(function() {
                     toastr.error('An error occurred. Please try again.');
                 }
 
-                $('button[type="submit"]').prop('disabled', false).text('Create Brand');
+                $('button[type="submit"]').prop('disabled', false).text('Create Team Member');
             }
         });
     });

@@ -30,7 +30,7 @@
         </div>
         <!-- Search -->
         <div class="bg-white p-4 rounded-lg shadow mb-6">
-            <form action="{{ route('admin.brands.all') }}" method="GET">
+            <form action="{{ route('admin.teams.all') }}" method="GET">
                 <div class="flex gap-4">
                     <div class="flex-1">
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Search team members..." class="w-full p-2 border !border-gray-300 rounded-lg">
@@ -52,7 +52,6 @@
                 <tr>
                     <th class="px-6 py-3">Name</th>
                     <th class="px-6 py-3">Email</th>
-                    <th class="px-6 py-3">Phone</th>
                     <th class="px-6 py-3">Designation</th>
                     <th class="px-6 py-3">Status</th>
                     <th class="px-6 py-3">Actions</th>
@@ -62,27 +61,32 @@
                     @forelse($teams as $team)
                         <tr>
                             <td class="px-6 py-4 font-medium text-gray-900">
-                                    <div class="flex items-center">
-                                        @if($team->media)
-                                            <img class="h-5 w-5 rounded-full object-cover mr-3"
-                                                src="{{ asset('storage/' . $team->media) }}"
-                                                alt="{{ $team->name }}">
-                                        @else
-                                            <div class="h-5 w-5 flex items-center justify-center mr-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                            </div>
-                                        @endif
-                                        <div class="font-light">
-                                            {{ $team->name }}
+                                <div class="flex items-center">
+                                    @if($team->media_url)
+                                        <img class="h-10 w-10 rounded-full object-cover mr-3"
+                                            src="{{ $team->media_url }}"
+                                            alt="{{ $team->name }}">
+                                    @else
+                                        <div class="h-10 w-10 flex items-center justify-center mr-3 bg-gray-100 rounded-full">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                         </div>
+                                    @endif
+                                    <div class="font-light">
+                                        {{ $team->name }}
                                     </div>
-                                </td>
+                                </div>
+                            </td>
                             <td class="px-6 py-4">{{ $team->email }}</td>
-                            <td class="px-6 py-4">{{ $team->phone }}</td>
                             <td class="px-6 py-4">{{ $team->designation }}</td>
-                            <td class="px-6 py-4">{{ $team->status }}</td>
+                            <td class="px-6 py-4">
+                                @if($team->status == 1)
+                                    <span class="text-green-600 font-bold">Active</span>
+                                @else
+                                    <span class="text-red-600 font-bold">Inactive</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-8 flex gap-x-2">
-                                <a href="{{ route('admin.brands.edit', $team->id) }}" class="text-blue-500 hover:text-blue-700">
+                                <a href="{{ route('admin.teams.edit', $team->id) }}" class="text-blue-500 hover:text-blue-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700 ml-2.5"
                                         viewBox="0 0 348.882 348.882">
                                         <path
@@ -106,7 +110,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-4 text-center font-medium text-gray-700">
+                            <td colspan="5" class="px-6 py-4 text-center font-medium text-gray-700">
                                 <div class="flex flex-col items-center justify-center gap-x-4 py-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
                                     <span class="pt-2 text-lg">No Team Member found.</span>
@@ -126,7 +130,7 @@
 <div id="delete-modal" class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white p-6 rounded-lg w-full max-w-md">
         <h3 class="text-lg font-medium mb-4">Confirm Delete</h3>
-        <p class="text-gray-600 mb-6">Are you sure you want to delete this brand? This action cannot be undone.</p>
+        <p class="text-gray-600 mb-6">Are you sure you want to delete this Team Member? This action cannot be undone.</p>
         <div class="flex justify-end gap-x-3">
             <button onclick="closeDeleteModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
             <form id="delete-form" method="POST">

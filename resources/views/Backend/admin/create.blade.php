@@ -66,14 +66,14 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Select Media</label>
 
                                     <div class="flex flex-col sm:flex-row gap-4">
-                                        <!-- Logo Preview -->
+                                        <!-- Media Preview -->
                                         <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
                                             <div class="text-center text-gray-400">
                                                 <p class="text-xs">No media selected</p>
                                             </div>
                                         </div>
 
-                                        <!-- Logo Actions -->
+                                        <!-- Media Actions -->
                                         <div class="flex flex-col justify-center gap-2">
                                             <button type="button" id="open-media-library" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg">
                                                 <div class="flex items-center gap-x-2">
@@ -86,7 +86,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- Selected Logo Info -->
+                                    <!-- Selected Media Info -->
                                     <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg hidden">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center space-x-3">
@@ -112,7 +112,7 @@
                             <div>
                                 <label for="facebook_link" class="block text-sm font-medium text-gray-700 mb-2">Password <span class="text-red-600">*</span></label>
                                 <input
-                                    type="password" id="facebook_link" name="password"
+                                    type="password" id="facebook_link" name="password" required
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                     placeholder="Enter password"
                                 />
@@ -123,7 +123,7 @@
                             <div>
                                 <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password <span class="text-red-600">*</span></label>
                                 <input
-                                    type="password" id="password_confirmation" name="password_confirmation"
+                                    type="password" id="password_confirmation" name="password_confirmation" required
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                     placeholder="Confirm password"
                                 />

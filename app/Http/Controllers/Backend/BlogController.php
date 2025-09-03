@@ -32,7 +32,7 @@ class BlogController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Blog created successfully',
+            'message' => 'Blog created successfully!',
             'redirect' => route('admin.blog.all')
         ]);
     }
@@ -50,7 +50,7 @@ class BlogController extends Controller
         $this->blogService->updateBlog($id, $data);
         return response()->json([
             'success' => true,
-            'message' => 'Blog updated successfully',
+            'message' => 'Blog updated successfully!',
             'redirect' => route('admin.blog.all')
         ]);
     }

@@ -8,6 +8,7 @@ class AdminUpdateRequest extends BaseRequest
 {
     public function rules(): array
     {
+        $adminId = $this->route('admin') ?? $this->route('id');
         return [
             'name' => [
                 'required',
@@ -18,18 +19,16 @@ class AdminUpdateRequest extends BaseRequest
                 'required',
                 'email',
                 'max:255',
-                Rule::unique('admins')->ignore($this->route('id')),
+                Rule::unique('admins', 'email')->ignore($adminId),
             ],
             'password' => [
                 'nullable',
                 'min:6',
                 'confirmed',
             ],
-            'avatar' => [
+            'media_id' => [
                 'nullable',
-                'image',
-                'mimes:png,jpg,jpeg',
-                'max:10240'
+                'exists:media_libraries,id',
             ],
 
         ];

@@ -24,11 +24,9 @@ class AdminCreateRequest extends BaseRequest
                 'min:6',
                 'confirmed',
             ],
-            'avatar' => [
+            'media_id' => [
                 'nullable',
-                'image',
-                'mimes:png,jpg,jpeg',
-                'max:10240'
+                'exists:media_libraries,id',
             ],
         ];
     }

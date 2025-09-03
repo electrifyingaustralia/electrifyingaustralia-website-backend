@@ -31,10 +31,9 @@ class TeamCreateRequest extends BaseRequest
                 'max:50',
             ],
 
-            'avatar' => [
+            'media_id' => [
                 'nullable',
-                'image',
-                'mimes:jpeg,png,jpg,gif,svg,webp',
+                'exists:media_libraries,id',
             ],
 
             'title' => [
@@ -48,11 +47,11 @@ class TeamCreateRequest extends BaseRequest
                 'string',
             ],
 
-            'website' => [
-                'nullable',
-                'url',
-                'max:255',
-            ],
+            // 'website' => [
+            //     'nullable',
+            //     'url',
+            //     'max:255',
+            // ],
 
             'status' => [
                 'required',

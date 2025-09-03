@@ -27,11 +27,13 @@ class TeamController extends Controller
     public function store(TeamCreateRequest $request)
     {
         $data = $request->validated();
-        if ($request->hasFile('avatar')) {
-            $data['avatar'] = $this->uploadAvatar($request->file('avatar'));
-        }
         $this->teamService->createTeamMember($data);
-        return redirect()->route('admin.teams.all')->with('success', 'Team member created successfully!');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Team member created successfully!',
+            'redirect' => route('admin.teams.all')
+        ]);
     }
 
     public function show($id)
@@ -49,23 +51,17 @@ class TeamController extends Controller
     public function update(TeamUpdateRequest $request, $id)
     {
         $data = $request->validated();
-
-        if ($request->hasFile('avatar')) {
-            //
-        }
-
         $this->teamService->updateTeamMember($id, $data);
-        return redirect();
+        return response()->json([
+            'success' => true,
+            'message' => 'Team member updated successfully!',
+            'redirect' => route('admin.teams.all')
+        ]);
     }
 
     public function destroy($id)
     {
         $this->teamService->deleteTeamMember($id);
-        return redirect();
-    }
-
-    protected function uploadAvatar($file): string
-    {
-        return $file->store('teams', 'public');
+        return redirect()->route('admin.teams.all')->with('success', 'Team member deleted successfully!');
     }
 }

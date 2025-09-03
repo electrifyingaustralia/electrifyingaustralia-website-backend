@@ -29,15 +29,13 @@ class AdminController extends Controller
     {
         $data = $request->validated();
 
-        if ($request->hasFile('avatar')) {
-            $data['avatar'] = $this->uploadAvatar($request->file('avatar'));
-        }
-
-        $data['password'] = Hash::make($data['password']);
-
         $this->adminService->createAdmin($data);
 
-        return redirect()->route('admin.users')->with('success', 'Admin created successfully!');
+        return response()->json([
+            'success' => true,
+            'message' => 'Admin user created successfully',
+            'redirect' => route('admin.users.all')
+        ]);
     }
 
     // public function show($id)
@@ -55,22 +53,26 @@ class AdminController extends Controller
     public function update(AdminUpdateRequest $request, $id)
     {
         $data = $request->validated();
-        $admin = $this->adminService->findAdmin($id);
+        // $admin = $this->adminService->findAdmin($id);
 
-        if (!empty($data['password'])) $data['password'] = Hash::make($data['password']);
-        else unset($data['password']);
+        // if (!empty($data['password'])) $data['password'] = Hash::make($data['password']);
+        // else unset($data['password']);
 
-        if ($request->hasFile('avatar')) {
-            if ($admin->avatar) {
-                Storage::disk('public')->delete($admin->avatar);
-            }
-            $data['avatar'] = $this->uploadAvatar($request->file('avatar'));
-        } else {
-            $data['avatar'] = $admin->avatar;
-        }
+        // if ($request->hasFile('avatar')) {
+        //     if ($admin->avatar) {
+        //         Storage::disk('public')->delete($admin->avatar);
+        //     }
+        //     $data['avatar'] = $this->uploadAvatar($request->file('avatar'));
+        // } else {
+        //     $data['avatar'] = $admin->avatar;
+        // }
 
         $this->adminService->updateAdmin($id, $data);
-        return redirect()->route('admin.users.all')->with('success', 'Admin Updated Successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'Admin user updated successfully',
+            'redirect' => route('admin.users.all')
+        ]);
     }
 
     public function destroy($id)
