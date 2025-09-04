@@ -66,6 +66,13 @@
                     </li>
 
                     <li class="relative mb-2">
+                        <a href="{{ route('admin.benefit.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.benefit*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-locate-fixed-icon lucide-locate-fixed"><line x1="2" x2="5" y1="12" y2="12"/><line x1="19" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="5"/><line x1="12" x2="12" y1="19" y2="22"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg>
+                            <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Benefits</span>
+                        </a>
+                    </li>
+
+                    <li class="relative mb-2">
                         <a href="{{ route('admin.sticky-header.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.sticky-header*') ? '!text-teal-500 bg-teal-50' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-anchor-icon lucide-anchor"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><circle cx="12" cy="5" r="3"/></svg>
                             <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Sticky Header</span>
@@ -83,6 +90,13 @@
                         <a href="{{ route('admin.teams.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.teams*') ? '!text-teal-500 bg-teal-50' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-handshake-icon lucide-handshake"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
                             <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Team Members</span>
+                        </a>
+                    </li>
+
+                    <li class="relative mb-2">
+                        <a href="{{ route('admin.solution-card.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.solution-card*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-grid2x2-check-icon lucide-grid-2x2-check"><path d="M12 3v17a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1H3"/><path d="m16 19 2 2 4-4"/></svg>
+                            <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Solution Cards</span>
                         </a>
                     </li>
 
@@ -111,6 +125,13 @@
                         <a href="{{ route('admin.faq.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.faq*') ? '!text-teal-500 bg-teal-50' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-question-mark-icon lucide-circle-question-mark"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
                             <span class="pl-4 group-data-[sidebar-size=sm]:hidden">FAQ</span>
+                        </a>
+                    </li>
+
+                    <li class="relative mb-2">
+                        <a href="{{ route('admin.faq.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.faq*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-icon lucide-settings"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+                            <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Settings</span>
                         </a>
                     </li>
 

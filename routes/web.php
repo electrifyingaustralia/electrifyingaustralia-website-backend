@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\AdminAuthController;
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\BenefitController;
 use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\DashboardController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\MediaLibraryController;
 use App\Http\Controllers\Backend\PackageController;
 use App\Http\Controllers\Backend\ProjectController;
+use App\Http\Controllers\Backend\SolutionCardController;
 use App\Http\Controllers\Backend\StickyHeaderController;
 use App\Http\Controllers\Backend\TeamController;
 use Illuminate\Routing\Router;
@@ -131,6 +133,27 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/package/{id}',  'show')->name('show');
             Route::put('/package/{id}',  'update')->name('update');
             Route::delete('/package/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Benefits
+        Route::controller(BenefitController::class)->name('benefit.')->group(function () {
+            Route::get('/benefit', 'index')->name('all');
+            Route::get('/benefit/create', 'create')->name('create');
+            Route::post('/benefit', 'store')->name('store');
+            Route::get('/benefit/{id}/edit',  'edit')->name('edit');
+            Route::get('/benefit/{id}',  'show')->name('show');
+            Route::put('/benefit/{id}',  'update')->name('update');
+            Route::delete('/benefit/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Solution Cards
+        Route::controller(SolutionCardController::class)->name('solution-card.')->group(function () {
+            Route::get('/solution-card', 'index')->name('all');
+            Route::post('/solution-card', 'store')->name('store');
+            Route::get('/solution-card/{id}/edit',  'edit')->name('edit');
+            Route::get('/solution-card/{id}',  'show')->name('show');
+            Route::put('/solution-card/{id}',  'update')->name('update');
+            Route::delete('/solution-card/{id}',  'destroy')->name('delete');
         });
     });
 });

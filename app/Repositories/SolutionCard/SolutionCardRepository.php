@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories\Benefit;
+namespace App\Repositories\SolutionCard;
 
-use App\Repositories\Benefit\BenefitRepositoryInterface;
+use App\Repositories\SolutionCard\SolutionCardRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Benefit;
+use App\Models\SolutionCard;
 
-class BenefitRepository implements BenefitRepositoryInterface
+class SolutionCardRepository implements SolutionCardRepositoryInterface
 {
     public function __construct()
     {
@@ -15,10 +15,10 @@ class BenefitRepository implements BenefitRepositoryInterface
 
     public function query(): Builder
     {
-        return Benefit::query();
+        return SolutionCard::query();
     }
 
-    public function get(array $columns = ["*"], int $perPage = 15, array $filters = []): object
+    public function get(array $columns = ["*"], int $perPage = 15): object
     {
         return $this->query()->select($columns)->paginate($perPage);
     }
@@ -46,7 +46,7 @@ class BenefitRepository implements BenefitRepositoryInterface
 
     public function create(array $data): object
     {
-        return Benefit::create($data);
+        return SolutionCard::create($data);
     }
 
     public function update(int $id, array $data): object

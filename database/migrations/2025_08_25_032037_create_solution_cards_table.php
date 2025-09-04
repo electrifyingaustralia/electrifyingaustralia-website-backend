@@ -22,8 +22,6 @@ return new class extends Migration
 
             $table->text('extra_info');
 
-            $table->integer('card_order')->default(0);
-
             $table->timestamps();
         });
     }
