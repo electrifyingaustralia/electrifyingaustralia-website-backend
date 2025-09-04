@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\EventController;
 use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\MediaLibraryController;
 use App\Http\Controllers\Backend\PackageController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\SolutionCardController;
 use App\Http\Controllers\Backend\StickyHeaderController;
@@ -154,6 +155,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/solution-card/{id}',  'show')->name('show');
             Route::put('/solution-card/{id}',  'update')->name('update');
             Route::delete('/solution-card/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Products
+        Route::controller(ProductController::class)->name('product.')->group(function () {
+            Route::get('/product', 'index')->name('all');
+            Route::get('/product/create', 'create')->name('create');
+            Route::post('/product', 'store')->name('store');
+            Route::get('/product/{id}/edit',  'edit')->name('edit');
+            Route::get('/product/{id}',  'show')->name('show');
+            Route::put('/product/{id}',  'update')->name('update');
+            Route::delete('/product/{id}',  'destroy')->name('delete');
         });
     });
 });
