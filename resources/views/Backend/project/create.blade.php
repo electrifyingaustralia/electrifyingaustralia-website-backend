@@ -142,8 +142,8 @@
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label for="is_active" class="block text-sm font-medium text-gray-700 mb-1">Project Type <span class="text-red-600">*</span></label>
-                                <select name="is_active" id="is_active" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Project Type <span class="text-red-600">*</span></label>
+                                <select name="type" id="type" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
                                     <option value="commercial" selected>Commercial</option>
                                     <option value="residential">Residential</option>
                                 </select>
@@ -745,7 +745,7 @@ $(document).ready(function() {
                     window.location.href = response.redirect;
                 } else {
                     toastr.error(response.message || 'An error occurred');
-                    $('button[type="submit"]').prop('disabled', false).text('Create Brand');
+                    $('button[type="submit"]').prop('disabled', false).text('Create Project');
                 }
             },
             error: function(xhr) {
@@ -765,7 +765,7 @@ $(document).ready(function() {
                     toastr.error('An error occurred. Please try again.');
                 }
 
-                $('button[type="submit"]').prop('disabled', false).text('Create Brand');
+                $('button[type="submit"]').prop('disabled', false).text('Create Project');
             }
         });
     });

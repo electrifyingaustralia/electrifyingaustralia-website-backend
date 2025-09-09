@@ -14,9 +14,9 @@ class TeamService implements TeamServiceInterface
         protected MediaLibraryServiceInterface $mediaLibrary
     ) {}
 
-    public function getTeamMembers(array $columns = ["*"], int $perPage = 15): object
+    public function getTeamMembers(array $columns = ["*"], int $perPage = 15, array $filters = []): object
     {
-        return $this->teamRepository->get($columns, $perPage);
+        return $this->teamRepository->get($columns, $perPage, $filters);
     }
 
     public function getAllTeamMembers(): object

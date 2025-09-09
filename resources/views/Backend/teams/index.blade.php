@@ -33,7 +33,7 @@
             <form action="{{ route('admin.teams.all') }}" method="GET">
                 <div class="flex gap-4">
                     <div class="flex-1">
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search team members..." class="w-full p-2 border !border-gray-300 rounded-lg">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search team members by name, email or designation..." class="w-full p-2 border !border-gray-300 rounded-lg">
                     </div>
                     <button type="submit" class="!bg-black text-white px-4 py-2 rounded-lg">
                         <div class="flex justify-center items-center gap-1">

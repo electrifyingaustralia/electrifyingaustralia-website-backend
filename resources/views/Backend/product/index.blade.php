@@ -82,9 +82,19 @@
                                     <span class="text-red-600 font-bold">Inactive</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-8 flex gap-x-2">
+                            <td class="px-6 py-8 flex items-center gap-x-2">
+                                <a href="{{ route('admin.product.show', $product->id) }}"
+                                    class="text-green-500 hover:text-green-700 rounded">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="w-5 h-5 fill-green-500 hover:fill-green-700"
+                                        viewBox="0 0 24 24">
+                                        <path d="M12 5c-7.633 0-11 7-11 7s3.367 7 11 7 11-7 11-7-3.367-7-11-7zm0 12c-4.411 0-7.757-3.134-9.223-5
+                                                1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </a>
                                 <a href="{{ route('admin.product.edit', $product->id) }}" class="text-blue-500 hover:text-blue-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700 ml-2.5"
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700"
                                         viewBox="0 0 348.882 348.882">
                                         <path
                                         d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"

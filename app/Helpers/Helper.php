@@ -35,3 +35,12 @@ if (! function_exists('formatFileSize')) {
         return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . ' ' . $size[$factor];
     }
 }
+
+function formatDate($date, $format = 'M d, Y')
+{
+    if ($date != null) {
+        return $date->format($format);
+    } else {
+        return 'No date available';
+    }
+}

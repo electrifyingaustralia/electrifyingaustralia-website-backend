@@ -20,7 +20,8 @@ class EventRepository implements EventRepositoryInterface
 
     public function get(array $columns = ["*"], int $perPage = 15, array $filters = []): object
     {
-        return $this->query()->select($columns)->paginate($perPage);
+        $q = $this->applyFilters($this->query()->select($columns), $filters);
+        return $q->paginate($perPage);
     }
 
     public function all(): object
@@ -69,5 +70,18 @@ class EventRepository implements EventRepositoryInterface
     {
         $instance = $this->find($id);
         return (bool) $instance->delete();
+    }
+
+    private function applyFilters(Builder $q, array $filters): Builder
+    {
+        if (!empty($filters['search'])) {
+            $term = '%' . $filters['search'] . '%';
+            $q->where(function ($query) use ($term) {
+                $query->where('title', 'like', $term)
+                    ->orWhere('subtitle', 'like', $term);
+            });
+        }
+
+        return $q;
     }
 }

@@ -20,7 +20,8 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function get(array $columns = ["*"], int $perPage = 15, array $filter = []): object
     {
-        return $this->query()->with('brand')->select($columns)->paginate($perPage);
+        $q = $this->applyFilters($this->query()->select($columns), $filter);
+        return $q->with('brand')->paginate($perPage);
     }
 
     public function all(): object
@@ -69,5 +70,15 @@ class ProductRepository implements ProductRepositoryInterface
     {
         $instance = $this->find($id);
         return $instance->delete();
+    }
+
+    private function applyFilters(Builder $q, array $filters): Builder
+    {
+        if (!empty($filters['search'])) {
+            $term = '%' . $filters['search'] . '%';
+            $q->where('name', 'like', $term);
+        }
+
+        return $q;
     }
 }

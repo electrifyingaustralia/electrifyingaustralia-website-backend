@@ -12,9 +12,11 @@ class TeamController extends Controller
 {
     public function __construct(protected TeamServiceInterface $teamService) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $teams = $this->teamService->getTeamMembers();
+        $teams = $this->teamService->getTeamMembers(['*'], 15, [
+            'search' => $request->get('search'),
+        ]);
 
         return view('Backend.teams.index', compact('teams'));
     }

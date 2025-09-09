@@ -16,9 +16,11 @@ class ProductController extends Controller
         protected BrandRepositoryInterface $brandRepository
     ) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = $this->productService->get();
+        $products = $this->productService->get(['*'], 15, [
+            'search' => $request->get('search'),
+        ]);
         return view('backend.product.index', compact('products'));
     }
 
@@ -45,6 +47,12 @@ class ProductController extends Controller
         $product = $this->productService->findProduct($id);
         $brands = $this->brandRepository->all();
         return view('backend.product.edit', compact('product', 'brands'));
+    }
+
+    public function show($id)
+    {
+        $product = $this->productService->findProduct($id);
+        return view('backend.product.show', compact('product'));
     }
 
     public function update(ProductUpdateRequest $request, $id)

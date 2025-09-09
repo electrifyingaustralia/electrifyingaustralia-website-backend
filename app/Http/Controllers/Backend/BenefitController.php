@@ -12,9 +12,11 @@ class BenefitController extends Controller
 {
     public function __construct(protected BenefitServiceInterface $benefitService) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $benefits = $this->benefitService->get();
+        $benefits = $this->benefitService->get(['*'], 15, [
+            'search' => $request->get('search'),
+        ]);
         return view('backend.benefit.index', compact('benefits'));
     }
 

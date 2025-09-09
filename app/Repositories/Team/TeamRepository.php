@@ -18,9 +18,10 @@ class TeamRepository implements TeamRepositoryInterface
         return Team::query();
     }
 
-    public function get(array $columns = ["*"], int $perPage = 15): object
+    public function get(array $columns = ["*"], int $perPage = 15, array $filters = []): object
     {
-        return $this->query()->select($columns)->paginate($perPage);
+        $q = $this->applyFilters($this->query()->select($columns), $filters);
+        return $q->paginate($perPage);
     }
 
     public function all(): object
@@ -69,5 +70,19 @@ class TeamRepository implements TeamRepositoryInterface
     {
         $instance = $this->find($id);
         return $instance->delete();
+    }
+
+    private function applyFilters(Builder $q, array $filters): Builder
+    {
+        if (!empty($filters['search'])) {
+            $term = '%' . $filters['search'] . '%';
+            $q->where(function ($query) use ($term) {
+                $query->where('name', 'like', $term)
+                    ->orWhere('email', 'like', $term)
+                    ->orWhere('designation', 'like', $term);
+            });
+        }
+
+        return $q;
     }
 }

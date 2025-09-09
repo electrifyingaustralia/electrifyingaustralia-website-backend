@@ -12,9 +12,11 @@ class EventController extends Controller
 {
     public function __construct(protected EventServiceInterface $eventService) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $events = $this->eventService->get();
+        $events = $this->eventService->get(['*'], 15, [
+            'search' => $request->get('search'),
+        ]);
         return view('backend.event.index', compact('events'));
     }
 

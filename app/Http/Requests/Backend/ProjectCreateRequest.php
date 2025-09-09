@@ -39,13 +39,13 @@ class ProjectCreateRequest extends BaseRequest
 
             'solar_panel' => [
                 'nullable',
-                'url',
+                'string',
                 'max:255',
             ],
 
             'inverter' => [
                 'nullable',
-                'url',
+                'string',
                 'max:255',
             ],
 

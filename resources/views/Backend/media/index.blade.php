@@ -19,6 +19,13 @@
                 <div class="bg-white p-4 rounded-lg shadow mb-6">
                     <div class="flex flex-col md:flex-row gap-4">
                         <div class="w-full md:w-auto">
+                            <input type="text" id="search-input" placeholder="Search by name..." class="w-full p-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <button id="search-btn" class="flex items-center !bg-black text-white px-4 py-2 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="mt-1" width="20" height="20" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-icon lucide-search"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+                            <span>Search</span>
+                        </button>
+                        <div class="min-w-1/5">
                             <select id="type-filter" class="w-full p-2 border border-gray-300 rounded-lg">
                                 <option value="">All Media Types</option>
                                 <option value="image">Images</option>
@@ -26,12 +33,6 @@
                                 <option value="other">Other</option>
                             </select>
                         </div>
-                        <div class="min-w-1/5">
-                            <input type="text" id="search-input" placeholder="Search by name..." class="w-full p-2 border border-gray-300 rounded-lg">
-                        </div>
-                        <button id="search-btn" class="!bg-black text-white px-4 py-2 rounded-lg">
-                            <i class="fas fa-search mr-2"></i> Search
-                        </button>
                     </div>
                 </div>
 

@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\MediaLibraryController;
 use App\Http\Controllers\Backend\PackageController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ProjectController;
+use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\SolutionCardController;
 use App\Http\Controllers\Backend\StickyHeaderController;
 use App\Http\Controllers\Backend\TeamController;
@@ -166,6 +167,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/product/{id}',  'show')->name('show');
             Route::put('/product/{id}',  'update')->name('update');
             Route::delete('/product/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Settings
+        Route::controller(SettingController::class)->name('setting.')->group(function () {
+            Route::get('/setting', 'index')->name('all');
+            Route::get('/setting/create', 'create')->name('create');
+            Route::post('/setting', 'store')->name('store');
+            Route::get('/setting/{id}/edit',  'edit')->name('edit');
+            Route::get('/setting/{id}',  'show')->name('show');
+            Route::put('/setting/{id}',  'update')->name('update');
+            Route::delete('/setting/{id}',  'destroy')->name('delete');
         });
     });
 });
