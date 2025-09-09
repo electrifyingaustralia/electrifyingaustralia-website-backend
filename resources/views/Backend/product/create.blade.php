@@ -153,8 +153,18 @@
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label for="is_active" class="block text-sm font-medium text-gray-700 mb-1">Type <span class="text-red-600">*</span></label></label>
-                                <select name="is_active" id="is_active" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                <label for="brand_id" class="block text-sm font-medium text-gray-700 mb-1">Select Brand <span class="text-red-600">*</span></label>
+                                <select name="brand_id" id="brand_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                    <option value="" selected>Select brand</option>
+                                    @foreach ($brands as $brand)
+
+                                    <option value="{{ $brand->id }}" >{{ $brand->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label for="product_type" class="block text-sm font-medium text-gray-700 mb-1">Type <span class="text-red-600">*</span></label></label>
+                                <select name="product_type" id="product_type" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
                                     <option value="solar_panel" selected>Solar Panel</option>
                                     <option value="battery" >Battery</option>
                                     <option value="ev_charger" >EV Charger</option>

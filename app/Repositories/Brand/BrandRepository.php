@@ -26,7 +26,7 @@ class BrandRepository implements BrandRepositoryInterface
 
     public function all(): object
     {
-        return $this->query()->all();
+        return $this->query()->get();
     }
 
     public function list(): object

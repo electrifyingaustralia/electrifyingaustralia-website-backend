@@ -3,18 +3,65 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Backend\ProductCreateRequest;
+use App\Http\Requests\Backend\ProductUpdateRequest;
+use App\Repositories\Brand\BrandRepositoryInterface;
+use App\Services\Product\ProductServiceInterface;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function __construct(
+        protected ProductServiceInterface $productService,
+        protected BrandRepositoryInterface $brandRepository
+    ) {}
+
     public function index()
     {
-        $products = [];
+        $products = $this->productService->get();
         return view('backend.product.index', compact('products'));
     }
 
     public function create()
     {
-        return view('backend.product.create');
+        $brands = $this->brandRepository->all();
+        return view('backend.product.create', compact('brands'));
+    }
+
+    public function store(ProductCreateRequest $request)
+    {
+        $data = $request->validated();
+        $this->productService->createProduct($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Product created successfully!',
+            'redirect' => route('admin.product.all')
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $product = $this->productService->findProduct($id);
+        $brands = $this->brandRepository->all();
+        return view('backend.product.edit', compact('product', 'brands'));
+    }
+
+    public function update(ProductUpdateRequest $request, $id)
+    {
+        $data = $request->validated();
+
+        $this->productService->updateProduct($id, $data);
+        return response()->json([
+            'success' => true,
+            'message' => 'Product updated successfully!',
+            'redirect' => route('admin.product.all')
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $this->productService->deleteProduct($id);
+        return redirect()->route('admin.product.all')->with('success', 'Product Deleted Successfully!');
     }
 }

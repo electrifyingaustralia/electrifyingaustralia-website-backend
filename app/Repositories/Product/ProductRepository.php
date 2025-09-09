@@ -20,7 +20,7 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function get(array $columns = ["*"], int $perPage = 15, array $filter = []): object
     {
-        return $this->query()->select($columns)->paginate($perPage);
+        return $this->query()->with('brand')->select($columns)->paginate($perPage);
     }
 
     public function all(): object
