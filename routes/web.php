@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\MediaLibraryController;
 use App\Http\Controllers\Backend\PackageController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ProjectController;
+use App\Http\Controllers\Backend\QuotationController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\SolutionCardController;
 use App\Http\Controllers\Backend\StickyHeaderController;
@@ -178,6 +179,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/setting/{id}',  'show')->name('show');
             Route::put('/setting/{id}',  'update')->name('update');
             Route::delete('/setting/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Quotation
+        Route::controller(QuotationController::class)->name('quotation.')->group(function () {
+            Route::get('/quotation', 'index')->name('all');
+            Route::get('/quotation/create', 'create')->name('create');
+            Route::post('/quotation', 'store')->name('store');
+            Route::get('/quotation/{id}/edit',  'edit')->name('edit');
+            Route::get('/quotation/{id}',  'show')->name('show');
+            Route::put('/quotation/{id}',  'update')->name('update');
+            Route::delete('/quotation/{id}',  'destroy')->name('delete');
         });
     });
 });

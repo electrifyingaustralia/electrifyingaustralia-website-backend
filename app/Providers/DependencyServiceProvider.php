@@ -30,6 +30,8 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Repositories\Package\PackageRepositoryInterface::class => \App\Repositories\Package\PackageRepository::class,
             \App\Repositories\SolutionCard\SolutionCardRepositoryInterface::class => \App\Repositories\SolutionCard\SolutionCardRepository::class,
             \App\Repositories\Product\ProductRepositoryInterface::class => \App\Repositories\Product\ProductRepository::class,
+            \App\Repositories\Quotation\QuotationRepositoryInterface::class => \App\Repositories\Quotation\QuotationRepository::class,
+            \App\Repositories\Question\QuestionRepositoryInterface::class => \App\Repositories\Question\QuestionRepository::class,
         ];
 
         $services = [
@@ -52,6 +54,9 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Services\Package\PackageServiceInterface::class => \App\Services\Package\PackageService::class,
             \App\Services\SolutionCard\SolutionCardServiceInterface::class => \App\Services\SolutionCard\SolutionCardService::class,
             \App\Services\Product\ProductServiceInterface::class => \App\Services\Product\ProductService::class,
+            \App\Services\Quotation\QuotationServiceInterface::class => \App\Services\Quotation\QuotationService::class,
+            \App\Services\Question\QuestionServiceInterface::class => \App\Services\Question\QuestionService::class,
+            \App\Services\Question\QuestionServiceInterface::class => \App\Services\Question\QuestionService::class,
         ];
 
         $bindings = array_merge($repositories, $services);
