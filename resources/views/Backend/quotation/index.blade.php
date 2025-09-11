@@ -1,6 +1,6 @@
 @extends('Backend.layouts.app')
 @push('styles')
-        <style>
+        {{-- <style>
         .tab-active {
             background-color: #F0FDFA;
             color: #00BBA7;
@@ -21,14 +21,35 @@
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 1.5rem;
         }
-    </style>
+    </style> --}}
 @endpush
 @section('contents')
     <div class="flex-1 p-3">
-        <div class="max-w-[90rem] mx-auto  rounded-xl overflow-hidden">
-            <div class="mb-3 pl-2 pb-5">
-                <h2 class="text-2xl font-bold text-gray-800">Quotation Management</h2>
-                <p class="text-gray-600 mt-1">Manage your quotation settings with questions and options</p>
+        <div class="max-w-[90rem] mx-auto rounded-xl overflow-hidden">
+            <div class="flex justify-between items-center mb-3 pl-2 pb-5 mr-6">
+                <div class="flex flex-col">
+                    <h2 class="text-2xl font-bold text-gray-800">Quotation Question and Option Management</h2>
+                    <p class="text-gray-600 mt-1">Manage your quotation settings with questions and options</p>
+                </div>
+
+                @if (request()->routeIs('admin.question.all'))
+                    <a href="{{ route('admin.question.create') }}" class="bg-teal-600 hover:bg-teal-700 text-white px-2 py-2 rounded-full">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                        </div>
+                    </a>
+                @endif
+                @if (
+                        request()->routeIs('admin.question.create') ||
+                        request()->routeIs('admin.question.edit') ||
+                        request()->routeIs('admin.question.show')
+                    )
+                    <a href="{{ route('admin.question.all') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-2 py-2 rounded-full">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+                        </div>
+                    </a>
+                @endif
             </div>
             <!-- Header -->
 
@@ -38,14 +59,14 @@
                 <div class=" lg:w-64 lg:!min-h-[45rem] bg-white border rounded-lg border-gray-200 overflow-hidden">
                     <div class="p-4">
                         <div class="space-y-1">
-                            <a href="{{ route('admin.quotation.all') }}" class="tab-button w-full text-left px-4 py-3 rounded-lg flex items-center tab-active">
+                            <a href="{{ route('admin.quotation.all') }}" class="tab-button w-full text-left px-4 py-3 rounded-lg flex items-center hover:!text-teal-500 hover:!bg-teal-50 {{ request()->routeIs('admin.quotation*') ? '!text-teal-500 bg-teal-50' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-quote-icon lucide-quote"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/></svg>
                                 <span class="ml-2">Quotation Section</span>
                             </a>
-                            <button class="tab-button w-full text-left px-4 py-3 rounded-lg flex items-center" data-tab="question">
+                            <a href="{{ route('admin.question.all') }}" class="tab-button w-full text-left px-4 py-3 rounded-lg flex items-center hover:!text-teal-500 hover:!bg-teal-50 {{ request()->routeIs('admin.question*') ? '!text-teal-500 bg-teal-50' : '' }}" data-tab="question">
                                 <svg width="15" height="15" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M11 11H9v-.148c0-.876.306-1.499 1-1.852.385-.195 1-.568 1-1a1.001 1.001 0 00-2 0H7c0-1.654 1.346-3 3-3s3 1 3 3-2 2.165-2 3zm-2 4h2v-2H9v2zm1-13a8 8 0 100 16 8 8 0 000-16z" fill="#5C5F62"/></svg>
                                 <span class="ml-2">Question Section</span>
-                            </button>
+                            </a>
                             <button class="tab-button w-full text-left px-4 py-3 rounded-lg flex items-center" data-tab="content">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-question-mark-icon lucide-file-question-mark"><path d="M12 17h.01"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3"/></svg>
                                 <span class="ml-2">Question to Quotation</span>
@@ -63,7 +84,7 @@
                 </div>
 
                 <!-- Tab Content Area -->
-                <div class="flex-1 p-6">
+                <div class="flex-1 px-6 pb-6">
                     <!-- Quotation Section Tab -->
                     {{-- @include('backend.quotation.sections.quotation-section') --}}
                     @yield('quotation-section')
@@ -230,25 +251,25 @@
 
 @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching functionality
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     // Tab switching functionality
+        //     const tabButtons = document.querySelectorAll('.tab-button');
+        //     const tabContents = document.querySelectorAll('.tab-content');
 
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabId = button.getAttribute('data-tab');
+        //     tabButtons.forEach(button => {
+        //         button.addEventListener('click', () => {
+        //             const tabId = button.getAttribute('data-tab');
 
-                    // Remove active class from all buttons and contents
-                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
-                    tabContents.forEach(content => content.classList.remove('active'));
+        //             // Remove active class from all buttons and contents
+        //             tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+        //             tabContents.forEach(content => content.classList.remove('active'));
 
-                    // Add active class to clicked button and corresponding content
-                    button.classList.add('tab-active');
-                    document.getElementById(`${tabId}-tab`).classList.add('active');
-                });
-            });
-        });
+        //             // Add active class to clicked button and corresponding content
+        //             button.classList.add('tab-active');
+        //             document.getElementById(`${tabId}-tab`).classList.add('active');
+        //         });
+        //     });
+        // });
     </script>
 
 @endpush

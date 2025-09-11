@@ -15,6 +15,7 @@ class QuotationRequest extends BaseRequest
 
             'subtitle' => [
                 'nullable',
+                'unique:quotation_sections,subtitle',
                 'string',
                 'max:500'
             ]

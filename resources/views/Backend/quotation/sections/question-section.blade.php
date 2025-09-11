@@ -1,31 +1,28 @@
-<div id="question-tab" class="tab-content">
+@extends('Backend.quotation.index')
+@section('quotation-section')
+<div id="quotation-tab" class="tab-content active">
     <div class="flex flex-col lg:!flex-row gap-6">
-        <div class="w-full lg:!w-2/3">
+        <div class="w-full">
+
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-600">
                         <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
                             <tr>
-                                <th class="px-4 py-3 w-3/5">Title</th>
-                                <th class="px-4 py-3 w-3/5">Subtitle</th>
+                                <th class="px-4 py-3 w-3/5">Question</th>
                                 <th class="pr-8 py-3 w-2/5 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                            @forelse($quotations as $quotation)
+                            @forelse($questions as $question)
                                 <tr>
                                     <td class="px-4 py-4">
-                                        <div class="max-w-[10rem] truncate" title="{{ $quotation->title }}">
-                                            {{ $quotation->title }}
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4">
-                                            <div class="max-w-[10rem] truncate" title="{{ $quotation->subtitle }}">
-                                            {{ $quotation->subtitle }}
+                                        <div class="max-w-[60rem] truncate" title="{{ $question->question }}">
+                                            {{ $question->question }}
                                         </div>
                                     </td>
                                     <td class="px-4 py-4 flex justify-end items-center gap-x-2">
-                                        <a href="{{ route('admin.quotation.show', $quotation->id) }}"
+                                        <a href="{{ route('admin.question.show', $question->id) }}"
                                         class="text-green-500 hover:text-green-700 p-1 rounded hover:bg-green-50">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="w-5 h-5 fill-green-500 hover:fill-green-700"
@@ -35,7 +32,7 @@
                                                 <circle cx="12" cy="12" r="3"/>
                                             </svg>
                                         </a>
-                                        <a href="{{ route('admin.quotation.edit', $quotation->id) }}" class="text-blue-500 hover:text-blue-700 p-1 rounded hover:bg-blue-50">
+                                        <a href="{{ route('admin.question.edit', $question->id) }}" class="text-blue-500 hover:text-blue-700 p-1 rounded hover:bg-blue-50">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700"
                                                 viewBox="0 0 348.882 348.882">
                                                 <path
@@ -46,7 +43,7 @@
                                                 data-original="#000000" />
                                             </svg>
                                         </a>
-                                        <button class="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50" type="button" onclick="confirmDelete({{ $quotation->id }})">
+                                        <button class="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50" type="button" onclick="confirmDelete({{ $question->id }})">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
                                                 <path
                                                 d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
@@ -62,9 +59,9 @@
                                     <td colspan="3" class="px-6 py-4 text-center font-medium text-gray-700">
                                         <div class="flex flex-col items-center justify-center gap-x-4 py-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
-                                            <span class="pt-2 text-lg">No Quotation found.</span>
+                                            <span class="pt-2 text-lg">No Question found.</span>
                                         </div>
-                                        <span class="text-gray-500">Create your first sticky header to get started!</span>
+                                        <span class="text-gray-500">Create your first question to get started!</span>
                                     </td>
                                 </tr>
                             @endforelse
@@ -73,76 +70,30 @@
                 </div>
             </div>
         </div>
-            <div class="w-full lg:!w-1/3">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">
-                        {{ isset($quotationToEdit) ? 'Edit FAQ' : 'Add New Quotation' }}
-                    </h2>
-
-                    <form action="{{ isset($quotationToEdit) ? route('admin.quotation.update', $quotationToEdit->id) : route('admin.quotation.store') }}" method="POST">
-                        @csrf
-                        @if(isset($quotationToEdit))
-                            @method('PUT')
-                        @endif
-
-                        <div class="mb-4">
-                            <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                            <input type="text" id="title" name="title" value="{{ old('title', $quotationToEdit->title ?? '') }}"
-                                class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
-                                placeholder="Enter your title here..."
-                            />
-                            @error('title')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
-                            <textarea name="subtitle" id="answer"
-                                class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
-                                placeholder="Enter your answer here...">{{ old('answer', $quotationToEdit->subtitle ?? '') }}</textarea>
-                            @error('subtitle')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-
-                        <div class="flex justify-end mt-6">
-                            @if(isset($quotationToEdit))
-                                <a href="{{ route('admin.quotation.all') }}" class="px-4 py-2 border !border-gray-300 rounded-lg text-gray-700 hover:!bg-gray-50 mr-2">
-                                    Cancel
-                                </a>
-                            @endif
-                            <button type="submit" class="px-4 py-2 !bg-teal-600 text-white rounded-lg hover:!bg-teal-700">
-                                {{ isset($quotationToEdit) ? 'Update' : 'Create' }} Quotation
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    </div>
 </div>
 
 <!-- Delete Confirmation Modal -->
-    <div id="delete-modal" class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50">
-        <div class="bg-white p-6 rounded-lg w-full max-w-md">
-            <h3 class="text-lg font-medium mb-4">Confirm Delete</h3>
-            <p class="text-gray-600 mb-6">Are you sure you want to delete this FAQ? This action cannot be undone.</p>
-            <div class="flex justify-end gap-x-3">
-                <button onclick="closeDeleteModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
-                <form id="delete-form" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="px-4 py-2 !bg-red-600 text-white rounded-lg hover:!bg-red-700">Delete</button>
-                </form>
-            </div>
+<div id="delete-modal" class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-6 rounded-lg w-full max-w-md">
+        <h3 class="text-lg font-medium mb-4">Confirm Delete</h3>
+        <p class="text-gray-600 mb-6">Are you sure you want to delete this FAQ? This action cannot be undone.</p>
+        <div class="flex justify-end gap-x-3">
+            <button onclick="closeDeleteModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
+            <form id="delete-form" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="px-4 py-2 !bg-red-600 text-white rounded-lg hover:!bg-red-700">Delete</button>
+            </form>
         </div>
     </div>
+</div>
+@endsection
 @push('scripts')
     <script>
         function confirmDelete(id) {
             const form = document.getElementById('delete-form');
-            form.action = `/admin/quotation/${id}`;
+            form.action = `/admin/question/${id}`;
             document.getElementById('delete-modal').classList.remove('hidden');
         }
 
