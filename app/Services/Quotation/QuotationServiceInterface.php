@@ -9,4 +9,7 @@ interface QuotationServiceInterface
     public function findQuotation(int $id): object;
     public function updateQuotation(int $id, array $data): object;
     public function deleteQuotation(int $id): bool;
+    public function getAvailableQuestions($sectionId);
+    public function removeQuestion($sectionId, $questionId);
+    public function assignMultipleQuestions($sectionId, array $questionIds);
 }

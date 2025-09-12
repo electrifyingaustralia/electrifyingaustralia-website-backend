@@ -4,6 +4,7 @@ namespace App\Services\Quotation;
 
 use App\Repositories\Quotation\QuotationRepositoryInterface;
 use App\Services\Quotation\QuotationServiceInterface;
+use Illuminate\Support\Facades\DB;
 
 class QuotationService implements QuotationServiceInterface
 {
@@ -32,5 +33,31 @@ class QuotationService implements QuotationServiceInterface
     public function deleteQuotation(int $id): bool
     {
         return $this->quotationRepository->delete($id);
+    }
+
+    public function assignQuestionsToSection($sectionId, array $questionIds): void
+    {
+        DB::transaction(function () use ($sectionId, $questionIds) {
+            $this->quotationRepository->attachQuestions($sectionId, $questionIds);
+        });
+    }
+
+    public function getAvailableQuestions($sectionId)
+    {
+        return $this->quotationRepository->getAvailableQuestions($sectionId);
+    }
+
+    public function removeQuestion($sectionId, $questionId): void
+    {
+        DB::transaction(function () use ($sectionId, $questionId) {
+            $this->quotationRepository->detachQuestion($sectionId, $questionId);
+        });
+    }
+
+    public function assignMultipleQuestions($sectionId, array $questionIds): void
+    {
+        DB::transaction(function () use ($sectionId, $questionIds) {
+            $this->quotationRepository->attachQuestions($sectionId, $questionIds);
+        });
     }
 }

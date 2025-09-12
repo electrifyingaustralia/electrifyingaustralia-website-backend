@@ -16,4 +16,8 @@ interface QuotationRepositoryInterface
     public function update(int $id, array $data): object;
     public function exists(int $id): bool;
     public function delete(int $id): bool;
+    public function getAvailableQuestions($sectionId);
+    public function attachQuestions($sectionId, $questionIds);
+    public function detachQuestion($sectionId, $questionId);
+    public function syncQuestions($sectionId, array $questionIds);
 }

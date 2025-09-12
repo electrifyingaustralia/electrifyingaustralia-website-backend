@@ -17,7 +17,7 @@
                             @forelse($quotations as $quotation)
                                 <tr>
                                     <td class="px-4 py-4">
-                                        <div class="max-w-[10rem] truncate" title="{{ $quotation->title }}">
+                                        <div class="max-w-[15rem] truncate" title="{{ $quotation->title }}">
                                             {{ $quotation->title }}
                                         </div>
                                     </td>
@@ -36,6 +36,10 @@
                                                         1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z"/>
                                                 <circle cx="12" cy="12" r="3"/>
                                             </svg>
+                                        </a>
+                                        <a href="{{ route('admin.quotation.assign-questions', $quotation->id) }}" title="Assign Questions"
+                                        class="text-green-500 hover:text-green-700 p-1 rounded hover:bg-green-50">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e9f910" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-question-mark-icon lucide-file-question-mark"><path d="M12 17h.01"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3"/></svg>
                                         </a>
                                         <a href="{{ route('admin.quotation.edit', $quotation->id) }}" class="text-blue-500 hover:text-blue-700 p-1 rounded hover:bg-blue-50">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700"
@@ -78,7 +82,7 @@
             <div class="w-full lg:!w-1/3">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">
-                        {{ isset($quotationToEdit) ? 'Edit FAQ' : 'Add New Quotation' }}
+                        {{ isset($quotationToEdit) ? 'Edit Quotation' : 'Add New Quotation' }}
                     </h2>
 
                     <form action="{{ isset($quotationToEdit) ? route('admin.quotation.update', $quotationToEdit->id) : route('admin.quotation.store') }}" method="POST">

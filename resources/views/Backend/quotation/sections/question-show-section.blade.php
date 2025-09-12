@@ -6,32 +6,24 @@
 
         <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
             <div class="px-6 py-5 border-b border-gray-200">
-                <h3 class="text-lg font-medium text-gray-900">Question Details</h3>
+                <h3 class="text-lg font-normal text-gray-900">Question : <span class="font-medium">{{ $question->question }}</span></h3>
             </div>
-            <div class="px-6 py-5">
+            {{-- <div class="px-6 py-5">
                 <div class="grid grid-cols-1 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Question</label>
                         <p class="text-lg text-gray-900">{{ $question->question }}</p>
                     </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Created At</label>
-                        <p class="text-sm text-gray-600">{{ $question->created_at->format('M d, Y h:i A') }}</p>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Updated At</label>
-                        <p class="text-sm text-gray-600">{{ $question->updated_at->format('M d, Y h:i A') }}</p>
-                    </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <div class="bg-white rounded-lg shadow overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-200">
-                <h3 class="text-lg font-medium text-gray-900">Options</h3>
-                <p class="text-sm text-gray-600 mt-1">Total options: {{ $question->options->count() }}</p>
+                <div class="flex justify-between items-center">
+
+                    <h3 class="text-lg font-normal text-gray-900">Options</h3>
+                    <p class="text-sm font-medium text-gray-600 mt-1">Total options: {{ $question->options->count() }}</p>
+                </div>
             </div>
             <div class="px-6 py-5">
                 @if($question->options->count() > 0)
@@ -72,7 +64,7 @@
         </div>
 
         <!-- Action buttons -->
-        <div class="mt-6 flex justify-end space-x-3">
+        {{-- <div class="mt-6 flex justify-end space-x-3">
             <a href="{{ route('admin.question.edit', $question->id) }}" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg">
                 <div class="flex items-center gap-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -81,7 +73,7 @@
                     <span>Edit Question</span>
                 </div>
             </a>
-        </div>
+        </div> --}}
     </div>
 </div>
             </div>

@@ -191,6 +191,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/quotation/{id}',  'show')->name('show');
             Route::put('/quotation/{id}',  'update')->name('update');
             Route::delete('/quotation/{id}',  'destroy')->name('delete');
+            Route::get('quotation/{id}/assign-questions', 'showAssignQuestions')->name('assign-questions');
+            Route::post('quotation/{id}/assign-questions', 'assignQuestions')->name('assign-questions');
+            Route::delete('quotation/{sectionId}/remove-question/{questionId}', 'removeQuestion')->name('remove-question');
         });
 
         // ! Question

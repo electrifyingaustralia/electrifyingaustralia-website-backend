@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Quotation;
 
+use App\Models\Question;
 use App\Repositories\Quotation\QuotationRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\QuotationSection;
@@ -69,5 +70,34 @@ class QuotationRepository implements QuotationRepositoryInterface
     {
         $instance = $this->find($id);
         return $instance->delete();
+    }
+
+    public function getAvailableQuestions($sectionId)
+    {
+        $section = QuotationSection::findOrFail($sectionId);
+
+        $assignedQuestionIds = $section->questions()->pluck('questions.id');
+
+        return Question::with('options')
+            ->whereNotIn('id', $assignedQuestionIds)
+            ->get();
+    }
+
+    public function attachQuestions($sectionId, $questionIds)
+    {
+        $section = QuotationSection::findOrFail($sectionId);
+        return $section->questions()->attach($questionIds);
+    }
+
+    public function detachQuestion($sectionId, $questionId)
+    {
+        $section = QuotationSection::findOrFail($sectionId);
+        return $section->questions()->detach($questionId);
+    }
+
+    public function syncQuestions($sectionId, array $questionIds)
+    {
+        $section = QuotationSection::findOrFail($sectionId);
+        return $section->questions()->sync($questionIds);
     }
 }
