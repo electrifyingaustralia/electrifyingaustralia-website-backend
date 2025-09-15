@@ -96,6 +96,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        @include('Backend.components.pagination', ['paginator' => $faqs])
                     </div>
                 </div>
 

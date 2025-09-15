@@ -95,6 +95,7 @@
                 @endif
             </div>
         </div>
+        @include('Backend.components.pagination', ['paginator' => $packages])
     </div>
 </div>
 

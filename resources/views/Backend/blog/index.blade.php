@@ -111,6 +111,7 @@
             </table>
             </div>
         </div>
+        @include('Backend.components.pagination', ['paginator' => $blogs])
     </div>
 </div>
 

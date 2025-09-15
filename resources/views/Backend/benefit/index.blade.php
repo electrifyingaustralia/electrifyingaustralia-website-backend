@@ -118,6 +118,7 @@
             </table>
             </div>
         </div>
+        @include('Backend.components.pagination', ['paginator' => $benefits])
     </div>
 </div>
 

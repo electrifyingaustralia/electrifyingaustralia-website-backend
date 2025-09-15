@@ -69,6 +69,7 @@
                     </table>
                 </div>
             </div>
+            @include('Backend.components.pagination', ['paginator' => $questions])
         </div>
     </div>
 </div>

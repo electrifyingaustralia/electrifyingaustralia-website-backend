@@ -130,6 +130,7 @@
             </table>
             </div>
         </div>
+        @include('Backend.components.pagination', ['paginator' => $products])
     </div>
 </div>
 

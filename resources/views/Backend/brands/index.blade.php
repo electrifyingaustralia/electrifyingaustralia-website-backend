@@ -119,6 +119,7 @@
             </table>
             </div>
         </div>
+        @include('Backend.components.pagination', ['paginator' => $brands])
     </div>
 </div>
 

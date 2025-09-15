@@ -77,6 +77,7 @@
                         </tbody>
                     </table>
                 </div>
+                @include('Backend.components.pagination', ['paginator' => $quotations])
             </div>
         </div>
             <div class="w-full lg:!w-1/3">

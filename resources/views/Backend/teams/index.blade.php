@@ -123,6 +123,7 @@
             </table>
             </div>
         </div>
+        @include('Backend.components.pagination', ['paginator' => $teams])
     </div>
 </div>
 

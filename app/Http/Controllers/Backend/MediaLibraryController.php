@@ -45,7 +45,16 @@ class MediaLibraryController extends Controller
             'search' => $request->get('search'),
         ]);
 
-        return response()->json($medias);
+        // Return JSON with proper pagination structure
+        return response()->json([
+            'data' => $medias->items(),
+            'current_page' => $medias->currentPage(),
+            'last_page' => $medias->lastPage(),
+            'per_page' => $medias->perPage(),
+            'total' => $medias->total(),
+            'from' => $medias->firstItem(),
+            'to' => $medias->lastItem(),
+        ]);
     }
 
     public function destroy(int $id): JsonResponse

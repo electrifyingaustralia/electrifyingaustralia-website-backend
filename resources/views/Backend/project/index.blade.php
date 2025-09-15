@@ -111,6 +111,7 @@
             </table>
             </div>
         </div>
+        @include('Backend.components.pagination', ['paginator' => $projects])
     </div>
 </div>
 
