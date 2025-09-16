@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Backend;
 
+use Illuminate\Validation\Rule;
+
 class BrandCreateRequest extends BaseRequest
 {
     public function rules(): array
@@ -10,7 +12,8 @@ class BrandCreateRequest extends BaseRequest
             'name' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
+                Rule::unique('brands', 'name')
             ],
 
             'logo_id' => [

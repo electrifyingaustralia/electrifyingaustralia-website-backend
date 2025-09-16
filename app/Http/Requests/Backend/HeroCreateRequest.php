@@ -2,27 +2,35 @@
 
 namespace App\Http\Requests\Backend;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class HeroCreateRequest extends FormRequest
+class HeroCreateRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'title' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+
+            'subtitle' => [
+                'nullable',
+                'string'
+            ],
+
+            'media_url' => [
+                'nullable',
+                'url'
+            ],
+
+            'media_id' => [
+                'nullable',
+                'exists:media_libraries,id'
+            ],
+
+            'is_active' => [
+                'boolean'
+            ],
         ];
     }
 }

@@ -4,14 +4,20 @@ namespace App\Services\Hero;
 
 use App\Repositories\Hero\HeroRepositoryInterface;
 use App\Services\Hero\HeroServiceInterface;
+use App\Services\MediaLibrary\MediaLibraryServiceInterface;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class HeroService implements HeroServiceInterface
 {
-    public function __construct(protected HeroRepositoryInterface $heroRepository) {}
+    public function __construct(
+        protected HeroRepositoryInterface $heroRepository,
+        protected MediaLibraryServiceInterface $mediaLibrary
+    ) {}
 
-    public function getAllHero(array $columns = ['*'], int $perPage = 15): object
+    public function get(array $columns = ['*'], int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return $this->heroRepository->get($columns, $perPage);
+        return $this->heroRepository->get($columns, $perPage, $filters);
     }
 
     public function getHeroList(): object
@@ -24,21 +30,46 @@ class HeroService implements HeroServiceInterface
         return $this->heroRepository->find($id);
     }
 
-    public function createHero(array $data): object
+    public function createHero(array $data, ?UploadedFile $media = null): object
     {
-        //* video
+        if ($media) {
+
+            $existingMedia = $this->mediaLibrary->query()->where('original_name', $media->getClientOriginalName())->first();
+
+            if ($existingMedia) {
+                $data['media_id'] = $existingMedia->id;
+            } else {
+                $uploaded = $this->mediaLibrary->upload($media);
+                $data['media_id'] = $uploaded->id;
+            }
+        }
+
         return $this->heroRepository->create($data);
     }
 
     public function updateHero(int $id, array $data): object
     {
-        //* video
+
+        if (isset($data['media_id'])) {
+            if (empty($data['media_id']) || $data['media_id'] === 'null') {
+                $data['media_id'] = null;
+            } else {
+                $existingMedia = $this->mediaLibrary->findMedia($data['media_id']);
+                if (!$existingMedia) {
+                    $data['media_id'] = null;
+                }
+            }
+        }
+
+        if (isset($data['is_active'])) {
+            $data['is_active'] = (bool)$data['is_active'];
+        }
+
         return $this->heroRepository->update($id, $data);
     }
 
     public function deleteHero(int $id): bool
     {
-        //* video
         return $this->heroRepository->delete($id);
     }
 }

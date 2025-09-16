@@ -12,22 +12,29 @@ class HeroController extends Controller
 {
     public function __construct(protected HeroServiceInterface $heroService) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $heros = $this->heroService->getAllHero();
-        return view();
+        $heroes = $this->heroService->get(['*'], 15, [
+            'search' => $request->get('search'),
+        ]);
+        return view('Backend.hero.index', compact('heroes'));
     }
 
     public function create()
     {
-        return view();
+        return view('backend.hero.create');
     }
 
     public function store(HeroCreateRequest $request)
     {
         $data = $request->validated();
         $this->heroService->createHero($data);
-        return redirect();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Hero created successfully!',
+            'redirect' => route('admin.hero.all')
+        ]);
     }
 
     public function show($id)
@@ -38,8 +45,8 @@ class HeroController extends Controller
 
     public function edit($id)
     {
-        $team = $this->heroService->findHero($id);
-        return view();
+        $hero = $this->heroService->findHero($id);
+        return view('backend.hero.edit', compact('hero'));
     }
 
     public function update(HeroUpdateRequest $request, $id)
@@ -47,12 +54,16 @@ class HeroController extends Controller
         $data = $request->validated();
 
         $this->heroService->updateHero($id, $data);
-        return redirect();
+        return response()->json([
+            'success' => true,
+            'message' => 'Hero updated successfully!',
+            'redirect' => route('admin.hero.all')
+        ]);
     }
 
     public function destroy($id)
     {
         $this->heroService->deleteHero($id);
-        return redirect();
+        return redirect()->route('admin.hero.all')->with('success', 'Hero deleted successfully!');
     }
 }

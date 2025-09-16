@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EventController;
 use App\Http\Controllers\Backend\FaqController;
+use App\Http\Controllers\backend\HeroController;
 use App\Http\Controllers\Backend\MediaLibraryController;
 use App\Http\Controllers\Backend\PackageController;
 use App\Http\Controllers\Backend\ProductController;
@@ -205,6 +206,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/question/{id}',  'show')->name('show');
             Route::put('/question/{id}',  'update')->name('update');
             Route::delete('/question/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Hero
+        Route::controller(HeroController::class)->name('hero.')->group(function () {
+            Route::get('/hero', 'index')->name('all');
+            Route::get('/hero/create', 'create')->name('create');
+            Route::post('/hero', 'store')->name('store');
+            Route::get('/hero/{id}/edit',  'edit')->name('edit');
+            Route::get('/hero/{id}',  'show')->name('show');
+            Route::put('/hero/{id}',  'update')->name('update');
+            Route::delete('/hero/{id}',  'destroy')->name('delete');
         });
     });
 });

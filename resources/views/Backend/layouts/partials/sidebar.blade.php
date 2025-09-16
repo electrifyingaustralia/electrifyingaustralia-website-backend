@@ -59,7 +59,7 @@
                     </li>
 
                     <li class="relative mb-2">
-                        <a href="{{ route('admin.brands.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.brands*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                        <a href="{{ route('admin.hero.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.hero*') ? '!text-teal-500 bg-teal-50' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-focus-icon lucide-focus"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
                             <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Hero</span>
                         </a>
