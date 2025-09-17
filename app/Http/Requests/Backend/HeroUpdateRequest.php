@@ -18,7 +18,7 @@ class HeroUpdateRequest extends BaseRequest
                 'string'
             ],
 
-            'media_url' => [
+            'video_url' => [
                 'nullable',
                 'url'
             ],

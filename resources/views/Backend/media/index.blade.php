@@ -12,7 +12,7 @@
                     <span>Upload Files</span>
                 </div>
             </label>
-            <input type="file" id="media-upload" multiple class="hidden" accept="image/*,video/*">
+            <input type="file" id="media-upload" multiple class="hidden" accept="image/*,video/*,.pdf,.doc,.docx">
         </div>
 
         <!-- Filters and Search -->
@@ -44,13 +44,19 @@
 
             <!-- Loading indicator -->
             <div id="loading" class="text-center py-8 hidden">
-                <i class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i>
+                <svg class="animate-spin h-8 w-8 text-blue-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
                 <p class="mt-2 text-gray-600">Loading media...</p>
             </div>
 
             <!-- Empty state -->
             <div id="empty-state" class="flex flex-col items-center text-center py-12 hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
+                    <circle cx="12" cy="12" r="3"/>
+                </svg>
                 <div class="pt-2">
                     <h3 class="text-lg font-medium text-gray-700">No media files found</h3>
                     <p class="text-gray-500 mt-2">Upload your first file to get started</p>
@@ -197,13 +203,46 @@
                 } else if (media.is_video) {
                     mediaContent = `
                         <div class="w-full h-40 bg-gray-800 flex items-center justify-center">
-                            <i class="fas fa-play-circle text-white text-4xl"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                                <path d="m10 7 5 3-5 3Z"/>
+                                <rect width="16" height="14" x="4" y="3" rx="2"/>
+                            </svg>
                         </div>
                     `;
                 } else {
+                    // Determine file type icon based on mime type
+                    let fileIcon = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        </svg>
+                    `;
+
+                    if (media.mime_type === 'application/pdf') {
+                        fileIcon = `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                <path d="M8 13h1"/>
+                                <path d="M8 17h1"/>
+                                <path d="M12 13h3"/>
+                                <path d="M12 17h1"/>
+                            </svg>
+                        `;
+                    } else if (media.mime_type.includes('word') || media.mime_type.includes('document')) {
+                        fileIcon = `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                <path d="M8 13h4"/>
+                                <path d="M8 17h6"/>
+                            </svg>
+                        `;
+                    }
+
                     mediaContent = `
                         <div class="w-full h-40 bg-gray-800 flex items-center justify-center">
-                            <i class="fas fa-file text-white text-4xl"></i>
+                            ${fileIcon}
                         </div>
                     `;
                 }

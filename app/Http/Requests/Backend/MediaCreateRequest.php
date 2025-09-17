@@ -15,7 +15,7 @@ class MediaCreateRequest extends BaseRequest
             'files.*' => [
                 'required',
                 'file',
-                'max:10240'
+                'max:102400'
             ],
 
             'metadata' => [

@@ -1,149 +1,3 @@
-@extends('Backend.layouts.app')
-@section('contents')
-@push('styles')
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
-@endpush
-<div class="flex-1 p-6">
-    <div class="max-w-5xl mx-auto">
-        <!-- Breadcrumb and navigation code remains the same -->
-        <div class="flex justify-between items-center mb-5" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-2">
-                <li class="inline-flex items-center">
-                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center text-lg font-medium text-gray-700 hover:!text-teal-600">
-                        <svg class="w-5 h-5 mr-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
-                        </svg>
-                        Dashboard
-                    </a>
-                </li>
-                <li aria-current="page">
-                    <div class="flex items-center">
-                        <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                        </svg>
-                        <span class="ml-1 text-lg font-medium text-gray-500 md:ml-2">Create New Hero File</span>
-                    </div>
-                </li>
-            </ol>
-            <a href="{{ route('admin.hero.all') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
-                <div class="flex items-center gap-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-                    <span>Back to All Heroes</span>
-                </div>
-            </a>
-        </div>
-
-        <form id="hero-form" action="{{ route('admin.hero.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="flex flex-col lg:!flex-row gap-6">
-                <div class="w-full">
-                    <!-- Sticky Headers Table -->
-                    <div class="bg-white p-6 rounded-lg shadow">
-
-                            <div class="grid grid-cols-1 gap-6">
-                                <div>
-                                    <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Hero title <span class="text-red-600">*</span></label>
-                                    <input
-                                        type="text" id="title" name="title" required
-                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        placeholder="Enter Hero title"
-                                    />
-                                    @error('title')
-                                        <p class="!text-red-600 text-sm">{{$message}}</p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">Hero Subtitle</label>
-                                    <input
-                                        type="text" id="subtitle" name="subtitle"
-                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        placeholder="Enter Hero subtitle"
-                                    />
-                                    @error('subtitle')
-                                        <p class="!text-red-600 text-sm">{{$message}}</p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label for="is_active" class="block text-sm font-medium text-gray-700 mb-1">Hero Status</label>
-                                    <select name="is_active" id="is_active" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
-                                        <option value="1" selected>Active</option>
-                                        <option value="0" >Inactive</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label for="video_url" class="block text-sm font-medium text-gray-700 mb-2">Hero Video Url</label>
-                                    <input
-                                        type="url" id="video_url" name="video_url"
-                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        placeholder="Enter Hero Media Url"
-                                    />
-                                    @error('video_url')
-                                        <p class="!text-red-600 text-sm">{{$message}}</p>
-                                    @enderror
-                                </div>
-
-                                <label for="media_url" class="block text-sm font-bold text-gray-700 ">OR</label>
-
-                                <!-- Media Selection -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Hero Media</label>
-
-                                    <div class="flex flex-col sm:flex-row gap-4">
-                                        <!-- Media Preview -->
-                                        <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
-                                            <div class="text-center text-gray-400">
-                                                <p class="text-xs">No media selected</p>
-                                            </div>
-                                        </div>
-
-                                        <!-- Media Actions -->
-                                        <div class="flex flex-col justify-center gap-2">
-                                            <button type="button" id="open-media-library" class="!bg-[#006494] hover:!bg-[#003554] text-white px-4 py-2 rounded-lg">
-                                                <div class="flex items-center gap-x-2">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-icon lucide-upload"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
-                                                    <span>Upload New Media</span>
-                                                </div>
-                                            </button>
-
-                                            <input type="hidden" id="selected-media-id" name="media_id">
-                                        </div>
-                                    </div>
-
-                                    <!-- Selected Media Info -->
-                                    <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg hidden">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center space-x-3">
-                                                <img id="selected-logo-preview" src="" alt="Selected media" class="w-12 h-12 object-cover rounded">
-                                                <div>
-                                                    <p id="selected-logo-name" class="text-sm font-medium"></p>
-                                                    <p id="selected-logo-size" class="text-xs text-gray-500"></p>
-                                                </div>
-                                            </div>
-                                            <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mt-4 flex justify-end space-x-3">
-                                    <button type="submit" class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
-                                        <div class="flex items-center gap-x-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save-icon lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
-                                            <span>Create Hero</span>
-                                        </div>
-                                    </button>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
 <!-- Media Library Modal -->
 <div id="media-library-modal" class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50 p-4">
     <div class="bg-white rounded-lg w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
@@ -178,7 +32,7 @@
                             </div>
                         </div>
                         <p class="text-sm text-gray-600 mb-4">Drag & drop your media here or click to browse</p>
-                        <input type="file" id="modal-logo-upload" class="hidden">
+                        <input type="file" id="modal-logo-upload" class="hidden" accept="{{ $accept ?? '*' }}">
                         <label for="modal-logo-upload" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg cursor-pointer">
                             <i class="fas fa-upload mr-2"></i> Browse Files
                         </label>
@@ -237,7 +91,6 @@
         </div>
     </div>
 </div>
-@endsection
 
 @push('styles')
 <style>
@@ -273,6 +126,7 @@ $(document).ready(function() {
     let currentTab = 'upload';
     let mediaLibraryItems = [];
     let isUploading = false;
+    const acceptTypes = '{{ $accept ?? "*" }}';
 
     // ========== UPLOAD TAB FUNCTIONS ==========
     function setupDragAndDrop() {
@@ -324,6 +178,12 @@ $(document).ready(function() {
     }
 
     function validateAndProcessFile(file) {
+        // Check file type if specified
+        if (acceptTypes !== '*' && !isFileTypeAccepted(file, acceptTypes)) {
+            alert('File type not accepted. Please select a valid file.');
+            return;
+        }
+
         const reader = new FileReader();
         reader.onload = function(e) {
             showUploadPreview(file, e.target.result);
@@ -340,6 +200,30 @@ $(document).ready(function() {
             updateUploadButtonState();
         };
         reader.readAsDataURL(file);
+    }
+
+    function isFileTypeAccepted(file, acceptPattern) {
+        if (acceptPattern === '*') return true;
+
+        const acceptedTypes = acceptPattern.split(',').map(type => type.trim());
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+
+        return acceptedTypes.some(type => {
+            if (type.startsWith('.')) {
+                return type.substring(1).toLowerCase() === fileExtension;
+            }
+
+            // Handle MIME types (e.g., image/*, image/jpeg)
+            if (type.includes('/')) {
+                if (type.endsWith('/*')) {
+                    const category = type.split('/')[0];
+                    return file.type.startsWith(category);
+                }
+                return file.type === type;
+            }
+
+            return false;
+        });
     }
 
     function showUploadPreview(file, dataUrl) {
@@ -538,7 +422,7 @@ $(document).ready(function() {
             <div class="text-center py-12">
                 <i class="fas fa-folder-open text-gray-400 text-4xl mb-4"></i>
                 <h3 class="text-lg font-medium text-gray-700">No media files found</h3>
-                <p class="text-gray-500 mt-2">Upload video to use as media</p>
+                <p class="text-gray-500 mt-2">Upload media to use</p>
             </div>
         `);
     }
@@ -672,59 +556,6 @@ $(document).ready(function() {
     $('#upload-to-library').on('click', uploadToLibrary);
     $('#confirm-selection').on('click', confirmMediaSelection);
     $('#remove-selected-logo').on('click', removeSelectedLogo);
-
-    // Form Submission
-    $('#hero-form').on('submit', function(e) {
-                e.preventDefault();
-
-        var form = $(this);
-        var formData = new FormData(this);
-
-        $.ajax({
-            url: form.attr('action'),
-            type: form.attr('method'),
-            data: formData,
-            processData: false,
-            contentType: false,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            beforeSend: function() {
-                $('button[type="submit"]').prop('disabled', true).text('Processing...');
-            },
-            success: function(response) {
-                if (response.success) {
-                    // Store the success message in localStorage
-                    localStorage.setItem('toastr_success', response.message) || '{{ route('admin.hero.all') }}';
-
-                    // Redirect to index page
-                    window.location.href = response.redirect;
-                } else {
-                    toastr.error(response.message || 'An error occurred');
-                    $('button[type="submit"]').prop('disabled', false).text('Create Hero');
-                }
-            },
-            error: function(xhr) {
-                // Handle errors
-                if (xhr.status === 422) {
-                    var errors = xhr.responseJSON.errors;
-                    var errorMessage = 'Please fix the following errors:<br>';
-
-                    for (var field in errors) {
-                        if (errors.hasOwnProperty(field)) {
-                            errorMessage += '- ' + errors[field].join('<br>') + '<br>';
-                        }
-                    }
-
-                    toastr.error(errorMessage);
-                } else {
-                    toastr.error('An error occurred. Please try again.');
-                }
-
-                $('button[type="submit"]').prop('disabled', false).text('Create Hero');
-            }
-        });
-    });
 });
 </script>
 @endpush

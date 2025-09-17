@@ -83,14 +83,14 @@
                             </div>
 
                             <div>
-                                <label for="media_url" class="block text-sm font-medium text-gray-700 mb-2">Hero Media Url</label>
+                                <label for="video_url" class="block text-sm font-medium text-gray-700 mb-2">Hero Video Url</label>
                                 <input
-                                    type="url" id="media_url" name="media_url"
+                                    type="url" id="video_url" name="video_url"
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                     placeholder="Enter Hero Media Url"
-                                    value="{{ old('media_url', $hero->media_url) }}"
+                                    value="{{ old('video_url', $hero->video_url) }}"
                                 />
-                                @error('media_url')
+                                @error('video_url')
                                     <p class="!text-red-600 text-sm">{{$message}}</p>
                                 @enderror
                             </div>
