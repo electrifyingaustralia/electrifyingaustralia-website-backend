@@ -100,12 +100,12 @@
                                 </select>
                             </div>
 
-                            <!-- Logo Selection -->
+                            <!-- Media Selection -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Blog Media <span class="text-red-600">*</span></label>
 
                                 <div class="flex flex-col sm:flex-row gap-4">
-                                    <!-- Logo Preview -->
+                                    <!-- Media Preview -->
                                     <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
                                         @if($blog->media)
                                             <img src="{{ $blog->media->url }}" alt="{{ $blog->title }}" class="w-full h-full object-cover rounded-lg">
@@ -117,7 +117,7 @@
                                         @endif
                                     </div>
 
-                                    <!-- Logo Actions -->
+                                    <!-- Media Actions -->
                                     <div class="flex flex-col justify-center gap-2">
                                         <button type="button" id="open-media-library" class="!bg-[#006494] hover:!bg-[#003554] text-white px-4 py-2 rounded-lg">
                                             <div class="flex items-center gap-x-2">
@@ -130,7 +130,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Selected Logo Info -->
+                                <!-- Selected Media Info -->
                                 <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg {{ $blog->media ? '' : 'hidden' }}">
                                     @if($blog->media)
                                     <div class="flex items-center justify-between">
@@ -351,7 +351,7 @@ $(document).ready(function() {
     let mediaLibraryItems = [];
     let isUploading = false;
 
-    // Initialize with existing logo data if available
+    // Initialize with existing media data if available
     @if($blog->media)
     selectedMedia = {
         id: {{ $blog->media_id }},
@@ -529,7 +529,7 @@ $(document).ready(function() {
                     }, 300);
                 } else {
                     $('#upload-status').text('Upload failed!');
-                    alert('Error uploading logo');
+                    alert('Error uploading media');
                 }
                 isUploading = false;
                 updateUploadButtonState();
@@ -763,59 +763,6 @@ $(document).ready(function() {
     $('#upload-to-library').on('click', uploadToLibrary);
     $('#confirm-selection').on('click', confirmMediaSelection);
     $('#remove-selected-logo').on('click', removeSelectedLogo);
-
-    // Form Submission - SINGLE HANDLER to prevent duplicate submissions
-    // $('#blog-form').on('submit', function(e) {
-    //     e.preventDefault();
-
-    //     var form = $(this);
-    //     var formData = new FormData(this);
-
-    //     $.ajax({
-    //         url: form.attr('action'),
-    //         type: form.attr('method'),
-    //         data: formData,
-    //         processData: false,
-    //         contentType: false,
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         },
-    //         beforeSend: function() {
-    //             $('button[type="submit"]').prop('disabled', true).text('Processing...');
-    //         },
-    //         success: function(response) {
-    //             if (response.success) {
-    //                 // Store the success message in localStorage
-    //                 localStorage.setItem('toastr_success', response.message);
-
-    //                 // Redirect to index page
-    //                 window.location.href = response.redirect || '{{ route('admin.blog.all') }}';
-    //             } else {
-    //                 toastr.error(response.message || 'An error occurred');
-    //                 $('button[type="submit"]').prop('disabled', false).text('Update Blog');
-    //             }
-    //         },
-    //         error: function(xhr) {
-    //             // Handle errors
-    //             if (xhr.status === 422) {
-    //                 var errors = xhr.responseJSON.errors;
-    //                 var errorMessage = 'Please fix the following errors:<br>';
-
-    //                 for (var field in errors) {
-    //                     if (errors.hasOwnProperty(field)) {
-    //                         errorMessage += '- ' + errors[field].join('<br>') + '<br>';
-    //                     }
-    //                 }
-
-    //                 toastr.error(errorMessage);
-    //             } else {
-    //                 toastr.error('An error occurred. Please try again.');
-    //             }
-
-    //             $('button[type="submit"]').prop('disabled', false).text('Update Blog');
-    //         }
-    //     });
-    // });
 
     $('#blog-form').on('submit', function(e) {
     e.preventDefault();

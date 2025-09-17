@@ -147,7 +147,7 @@
                                     @if($product->media)
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center space-x-3">
-                                            <img id="selected-logo-preview" src="{{ $product->media->url }}" alt="Selected logo" class="w-12 h-12 object-cover rounded">
+                                            <img id="selected-logo-preview" src="{{ $product->media->url }}" alt="Selected media" class="w-12 h-12 object-cover rounded">
                                             <div>
                                                 <p id="selected-logo-name" class="text-sm font-medium">{{ $product->media->original_name }}</p>
                                                 <p id="selected-logo-size" class="text-xs text-gray-500">{{ formatFileSize($product->media->file_size) }}</p>

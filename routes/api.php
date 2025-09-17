@@ -17,17 +17,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
+
     Route::get('heroes', [ApiHeroController::class, 'index']);
+
     Route::get('brands', [ApiBrandController::class, 'index']);
+
     Route::get('products', [ApiProductController::class, 'index']);
+
     Route::get('benefits', [ApiBenefitController::class, 'index']);
+
     Route::get('sticky-headers', [ApiStickyHeaderController::class, 'index']);
+
     Route::get('blogs', [ApiBlogController::class, 'index']);
+
     Route::get('teams', [ApiTeamController::class, 'index']);
+
     Route::get('solution-cards', [ApiSolutionCardController::class, 'index']);
+
     Route::get('events', [ApiEventController::class, 'index']);
+
     Route::get('projects', [ApiProjectController::class, 'index']);
+
     Route::get('packages', [ApiPackageController::class, 'index']);
+
     Route::get('quotations', [ApiQuotationController::class, 'index']);
+
     Route::get('faqs', [ApiFaqController::class, 'index']);
 });

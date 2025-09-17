@@ -97,12 +97,12 @@
 
                             <label for="media_url" class="block text-sm font-bold text-gray-700 ">OR</label>
 
-                            <!-- Logo Selection -->
+                            <!-- Media Selection -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Hero Media</label>
 
                                 <div class="flex flex-col sm:flex-row gap-4">
-                                    <!-- Logo Preview -->
+                                    <!-- Media Preview -->
                                     <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
                                         @if($hero->media)
                                             <img src="{{ $hero->media->url }}" alt="{{ $hero->title }}" class="w-full h-full object-cover rounded-lg">
@@ -114,7 +114,7 @@
                                         @endif
                                     </div>
 
-                                    <!-- Logo Actions -->
+                                    <!-- Media Actions -->
                                     <div class="flex flex-col justify-center gap-2">
                                         <button type="button" id="open-media-library" class="!bg-[#006494] hover:!bg-[#003554] text-white px-4 py-2 rounded-lg">
                                             <div class="flex items-center gap-x-2">
@@ -132,7 +132,7 @@
                                     @if($hero->media)
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center space-x-3">
-                                            <img id="selected-logo-preview" src="{{ $hero->media->url }}" alt="Selected logo" class="w-12 h-12 object-cover rounded">
+                                            <img id="selected-logo-preview" src="{{ $hero->media->url }}" alt="Selected media" class="w-12 h-12 object-cover rounded">
                                             <div>
                                                 <p id="selected-logo-name" class="text-sm font-medium">{{ $hero->media->original_name }}</p>
                                                 <p id="selected-logo-size" class="text-xs text-gray-500">{{ formatFileSize($hero->media->file_size) }}</p>
@@ -292,7 +292,7 @@ $(document).ready(function() {
     let mediaLibraryItems = [];
     let isUploading = false;
 
-    // Initialize with existing logo data if available
+    // Initialize with existing media data if available
     @if($hero->media)
     selectedMedia = {
         id: {{ $hero->media_id }},

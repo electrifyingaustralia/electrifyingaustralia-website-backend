@@ -122,7 +122,7 @@
                                     <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg hidden">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center space-x-3">
-                                                <img id="selected-logo-preview" src="" alt="Selected logo" class="w-12 h-12 object-cover rounded">
+                                                <img id="selected-logo-preview" src="" alt="Selected media" class="w-12 h-12 object-cover rounded">
                                                 <div>
                                                     <p id="selected-logo-name" class="text-sm font-medium"></p>
                                                     <p id="selected-logo-size" class="text-xs text-gray-500"></p>
@@ -220,7 +220,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="m-auto text-center" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                             </div>
                         </div>
-                        <p class="text-sm text-gray-600 mb-4">Drag & drop your logo here or click to browse</p>
+                        <p class="text-sm text-gray-600 mb-4">Drag & drop your media here or click to browse</p>
                         <input type="file" id="modal-logo-upload" class="hidden">
                         <label for="modal-logo-upload" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg cursor-pointer">
                             <i class="fas fa-upload mr-2"></i> Browse Files
@@ -484,15 +484,15 @@ $(document).ready(function() {
                     }, 300);
                 } else {
                     $('#upload-status').text('Upload failed!');
-                    alert('Error uploading logo');
+                    alert('Error uploading media');
                 }
                 isUploading = false;
                 updateUploadButtonState();
             },
             error: function(error) {
-                console.error('Error uploading logo:', error);
+                console.error('Error uploading media:', error);
                 $('#upload-status').text('Upload failed!');
-                alert('Error uploading logo');
+                alert('Error uploading media');
                 isUploading = false;
                 updateUploadButtonState();
             }
@@ -582,7 +582,7 @@ $(document).ready(function() {
             <div class="text-center py-12">
                 <i class="fas fa-folder-open text-gray-400 text-4xl mb-4"></i>
                 <h3 class="text-lg font-medium text-gray-700">No media files found</h3>
-                <p class="text-gray-500 mt-2">Upload images to use as logos</p>
+                <p class="text-gray-500 mt-2">Upload images to use as media</p>
             </div>
         `);
     }
@@ -658,7 +658,7 @@ $(document).ready(function() {
 
     function confirmMediaSelection() {
         if (!selectedMedia) {
-            alert('Please select a logo first');
+            alert('Please select a media first');
             return;
         }
 
@@ -684,7 +684,7 @@ $(document).ready(function() {
         $('#logo-preview').html(`
             <div class="text-center text-gray-400">
                 <i class="fas fa-image text-2xl mb-2"></i>
-                <p class="text-xs">No logo selected</p>
+                <p class="text-xs">No media selected</p>
             </div>
         `);
 

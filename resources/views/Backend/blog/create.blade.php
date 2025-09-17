@@ -88,19 +88,19 @@
                                     </select>
                                 </div>
 
-                                <!-- Logo Selection -->
+                                <!-- Media Selection -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Blog Media</label>
 
                                     <div class="flex flex-col sm:flex-row gap-4">
-                                        <!-- Logo Preview -->
+                                        <!-- Media Preview -->
                                         <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
                                             <div class="text-center text-gray-400">
                                                 <p class="text-xs">No media selected</p>
                                             </div>
                                         </div>
 
-                                        <!-- Logo Actions -->
+                                        <!-- Media Actions -->
                                         <div class="flex flex-col justify-center gap-2">
                                             <button type="button" id="open-media-library" class="!bg-[#006494] hover:!bg-[#003554] text-white px-4 py-2 rounded-lg">
                                                 <div class="flex items-center gap-x-2">
@@ -201,7 +201,7 @@
 <div id="media-library-modal" class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50 p-4">
     <div class="bg-white rounded-lg w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
         <div class="flex justify-between items-center p-6 border-b">
-            <h3 class="text-lg font-medium">Upload or Select Logo</h3>
+            <h3 class="text-lg font-medium">Upload or Select Media</h3>
             <button id="close-media-library" class="text-gray-400 hover:text-gray-600">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
             </button>
@@ -230,7 +230,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="m-auto text-center" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                             </div>
                         </div>
-                        <p class="text-sm text-gray-600 mb-4">Drag & drop your logo here or click to browse</p>
+                        <p class="text-sm text-gray-600 mb-4">Drag & drop your media here or click to browse</p>
                         <input type="file" id="modal-logo-upload" class="hidden">
                         <label for="modal-logo-upload" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg cursor-pointer">
                             <i class="fas fa-upload mr-2"></i> Browse Files
@@ -494,15 +494,15 @@ $(document).ready(function() {
                     }, 300);
                 } else {
                     $('#upload-status').text('Upload failed!');
-                    alert('Error uploading logo');
+                    alert('Error uploading media');
                 }
                 isUploading = false;
                 updateUploadButtonState();
             },
             error: function(error) {
-                console.error('Error uploading logo:', error);
+                console.error('Error uploading media:', error);
                 $('#upload-status').text('Upload failed!');
-                alert('Error uploading logo');
+                alert('Error uploading media');
                 isUploading = false;
                 updateUploadButtonState();
             }
@@ -592,7 +592,7 @@ $(document).ready(function() {
             <div class="text-center py-12">
                 <i class="fas fa-folder-open text-gray-400 text-4xl mb-4"></i>
                 <h3 class="text-lg font-medium text-gray-700">No media files found</h3>
-                <p class="text-gray-500 mt-2">Upload images to use as logos</p>
+                <p class="text-gray-500 mt-2">Upload images to use as media</p>
             </div>
         `);
     }
@@ -668,7 +668,7 @@ $(document).ready(function() {
 
     function confirmMediaSelection() {
         if (!selectedMedia) {
-            alert('Please select a logo first');
+            alert('Please select a media first');
             return;
         }
 
@@ -694,7 +694,7 @@ $(document).ready(function() {
         $('#logo-preview').html(`
             <div class="text-center text-gray-400">
                 <i class="fas fa-image text-2xl mb-2"></i>
-                <p class="text-xs">No logo selected</p>
+                <p class="text-xs">No media selected</p>
             </div>
         `);
 
@@ -755,7 +755,7 @@ $(document).ready(function() {
                     window.location.href = response.redirect;
                 } else {
                     toastr.error(response.message || 'An error occurred');
-                    $('button[type="submit"]').prop('disabled', false).text('Create Brand');
+                    $('button[type="submit"]').prop('disabled', false).text('Create Blog');
                 }
             },
             error: function(xhr) {
@@ -775,7 +775,7 @@ $(document).ready(function() {
                     toastr.error('An error occurred. Please try again.');
                 }
 
-                $('button[type="submit"]').prop('disabled', false).text('Create Brand');
+                $('button[type="submit"]').prop('disabled', false).text('Create Blog');
             }
         });
     });

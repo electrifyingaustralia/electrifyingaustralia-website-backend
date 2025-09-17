@@ -75,12 +75,12 @@
                                 @enderror
                             </div>
 
-                            <!-- Logo Selection -->
+                            <!-- Media Selection -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Select Media <span class="text-red-600">*</span></label>
 
                                 <div class="flex flex-col sm:flex-row gap-4">
-                                    <!-- Logo Preview -->
+                                    <!-- Media Preview -->
                                     <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
                                         @if($admin->media)
                                             <img src="{{ $admin->media->url }}" alt="{{ $admin->title }}" class="w-full h-full object-cover rounded-lg">
@@ -92,7 +92,7 @@
                                         @endif
                                     </div>
 
-                                    <!-- Logo Actions -->
+                                    <!-- Media Actions -->
                                     <div class="flex flex-col justify-center gap-2">
                                         <button type="button" id="open-media-library" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg">
                                             <div class="flex items-center gap-x-2">
@@ -105,7 +105,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Selected Logo Info -->
+                                <!-- Selected Media Info -->
                                 <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg {{ $admin->media ? '' : 'hidden' }}">
                                     @if($admin->media)
                                     <div class="flex items-center justify-between">
@@ -475,7 +475,7 @@ $(document).ready(function() {
                     }, 300);
                 } else {
                     $('#upload-status').text('Upload failed!');
-                    alert('Error uploading logo');
+                    alert('Error uploading media');
                 }
                 isUploading = false;
                 updateUploadButtonState();

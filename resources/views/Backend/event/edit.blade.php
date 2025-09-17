@@ -100,12 +100,12 @@
                                 </select>
                             </div>
 
-                            <!-- Logo Selection -->
+                            <!-- Media Selection -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Event Media <span class="text-red-600">*</span></label>
 
                                 <div class="flex flex-col sm:flex-row gap-4">
-                                    <!-- Logo Preview -->
+                                    <!-- Media Preview -->
                                     <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
                                         @if($event->media)
                                             <img src="{{ $event->media->url }}" alt="{{ $event->title }}" class="w-full h-full object-cover rounded-lg">
@@ -117,7 +117,7 @@
                                         @endif
                                     </div>
 
-                                    <!-- Logo Actions -->
+                                    <!-- Media Actions -->
                                     <div class="flex flex-col justify-center gap-2">
                                         <button type="button" id="open-media-library" class="!bg-[#006494] hover:!bg-[#003554] text-white px-4 py-2 rounded-lg">
                                             <div class="flex items-center gap-x-2">
@@ -130,12 +130,12 @@
                                     </div>
                                 </div>
 
-                                <!-- Selected Logo Info -->
+                                <!-- Selected Media Info -->
                                 <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg {{ $event->media ? '' : 'hidden' }}">
                                     @if($event->media)
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center space-x-3">
-                                            <img id="selected-logo-preview" src="{{ $event->media->url }}" alt="Selected logo" class="w-12 h-12 object-cover rounded">
+                                            <img id="selected-logo-preview" src="{{ $event->media->url }}" alt="Selected media" class="w-12 h-12 object-cover rounded">
                                             <div>
                                                 <p id="selected-logo-name" class="text-sm font-medium">{{ $event->media->original_name }}</p>
                                                 <p id="selected-logo-size" class="text-xs text-gray-500">{{ formatFileSize($event->media->file_size) }}</p>
@@ -295,7 +295,7 @@ $(document).ready(function() {
     let mediaLibraryItems = [];
     let isUploading = false;
 
-    // Initialize with existing logo data if available
+    // Initialize with existing media data if available
     @if($event->media)
     selectedMedia = {
         id: {{ $event->media_id }},
@@ -473,7 +473,7 @@ $(document).ready(function() {
                     }, 300);
                 } else {
                     $('#upload-status').text('Upload failed!');
-                    alert('Error uploading logo');
+                    alert('Error uploading media');
                 }
                 isUploading = false;
                 updateUploadButtonState();

@@ -20,7 +20,7 @@ class StickyHeaderRepository implements StickyHeaderRepositoryInterface
 
     public function get(array $columns = ["*"], int $perPage = 15): object
     {
-        return $this->query()->select($columns)->paginate($perPage);
+        return $this->query()->select($columns)->latest('id')->paginate($perPage);
     }
 
     public function all(): object

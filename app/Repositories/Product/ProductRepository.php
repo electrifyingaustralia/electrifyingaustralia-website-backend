@@ -21,7 +21,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function get(array $columns = ["*"], int $perPage = 15, array $filter = []): object
     {
         $q = $this->applyFilters($this->query()->select($columns), $filter);
-        return $q->with('brand')->paginate($perPage);
+        return $q->with('brand')->latest()->paginate($perPage);
     }
 
     public function all(): object

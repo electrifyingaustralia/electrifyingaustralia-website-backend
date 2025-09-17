@@ -116,7 +116,7 @@
                                     <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg hidden">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center space-x-3">
-                                                <img id="selected-logo-preview" src="" alt="Selected logo" class="w-12 h-12 object-cover rounded">
+                                                <img id="selected-logo-preview" src="" alt="Selected media" class="w-12 h-12 object-cover rounded">
                                                 <div>
                                                     <p id="selected-logo-name" class="text-sm font-medium"></p>
                                                     <p id="selected-logo-size" class="text-xs text-gray-500"></p>
@@ -440,15 +440,15 @@ $(document).ready(function() {
                     }, 300);
                 } else {
                     $('#upload-status').text('Upload failed!');
-                    alert('Error uploading logo');
+                    alert('Error uploading media');
                 }
                 isUploading = false;
                 updateUploadButtonState();
             },
             error: function(error) {
-                console.error('Error uploading logo:', error);
+                console.error('Error uploading media:', error);
                 $('#upload-status').text('Upload failed!');
-                alert('Error uploading logo');
+                alert('Error uploading media');
                 isUploading = false;
                 updateUploadButtonState();
             }
@@ -538,7 +538,7 @@ $(document).ready(function() {
             <div class="text-center py-12">
                 <i class="fas fa-folder-open text-gray-400 text-4xl mb-4"></i>
                 <h3 class="text-lg font-medium text-gray-700">No media files found</h3>
-                <p class="text-gray-500 mt-2">Upload images to use as logos</p>
+                <p class="text-gray-500 mt-2">Upload video to use as media</p>
             </div>
         `);
     }
@@ -614,7 +614,7 @@ $(document).ready(function() {
 
     function confirmMediaSelection() {
         if (!selectedMedia) {
-            alert('Please select a logo first');
+            alert('Please select a media first');
             return;
         }
 
@@ -640,7 +640,7 @@ $(document).ready(function() {
         $('#logo-preview').html(`
             <div class="text-center text-gray-400">
                 <i class="fas fa-image text-2xl mb-2"></i>
-                <p class="text-xs">No logo selected</p>
+                <p class="text-xs">No media selected</p>
             </div>
         `);
 

@@ -21,7 +21,7 @@ class BenefitRepository implements BenefitRepositoryInterface
     public function get(array $columns = ["*"], int $perPage = 15, array $filters = []): object
     {
         $q = $this->applyFilters($this->query()->select($columns), $filters);
-        return $q->paginate($perPage);
+        return $q->latest('id')->paginate($perPage);
     }
 
     public function all(): object
