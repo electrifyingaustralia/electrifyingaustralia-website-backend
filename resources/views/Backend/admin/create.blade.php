@@ -188,7 +188,23 @@
 
                     <div id="upload-preview" class="upload-content hidden">
                         <div class="flex flex-col items-center">
-                            <img id="preview-image" src="" alt="Preview" class="w-32 h-32 object-contain mb-4 rounded-lg">
+                            <!-- Preview container that will show appropriate content based on file type -->
+                            <div id="preview-container" class="w-32 h-32 flex items-center justify-center mb-4 rounded-lg bg-gray-100">
+                                <!-- Image preview (default) -->
+                                <img id="preview-image" src="" alt="Preview" class="w-full h-full object-contain hidden">
+
+                                <!-- Video preview -->
+                                <video id="preview-video" class="w-full h-full object-contain hidden" controls>
+                                    Your browser does not support the video tag.
+                                </video>
+
+                                <!-- Document preview icons -->
+                                <div id="preview-document" class="hidden flex flex-col items-center justify-center">
+                                    <svg id="preview-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide"></svg>
+                                    <p id="preview-extension" class="text-xs font-medium mt-1"></p>
+                                </div>
+                            </div>
+
                             <p id="preview-filename" class="text-sm font-medium text-gray-700 mb-2"></p>
                             <p id="preview-size" class="text-xs text-gray-500 mb-4"></p>
 
@@ -199,7 +215,7 @@
                             <p id="upload-status" class="text-xs text-gray-500 mb-2 hidden"></p>
 
                             <button id="clear-upload-preview" class="!text-red-600 hover:!text-red-800 text-sm">
-                                 Remove
+                                Remove
                             </button>
                         </div>
                     </div>
@@ -348,11 +364,82 @@ $(document).ready(function() {
         $('#upload-default').addClass('hidden');
         $('#upload-preview').removeClass('hidden');
 
+        // Hide all preview elements first
+        $('#preview-image').addClass('hidden');
+        $('#preview-video').addClass('hidden');
+        $('#preview-document').addClass('hidden');
+
         // Hide progress elements initially
         $('#upload-progress-container').addClass('hidden');
         $('#upload-status').addClass('hidden');
 
-        $('#preview-image').attr('src', dataUrl);
+        // Determine file type and show appropriate preview
+        const fileType = file.type;
+        const fileName = file.name;
+        const fileExtension = fileName.split('.').pop().toLowerCase();
+
+        if (fileType.startsWith('image/')) {
+            // Show image preview
+            $('#preview-image')
+                .attr('src', dataUrl)
+                .removeClass('hidden');
+        } else if (fileType.startsWith('video/')) {
+            // Show video preview
+            $('#preview-video')
+                .attr('src', dataUrl)
+                .removeClass('hidden');
+        } else {
+            // Show document icon based on file type
+            $('#preview-document').removeClass('hidden');
+
+            let iconSvg = '';
+            let bgColor = 'bg-gray-100';
+
+            switch(fileExtension) {
+                case 'pdf':
+                    iconSvg = `
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        <path d="M10 9H8"/>
+                        <path d="M16 13H8"/>
+                        <path d="M16 17H8"/>
+                    `;
+                    bgColor = 'bg-red-100';
+                    break;
+                case 'doc':
+                case 'docx':
+                    iconSvg = `
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        <path d="M10 9H8"/>
+                        <path d="M16 13H8"/>
+                        <path d="M16 17H8"/>
+                    `;
+                    bgColor = 'bg-blue-100';
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    iconSvg = `
+                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                        <path d="M3 9h18"/>
+                        <path d="M3 15h18"/>
+                        <path d="M9 3v18"/>
+                        <path d="M15 3v18"/>
+                    `;
+                    bgColor = 'bg-green-100';
+                    break;
+                default:
+                    iconSvg = `
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                    `;
+            }
+
+            $('#preview-icon').html(iconSvg);
+            $('#preview-extension').text(fileExtension.toUpperCase());
+            $('#preview-container').removeClass().addClass(`w-32 h-32 flex items-center justify-center mb-4 rounded-lg ${bgColor}`);
+        }
+
         $('#preview-filename').text(file.name);
         $('#preview-size').text(formatFileSize(file.size));
     }
@@ -361,6 +448,12 @@ $(document).ready(function() {
         $('#upload-preview').addClass('hidden');
         $('#upload-default').removeClass('hidden');
         $('#modal-logo-upload').val('');
+
+        // Reset all preview elements
+        $('#preview-image').addClass('hidden').attr('src', '');
+        $('#preview-video').addClass('hidden').attr('src', '');
+        $('#preview-document').addClass('hidden');
+        $('#preview-container').removeClass().addClass('w-32 h-32 flex items-center justify-center mb-4 rounded-lg bg-gray-100');
 
         // Reset progress
         $('#upload-progress-bar').css('width', '0%');
@@ -493,10 +586,78 @@ $(document).ready(function() {
         let html = '<div class="grid !grid-cols-2 sm:!grid-cols-3 md:!grid-cols-4 lg:!grid-cols-6 !gap-4">';
 
         $.each(mediaItems, function(index, media) {
+            // Determine file type and appropriate preview
+            let previewHtml = '';
+            const fileExtension = media.original_name.split('.').pop().toLowerCase();
+
+            if (media.mime_type && media.mime_type.startsWith('image/')) {
+                // Image files - show thumbnail
+                previewHtml = `<img src="${media.url}" alt="${media.original_name}" class="w-full h-24 object-scale-down">`;
+            } else if (media.mime_type && media.mime_type.startsWith('video/')) {
+                // Video files - show video icon
+                previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center bg-gray-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
+                            <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
+                            <rect x="2" y="6" width="14" height="12" rx="2"/>
+                        </svg>
+                    </div>
+                `;
+            } else if (['pdf'].includes(fileExtension)) {
+                // PDF files - show PDF icon
+                previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center bg-red-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-red-600">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                            <path d="M10 9H8"/>
+                            <path d="M16 13H8"/>
+                            <path d="M16 17H8"/>
+                        </svg>
+                    </div>
+                `;
+            } else if (['doc', 'docx'].includes(fileExtension)) {
+                // Word documents - show document icon
+                previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center bg-blue-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-blue-600">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                            <path d="M10 9H8"/>
+                            <path d="M16 13H8"/>
+                            <path d="M16 17H8"/>
+                        </svg>
+                    </div>
+                `;
+            } else if (['xls', 'xlsx'].includes(fileExtension)) {
+                // Excel files - show spreadsheet icon
+                previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center bg-green-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-table text-green-600">
+                            <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                            <path d="M3 9h18"/>
+                            <path d="M3 15h18"/>
+                            <path d="M9 3v18"/>
+                            <path d="M15 3v18"/>
+                        </svg>
+                    </div>
+                `;
+            } else {
+                // Other file types - show generic file icon
+                previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center bg-gray-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file text-gray-600">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        </svg>
+                    </div>
+                `;
+            }
+
             html += `
                 <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md"
-                     data-index="${index}">
-                    <img src="${media.url}" alt="${media.original_name}" class="w-full h-24 object-scale-down">
+                    data-index="${index}">
+                    ${previewHtml}
                     <div class="p-2">
                         <p class="text-xs text-center font-medium truncate">${media.original_name}</p>
                     </div>

@@ -130,7 +130,47 @@
                                     <!-- Media Preview -->
                                     <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
                                         @if($team->media)
-                                            <img src="{{ $team->media->url }}" alt="{{ $team->title }}" class="w-full h-full object-cover rounded-lg">
+                                            @if($team->media->mime_type && str_starts_with($team->media->mime_type, 'image/'))
+                                                <img src="{{ $team->media->url }}" alt="{{ $team->title }}" class="w-full h-full object-cover rounded-lg">
+                                            @elseif($team->media->mime_type && str_starts_with($team->media->mime_type, 'video/'))
+                                                <div class="w-full h-full flex items-center justify-center bg-gray-200 rounded-lg">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
+                                                        <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
+                                                        <rect x="2" y="6" width="14" height="12" rx="2"/>
+                                                    </svg>
+                                                </div>
+                                            @else
+                                                @php
+                                                    $fileExtension = pathinfo($team->media->original_name, PATHINFO_EXTENSION);
+                                                    $bgColor = 'bg-gray-200';
+                                                    $iconSvg = '';
+
+                                                    switch(strtolower($fileExtension)) {
+                                                        case 'pdf':
+                                                            $bgColor = 'bg-red-100';
+                                                            $iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                                            break;
+                                                        case 'doc':
+                                                        case 'docx':
+                                                            $bgColor = 'bg-blue-100';
+                                                            $iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                                            break;
+                                                        case 'xls':
+                                                        case 'xlsx':
+                                                            $bgColor = 'bg-green-100';
+                                                            $iconSvg = '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
+                                                            break;
+                                                        default:
+                                                            $bgColor = 'bg-gray-200';
+                                                            $iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
+                                                    }
+                                                @endphp
+                                                <div class="w-full h-full flex items-center justify-center {{ $bgColor }} rounded-lg">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide">
+                                                        {!! $iconSvg !!}
+                                                    </svg>
+                                                </div>
+                                            @endif
                                         @else
                                             <div class="text-center text-gray-400">
                                                 <i class="fas fa-image text-2xl mb-2"></i>
@@ -157,7 +197,40 @@
                                     @if($team->media)
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center space-x-3">
-                                            <img id="selected-logo-preview" src="{{ $team->media->url }}" alt="Selected media" class="w-12 h-12 object-cover rounded">
+                                            @if($team->media->mime_type && str_starts_with($team->media->mime_type, 'image/'))
+                                                <img id="selected-logo-preview" src="{{ $team->media->url }}" alt="Selected media" class="w-12 h-12 object-cover rounded">
+                                            @else
+                                                @php
+                                                    $fileExtension = pathinfo($team->media->original_name, PATHINFO_EXTENSION);
+                                                    $bgColor = 'bg-gray-200';
+                                                    $iconSvg = '';
+
+                                                    switch(strtolower($fileExtension)) {
+                                                        case 'pdf':
+                                                            $bgColor = 'bg-red-100';
+                                                            $iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                                            break;
+                                                        case 'doc':
+                                                        case 'docx':
+                                                            $bgColor = 'bg-blue-100';
+                                                            $iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                                            break;
+                                                        case 'xls':
+                                                        case 'xlsx':
+                                                            $bgColor = 'bg-green-100';
+                                                            $iconSvg = '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
+                                                            break;
+                                                        default:
+                                                            $bgColor = 'bg-gray-200';
+                                                            $iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
+                                                    }
+                                                @endphp
+                                                <div class="w-12 h-12 flex items-center justify-center {{ $bgColor }} rounded">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide">
+                                                        {!! $iconSvg !!}
+                                                    </svg>
+                                                </div>
+                                            @endif
                                             <div>
                                                 <p id="selected-logo-name" class="text-sm font-medium">{{ $team->media->original_name }}</p>
                                                 <p id="selected-logo-size" class="text-xs text-gray-500">{{ formatFileSize($team->media->file_size) }}</p>
@@ -297,7 +370,23 @@
 
                     <div id="upload-preview" class="upload-content hidden">
                         <div class="flex flex-col items-center">
-                            <img id="preview-image" src="" alt="Preview" class="w-32 h-32 object-contain mb-4 rounded-lg">
+                            <!-- Preview container that will show appropriate content based on file type -->
+                            <div id="preview-container" class="w-32 h-32 flex items-center justify-center mb-4 rounded-lg bg-gray-100">
+                                <!-- Image preview (default) -->
+                                <img id="preview-image" src="" alt="Preview" class="w-full h-full object-contain hidden">
+
+                                <!-- Video preview -->
+                                <video id="preview-video" class="w-full h-full object-contain hidden" controls>
+                                    Your browser does not support the video tag.
+                                </video>
+
+                                <!-- Document preview icons -->
+                                <div id="preview-document" class="hidden flex flex-col items-center justify-center">
+                                    <svg id="preview-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide"></svg>
+                                    <p id="preview-extension" class="text-xs font-medium mt-1"></p>
+                                </div>
+                            </div>
+
                             <p id="preview-filename" class="text-sm font-medium text-gray-700 mb-2"></p>
                             <p id="preview-size" class="text-xs text-gray-500 mb-4"></p>
 
@@ -308,7 +397,7 @@
                             <p id="upload-status" class="text-xs text-gray-500 mb-2 hidden"></p>
 
                             <button id="clear-upload-preview" class="!text-red-600 hover:!text-red-800 text-sm">
-                                 Remove
+                                Remove
                             </button>
                         </div>
                     </div>
@@ -469,11 +558,82 @@ $(document).ready(function() {
         $('#upload-default').addClass('hidden');
         $('#upload-preview').removeClass('hidden');
 
+        // Hide all preview elements first
+        $('#preview-image').addClass('hidden');
+        $('#preview-video').addClass('hidden');
+        $('#preview-document').addClass('hidden');
+
         // Hide progress elements initially
         $('#upload-progress-container').addClass('hidden');
         $('#upload-status').addClass('hidden');
 
-        $('#preview-image').attr('src', dataUrl);
+        // Determine file type and show appropriate preview
+        const fileType = file.type;
+        const fileName = file.name;
+        const fileExtension = fileName.split('.').pop().toLowerCase();
+
+        if (fileType.startsWith('image/')) {
+            // Show image preview
+            $('#preview-image')
+                .attr('src', dataUrl)
+                .removeClass('hidden');
+        } else if (fileType.startsWith('video/')) {
+            // Show video preview
+            $('#preview-video')
+                .attr('src', dataUrl)
+                .removeClass('hidden');
+        } else {
+            // Show document icon based on file type
+            $('#preview-document').removeClass('hidden');
+
+            let iconSvg = '';
+            let bgColor = 'bg-gray-100';
+
+            switch(fileExtension) {
+                case 'pdf':
+                    iconSvg = `
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        <path d="M10 9H8"/>
+                        <path d="M16 13H8"/>
+                        <path d="M16 17H8"/>
+                    `;
+                    bgColor = 'bg-red-100';
+                    break;
+                case 'doc':
+                case 'docx':
+                    iconSvg = `
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        <path d="M10 9H8"/>
+                        <path d="M16 13H8"/>
+                        <path d="M16 17H8"/>
+                    `;
+                    bgColor = 'bg-blue-100';
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    iconSvg = `
+                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                        <path d="M3 9h18"/>
+                        <path d="M3 15h18"/>
+                        <path d="M9 3v18"/>
+                        <path d="M15 3v18"/>
+                    `;
+                    bgColor = 'bg-green-100';
+                    break;
+                default:
+                    iconSvg = `
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                    `;
+            }
+
+            $('#preview-icon').html(iconSvg);
+            $('#preview-extension').text(fileExtension.toUpperCase());
+            $('#preview-container').removeClass().addClass(`w-32 h-32 flex items-center justify-center mb-4 rounded-lg ${bgColor}`);
+        }
+
         $('#preview-filename').text(file.name);
         $('#preview-size').text(formatFileSize(file.size));
     }
@@ -482,6 +642,12 @@ $(document).ready(function() {
         $('#upload-preview').addClass('hidden');
         $('#upload-default').removeClass('hidden');
         $('#modal-logo-upload').val('');
+
+        // Reset all preview elements
+        $('#preview-image').addClass('hidden').attr('src', '');
+        $('#preview-video').addClass('hidden').attr('src', '');
+        $('#preview-document').addClass('hidden');
+        $('#preview-container').removeClass().addClass('w-32 h-32 flex items-center justify-center mb-4 rounded-lg bg-gray-100');
 
         // Reset progress
         $('#upload-progress-bar').css('width', '0%');
@@ -618,12 +784,81 @@ $(document).ready(function() {
 
         $.each(mediaItems, function(index, media) {
             const isSelected = selectedMedia && selectedMedia.id === media.id;
+
+            // Determine file type and appropriate preview
+            let previewHtml = '';
+            const fileExtension = media.original_name.split('.').pop().toLowerCase();
+
+            if (media.mime_type && media.mime_type.startsWith('image/')) {
+                // Image files - show thumbnail
+                previewHtml = `<img src="${media.url}" alt="${media.original_name}" class="w-full h-24 object-scale-down">`;
+            } else if (media.mime_type && media.mime_type.startsWith('video/')) {
+                // Video files - show video icon
+                previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center bg-gray-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
+                            <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
+                            <rect x="2" y="6" width="14" height="12" rx="2"/>
+                        </svg>
+                    </div>
+                `;
+            } else if (['pdf'].includes(fileExtension)) {
+                // PDF files - show PDF icon
+                previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center bg-red-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-red-600">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                            <path d="M10 9H8"/>
+                            <path d="M16 13H8"/>
+                            <path d="M16 17H8"/>
+                        </svg>
+                    </div>
+                `;
+            } else if (['doc', 'docx'].includes(fileExtension)) {
+                // Word documents - show document icon
+                previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center bg-blue-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-blue-600">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                            <path d="M10 9H8"/>
+                            <path d="M16 13H8"/>
+                            <path d="M16 17H8"/>
+                        </svg>
+                    </div>
+                `;
+            } else if (['xls', 'xlsx'].includes(fileExtension)) {
+                // Excel files - show spreadsheet icon
+                previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center bg-green-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-table text-green-600">
+                            <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                            <path d="M3 9h18"/>
+                            <path d="M3 15h18"/>
+                            <path d="M9 3v18"/>
+                            <path d="M15 3v18"/>
+                        </svg>
+                    </div>
+                `;
+            } else {
+                // Other file types - show generic file icon
+                previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center bg-gray-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file text-gray-600">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        </svg>
+                    </div>
+                `;
+            }
+
             html += `
                 <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md ${isSelected ? 'selected' : ''}"
-                     data-index="${index}">
-                    <img src="${media.url}" alt="${media.original_name}" class="w-full h-24 object-scale-down">
+                    data-index="${index}">
+                    ${previewHtml}
                     <div class="p-2">
-                        <p class="text-xs font-medium truncate">${media.original_name}</p>
+                        <p class="text-xs text-center font-medium truncate">${media.original_name}</p>
                     </div>
                 </div>
             `;
@@ -751,13 +986,130 @@ $(document).ready(function() {
     function applySelectedMedia() {
         $('#selected-media-id').val(selectedMedia.id);
 
-        $('#logo-preview').html(`<img src="${selectedMedia.url}" alt="${selectedMedia.name}" class="w-full h-full object-cover">`);
+        // Determine file type and show appropriate preview
+        const fileExtension = selectedMedia.name.split('.').pop().toLowerCase();
 
-        $('#selected-logo-preview').attr('src', selectedMedia.url);
-        $('#selected-logo-name').text(selectedMedia.name);
-        $('#selected-logo-size').text(formatFileSize(selectedMedia.size));
+        if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) ||
+            (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('image/'))) {
+            // Image files
+            $('#logo-preview').html(`<img src="${selectedMedia.url}" alt="${selectedMedia.name}" class="w-full h-full object-cover rounded-lg">`);
+        } else if (selectedMedia.url.match(/\.(mp4|web极|ogg|mov|avi|wmv)$/i) ||
+                (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('video/'))) {
+            // Video files
+            $('#logo-preview').html(`
+                <div class="w-full h-full flex items-center justify-center bg-gray-200 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin极 round" class="lucide lucide-video text-gray-600">
+                        <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
+                        <rect x="2" y="6" width="14" height="12" rx="2"/>
+                    </svg>
+                </div>
+            `);
+        } else {
+            // Document files - show appropriate icon
+            let bgColor = 'bg-gray-200';
+            let iconSvg = '';
+
+            switch(fileExtension) {
+                case 'pdf':
+                    bgColor = 'bg-red-100';
+                    iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2极 4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                    break;
+                case 'doc':
+                case 'docx':
+                    bgColor = 'bg-blue-100';
+                    iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v极 4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    bgColor = 'bg-green-100';
+                    iconSvg = '<rect width="18" height="18" x极 3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
+                    break;
+                default:
+                    bgColor = 'bg-gray-200';
+                    iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
+            }
+
+            $('#logo-preview').html(`
+                <div class="w-full h-full flex items-center justify-center ${bgColor} rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide">
+                        ${iconSvg}
+                    </svg>
+                </div>
+            `);
+        }
+
+        // Update selected logo info
+        if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) ||
+            (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('image/'))) {
+            // Show image preview
+            $('#selected-logo-info').html(`
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <img id="selected-logo-preview" src="${selectedMedia.url}" alt="Selected media" class="w-12 h-12 object-cover rounded">
+                        <div>
+                            <p id="selected-logo-name" class="text-sm font-medium">${selectedMedia.name}</p>
+                            <p id="selected-logo-size" class="text-xs text-gray-500">${formatFileSize(selectedMedia.size)}</p>
+                        </div>
+                    </div>
+                    <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2">
+                            <path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6极 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
+                </div>
+            `);
+        } else {
+            // Show icon preview
+            const fileExtension = selectedMedia.name.split('.').pop().toLowerCase();
+            let bgColor = 'bg-gray-200';
+            let iconSvg = '';
+
+            switch(fileExtension) {
+                case 'pdf':
+                    bgColor = 'bg-red-100';
+                    iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 极 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                    break;
+                case 'doc':
+                case 'docx':
+                    bgColor = 'bg-blue-100';
+                    iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    bgColor = 'bg-green-100';
+                    iconSvg = '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
+                    break;
+                default:
+                    bgColor = 'bg-gray-200';
+                    iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><极 d="M14 2v4a2 2 极 0 0 2 2h4"/>';
+            }
+
+            $('#selected-logo-info').html(`
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 flex items-center justify-center ${bgColor} rounded">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide">
+                                ${iconSvg}
+                            </svg>
+                        </div>
+                        <div>
+                            <p id="selected-logo-name" class="text-sm font-medium">${selectedMedia.name}</p>
+                            <p id="selected-logo-size" class="text-xs text-gray-500">${formatFileSize(selectedMedia.size)}</p>
+                        </div>
+                    </div>
+                    <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2">
+                            <path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
+                </div>
+            `);
+        }
+
+        // Re-bind the remove event listener
+        $('#remove-selected-logo').on('click', removeSelectedLogo);
+
         $('#selected-logo-info').removeClass('hidden');
-
         closeMediaLibrary();
     }
 
@@ -769,7 +1121,7 @@ $(document).ready(function() {
             </div>
         `);
 
-        $('#selected-logo-info').addClass('hidden');
+        $('#selected-logo-info').addClass('hidden').html('');
         $('#selected-media-id').val('');
         selectedMedia = null;
         updateConfirmButtonState();

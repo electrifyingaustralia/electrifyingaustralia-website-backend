@@ -61,20 +61,28 @@
                 <tbody class="divide-y divide-gray-200">
                     @forelse($heroes as $hero)
                         <tr>
-                            <td class="px-6 py-4 font-medium text-gray-900">
+                            <td class=" px-5 py-4 font-medium text-gray-900">
                                 <div class="flex items-center">
                                     @if($hero->media_url)
-                                        @if($hero->video_type === 'upload')
-                                            <video class="w-20 h-10 object-cover rounded" controls>
-                                                <source src="{{ $hero->media_url }}" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        @else
-                                            <img src="{{ $hero->media_url }}" alt="{{ $hero->title }}" class="w-20 h-10 object-scale-down rounded">
-                                        @endif
+                                        <div class="flex items-center space-x-2">
+                                            <div class="relative group !cursor-pointer" onclick="openVideoModal('{{ $hero->media_url }}')">
+                                                <div class="w-20 h-12 bg-gray-200 rounded flex items-center justify-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
+                                                        <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
+                                                        <rect x="2" y="6" width="14" height="12" rx="2"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white lucide lucide-play-circle bg-teal-600 rounded-full p-1">
+                                                        <circle cx="12" cy="12" r="10"/>
+                                                        <polygon points="10 8 16 12 10 16 10 8"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @else
-                                        <div class="w-20 h-10 bg-gray-200 rounded flex items-center justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera-icon lucide-camera"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>
+                                        <div class="flex items-center space-x-3">
+                                            <span class="text-sm text-gray-500 italic">No file</span>
                                         </div>
                                     @endif
                                 </div>
@@ -145,6 +153,21 @@
         </div>
     </div>
 </div>
+
+<!-- Video Modal -->
+<div id="video-modal" class="fixed inset-0 bg-black/30 bg-opacity-75 flex items-center justify-center hidden z-50 p-4">
+    <div class="bg-black rounded-lg w-full max-w-4xl relative">
+        <button onclick="closeVideoModal()" class="absolute -top-10 right-0 text-white hover:text-gray-300 z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x">
+                <path d="M18 6 6 18"/>
+                <path d="m6 6 12 12"/>
+            </svg>
+        </button>
+        <video id="modal-video" class="w-full h-auto rounded-lg" controls>
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -158,5 +181,42 @@ function confirmDelete(id) {
 function closeDeleteModal() {
     document.getElementById('delete-modal').classList.add('hidden');
 }
+</script>
+<script>
+    function openVideoModal(videoUrl) {
+    const modal = document.getElementById('video-modal');
+    const video = document.getElementById('modal-video');
+
+    video.src = videoUrl;
+    modal.classList.remove('hidden');
+
+    // Play the video when modal opens
+    setTimeout(() => {
+        video.play().catch(e => console.log('Autoplay prevented:', e));
+    }, 300);
+}
+
+function closeVideoModal() {
+    const modal = document.getElementById('video-modal');
+    const video = document.getElementById('modal-video');
+
+    video.pause();
+    video.src = '';
+    modal.classList.add('hidden');
+}
+
+// Close modal when clicking outside
+document.getElementById('video-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'video-modal') {
+        closeVideoModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeVideoModal();
+    }
+});
 </script>
 @endpush

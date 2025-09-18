@@ -63,7 +63,7 @@
                             <td class="px-6 py-4 font-medium text-gray-900">
                                 <div class="flex items-center">
                                     @if($team->media_url)
-                                        <img class="h-10 w-10 rounded-full object-cover mr-3"
+                                        <img class="h-10 w-10 rounded-full object-fit mr-3"
                                             src="{{ $team->media_url }}"
                                             alt="{{ $team->name }}">
                                     @else
