@@ -72,7 +72,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4">{{ $brand->name }}</td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 max-w-[10rem] truncate">
                                 @if($brand->link)
                                     <a href="{{ $brand->link }}" target="_blank" class="text-blue-600 hover:underline">
                                         {{ Str::limit($brand->link, 30) }}

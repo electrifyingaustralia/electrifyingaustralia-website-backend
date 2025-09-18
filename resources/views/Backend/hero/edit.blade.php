@@ -47,7 +47,7 @@
 
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Hero title <span class="text-red-600">*</span></label>
+                                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Hero title <span class="text-red-600 font-bold">*</span></label>
                                 <input
                                     type="text" id="title" name="title" required
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"

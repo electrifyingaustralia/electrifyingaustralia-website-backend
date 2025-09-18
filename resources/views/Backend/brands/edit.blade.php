@@ -45,7 +45,7 @@
                 <div class="grid grid-cols-1 gap-6">
                     <!-- Brand Name -->
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Brand Name <span class="text-red-600">*</span></label>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Brand Name <span class="text-red-600 font-bold">*</span></label>
                         <input
                             type="text" id="name" name="name" value="{{ old('name', $brand->name) }}" required
                             class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -58,7 +58,7 @@
 
                     <!-- Brand Link -->
                     <div>
-                        <label for="link" class="block text-sm font-medium text-gray-700 mb-2">Website Link</label>
+                        <label for="link" class="block text-sm font-medium text-gray-700 mb-2">Website Link <span class="text-red-600 font-bold">*</span></label>
                         <input
                             type="url" id="link" name="link" value="{{ old('link', $brand->link) }}"
                             class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -71,7 +71,7 @@
 
                     <!-- Media Selection -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Brand Logo <span class="text-red-600">*</span></label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Brand Logo <span class="text-red-600 font-bold">*</span></label>
 
                         <div class="flex flex-col sm:flex-row gap-4">
                             <!-- Media Preview -->

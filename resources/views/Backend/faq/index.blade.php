@@ -42,7 +42,7 @@
                                     @forelse($faqs as $faq)
                                         <tr>
                                             <td class="px-4 py-4">
-                                                <div class="max-w-2xl truncate" title="{{ $faq->question }}">
+                                                <div class="max-w-[25rem] truncate" title="{{ $faq->question }}">
                                                     {{ $faq->question }}
                                                 </div>
                                             </td>
@@ -114,7 +114,7 @@
                             @endif
 
                             <div class="mb-4">
-                                <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Question</label>
+                                <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Question <span class="text-red-600 font-bold">*</span></label>
                                 <input type="text" id="question" name="question" value="{{ old('question', $faqToEdit->question ?? '') }}"
                                     class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
                                     placeholder="Enter your question here..."
@@ -125,7 +125,7 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="answer" class="block text-sm font-medium text-gray-700 mb-1">Answer</label>
+                                <label for="answer" class="block text-sm font-medium text-gray-700 mb-1">Answer <span class="text-red-600 font-bold">*</span></label>
                                 <textarea name="answer" id="answer"
                                     class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
                                     placeholder="Enter your answer here...">{{ old('answer', $faqToEdit->answer ?? '') }}</textarea>

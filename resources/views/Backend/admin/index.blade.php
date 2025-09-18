@@ -54,13 +54,13 @@
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                             </div>
                                         @endif
-                                        <div class="font-light">
+                                        <div class="font-light max-w-[3rem] truncate">
                                             {{ $admin->name }}
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">{{ $admin->email }}</td>
-                                <td class="px-6 py-4">{{ $admin->created_at->format('Y-m-d') }}</td>
+                                <td class="px-6 py-4">{{ formatDate($admin->created_at) }}</td>
                                 <td class="px-6 py-8 flex gap-x-2">
                                     <a href="{{ route('admin.users.edit', $admin->id) }}" class="text-blue-500 hover:text-blue-700">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700 ml-2.5"

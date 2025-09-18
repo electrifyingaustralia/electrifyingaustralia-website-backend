@@ -36,7 +36,7 @@
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Package Name <span class="text-red-600">*</span></label>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Package Name <span class="text-red-600 font-bold">*</span></label>
                                 <input
                                     type="text" id="name" name="name" required
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -75,7 +75,7 @@
                 <div class="w-full lg:!w-1/3">
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="grid grid-cols-1 gap-6">
-                            <h5 class="block text-sm font-medium text-gray-700">Package Features <span class="text-red-600">*</span></h5>
+                            <h5 class="block text-sm font-medium text-gray-700">Package Features <span class="text-red-600 font-bold">*</span></h5>
                             <div class="border-t border-gray-100"></div>
 
                             <div id="features-container">

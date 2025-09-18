@@ -47,7 +47,7 @@
 
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name <span class="text-red-600">*</span></label>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name <span class="text-red-600 font-bold">*</span></label>
                                 <input
                                     type="text" id="name" name="name" required
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -60,7 +60,7 @@
                             </div>
 
                             <div>
-                                <label for="model_number" class="block text-sm font-medium text-gray-700 mb-2">Model Number <span class="text-red-600">*</span></label>
+                                <label for="model_number" class="block text-sm font-medium text-gray-700 mb-2">Model Number <span class="text-red-600 font-bold">*</span></label>
                                 <input
                                     type="text" id="model_number" name="model_number" required
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -114,7 +114,7 @@
 
                             <!-- Media Selection -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Product Media <span class="text-red-600">*</span></label>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Product Media <span class="text-red-600 font-bold">*</span></label>
 
                                 <div class="flex flex-col sm:flex-row gap-4">
                                     <!-- Media Preview -->
@@ -227,7 +227,7 @@
                                             </div>
                                         </div>
                                         <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                         </button>
                                     </div>
                                     @endif
@@ -241,7 +241,7 @@
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label for="brand_id" class="block text-sm font-medium text-gray-700 mb-1">Select Brand <span class="text-red-600">*</span></label>
+                                <label for="brand_id" class="block text-sm font-medium text-gray-700 mb-1">Select Brand <span class="text-red-600 font-bold">*</span></label>
                                 <select name="brand_id" id="brand_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
                                     {{-- <option value="" selected>Select brand</option> --}}
                                     @foreach($brands as $brand)
@@ -253,7 +253,7 @@
                             </div>
                             <div>
                                 <label for="product_type" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Type <span class="text-red-600">*</span>
+                                    Type <span class="text-red-600 font-bold">*</span>
                                 </label>
 
                                 <select name="product_type" id="product_type"
@@ -1034,9 +1034,7 @@ $(document).ready(function() {
                         </div>
                     </div>
                     <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2">
-                            <path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6极 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                     </button>
                 </div>
             `);
@@ -1080,9 +1078,7 @@ $(document).ready(function() {
                         </div>
                     </div>
                     <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2">
-                            <path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                     </button>
                 </div>
             `);

@@ -42,9 +42,9 @@
 
                             <div class="grid grid-cols-1 gap-6">
                                 <div>
-                                    <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Event title <span class="text-red-600">*</span></label>
+                                    <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Event title <span class="text-red-600 font-bold">*</span></label>
                                     <input
-                                        type="text" id="title" name="title" required value="{{ old('title') }}"
+                                        type="text" id="title" name="title" required
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                         placeholder="Enter event title"
                                     />
@@ -56,7 +56,7 @@
                                 <div>
                                     <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">Event Subtitle</label>
                                     <input
-                                        type="text" id="subtitle" name="subtitle" required value="{{ old('subtitle') }}"
+                                        type="text" id="subtitle" name="subtitle" required
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                         placeholder="Enter event subtitle"
                                     />
@@ -84,7 +84,7 @@
                                     <label for="is_active" class="block text-sm font-medium text-gray-700 mb-1">Event Status</label>
                                     <select name="is_active" id="is_active" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
                                         <option value="1" selected>Active</option>
-                                        <option value="0">Inactive</option>
+                                        <option value="0" >Inactive</option>
                                     </select>
                                 </div>
 
@@ -110,11 +110,11 @@
                                                 </div>
                                             </button>
 
-                                            <input type="hidden" id="selected-media-id" name="media_id" value="{{ old('media_id') }}">
+                                            <input type="hidden" id="selected-media-id" name="media_id">
                                         </div>
                                     </div>
 
-                                    <!-- Selected Media Info -->
+                                    <!-- Selected Logo Info -->
                                     <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg hidden">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center space-x-3">
@@ -136,14 +136,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-2 flex justify-end space-x-3">
-                                    <button type="submit" class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
-                                        <div class="flex items-center gap-x-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save-icon lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
-                                            <span>Create Event</span>
-                                        </div>
-                                    </button>
-                                </div>
+                            </div>
+                            <!-- Form Actions -->
+                            <div class="mt-4 flex justify-end space-x-3">
+                                <button type="submit" class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
+                                    <div class="flex items-center gap-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save-icon lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
+                                        <span>Create Event</span>
+                                    </div>
+                                </button>
                             </div>
                     </div>
                 </div>
@@ -156,7 +157,7 @@
 <div id="media-library-modal" class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50 p-4">
     <div class="bg-white rounded-lg w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
         <div class="flex justify-between items-center p-6 border-b">
-            <h3 class="text-lg font-medium">Upload or Select media</h3>
+            <h3 class="text-lg font-medium">Upload or Select Media</h3>
             <button id="close-media-library" class="text-gray-400 hover:text-gray-600">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
             </button>
@@ -186,10 +187,11 @@
                             </div>
                         </div>
                         <p class="text-sm text-gray-600 mb-4">Drag & drop your media here or click to browse</p>
-                        <input type="file" id="modal-media-upload" class="hidden">
-                        <label for="modal-media-upload" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg cursor-pointer">
+                        <input type="file" id="modal-logo-upload" class="hidden">
+                        <label for="modal-logo-upload" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg cursor-pointer">
                             <i class="fas fa-upload mr-2"></i> Browse Files
                         </label>
+                        {{-- <p class="text-xs text-gray-500 mt-3">Supported formats: JPG, PNG, GIF, SVG • Max size: 10MB</p> --}}
                     </div>
 
                     <div id="upload-preview" class="upload-content hidden">
@@ -297,19 +299,6 @@ $(document).ready(function() {
     let currentTab = 'upload';
     let mediaLibraryItems = [];
     let isUploading = false;
-
-    // Initialize with old media value if exists
-    @if(old('media_id') && $media = \App\Models\MediaLibrary::find(old('media_id')))
-        selectedMedia = {
-            id: "{{ old('media_id') }}",
-            url: "{{ $media->url }}",
-            name: "{{ $media->original_name }}",
-            size: "{{ $media->file_size }}",
-            file: null,
-            type: 'library'
-        };
-        applySelectedMedia();
-    @endif
 
     // ========== UPLOAD TAB FUNCTIONS ==========
     function setupDragAndDrop() {
@@ -796,7 +785,7 @@ $(document).ready(function() {
 
     function confirmMediaSelection() {
         if (!selectedMedia) {
-            alert('Please select media first');
+            alert('Please select a media first');
             return;
         }
 
@@ -932,7 +921,7 @@ $(document).ready(function() {
     $('#close-media-library, #cancel-upload, #cancel-media-selection').on('click', closeMediaLibrary);
     $('#upload-tab').on('click', function() { switchTab('upload'); });
     $('#library-tab').on('click', function() { switchTab('library'); });
-    $('#modal-media-upload').on('change', function() {
+    $('#modal-logo-upload').on('change', function() {
         if (this.files && this.files[0]) {
             validateAndProcessFile(this.files[0]);
         }
@@ -940,17 +929,14 @@ $(document).ready(function() {
     $('#clear-upload-preview').on('click', clearUploadPreview);
     $('#upload-to-library').on('click', uploadToLibrary);
     $('#confirm-selection').on('click', confirmMediaSelection);
-    $('#remove-selected-media').on('click', removeSelectedMedia);
+    $('#remove-selected-logo').on('click', removeSelectedLogo);
 
     // Form Submission
     $('#event-form').on('submit', function(e) {
-        e.preventDefault();
+                e.preventDefault();
 
         var form = $(this);
         var formData = new FormData(this);
-
-        // Get summernote content
-        formData.set('description', $('#summernote').summernote('code'));
 
         $.ajax({
             url: form.attr('action'),
@@ -967,10 +953,10 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     // Store the success message in localStorage
-                    localStorage.setItem('toastr_success', response.message);
+                    localStorage.setItem('toastr_success', response.message) || '{{ route('admin.event.all') }}';
 
                     // Redirect to index page
-                    window.location.href = response.redirect || '{{ route('admin.event.all') }}';
+                    window.location.href = response.redirect;
                 } else {
                     toastr.error(response.message || 'An error occurred');
                     $('button[type="submit"]').prop('disabled', false).text('Create Event');
@@ -999,24 +985,24 @@ $(document).ready(function() {
     });
 });
 </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#summernote').summernote({
-                placeholder: 'Write your event description here...',
-                tabsize: 2,
-                height: 100,
-                toolbar: [
-                // basic editing tools
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['strikethrough', 'superscript', 'subscript']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['insert', ['link']],
-                ['view', ['codeview', 'help']]
-            ]
-            });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            placeholder: 'Write your Event description here...',
+            tabsize: 2,
+            height: 100,
+            toolbar: [
+            // basic editing tools
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link']], //
+            ['view', ['codeview', 'help']]
+        ]
         });
-    </script>
+    });
+</script>
 @endpush

@@ -42,7 +42,7 @@
 
                             <div class="grid grid-cols-1 gap-6">
                                 <div>
-                                    <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Blog title <span class="text-red-600">*</span></label>
+                                    <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Blog title <span class="text-red-600 font-bold">*</span></label>
                                     <input
                                         type="text" id="title" name="title" required
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -54,7 +54,7 @@
                                 </div>
 
                                 <div>
-                                    <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">Blog Subtitle <span class="text-red-600">*</span></label>
+                                    <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">Blog Subtitle <span class="text-red-600 font-bold">*</span></label>
                                     <input
                                         type="text" id="subtitle" name="subtitle" required
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -1036,24 +1036,24 @@ $(document).ready(function() {
     });
 });
 </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#summernote').summernote({
-                placeholder: 'Write your blog description here...',
-                tabsize: 2,
-                height: 100,
-                toolbar: [
-                // basic editing tools
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['strikethrough', 'superscript', 'subscript']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['insert', ['link']], //
-                ['view', ['codeview', 'help']]
-            ]
-            });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            placeholder: 'Write your blog description here...',
+            tabsize: 2,
+            height: 100,
+            toolbar: [
+            // basic editing tools
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link']], //
+            ['view', ['codeview', 'help']]
+        ]
         });
-    </script>
+    });
+</script>
 @endpush

@@ -42,7 +42,7 @@
 
                             <div class="grid grid-cols-1 gap-6">
                                 <div>
-                                    <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Project title <span class="text-red-600">*</span></label>
+                                    <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Project title <span class="text-red-600 font-bold">*</span></label>
                                     <input
                                         type="text" id="title" name="title" required
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -54,7 +54,7 @@
                                 </div>
 
                                 <div>
-                                    <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">Project Subtitle <span class="text-red-600">*</span></label>
+                                    <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">Project Subtitle <span class="text-red-600 font-bold">*</span></label>
                                     <input
                                         type="text" id="subtitle" name="subtitle" required
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -95,7 +95,7 @@
 
                                 <!-- Media Selection -->
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Project Media</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Project Media <span class="text-red-600 font-bold">*</span></label>
 
                                     <div class="flex flex-col sm:flex-row gap-4">
                                         <!-- Media Preview -->
@@ -149,7 +149,7 @@
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Project Type <span class="text-red-600">*</span></label>
+                                <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Project Type <span class="text-red-600 font-bold">*</span></label>
                                 <select name="type" id="type" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
                                     <option value="commercial" selected>Commercial</option>
                                     <option value="residential">Residential</option>

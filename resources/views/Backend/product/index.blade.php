@@ -72,9 +72,9 @@
                                     @endif
                                 </div>
                             </td>
-                            <td class="px-6 py-4 max-w-[15rem] truncate">{{ $product->name }}</td>
-                            <td class="px-6 py-4 max-w-[15rem] truncate">{{ $product->brand->name }}</td>
-                            <td class="px-6 py-4 max-w-[15rem] truncate">{{ $product->model_number }}</td>
+                            <td class="px-6 py-4 max-w-[10rem] truncate">{{ $product->name }}</td>
+                            <td class="px-6 py-4 max-w-[10rem] truncate">{{ $product->brand->name }}</td>
+                            <td class="px-6 py-4 max-w-[10rem] truncate">{{ $product->model_number }}</td>
                             <td class="px-6 py-4">
                                 @if($product->is_active == 1)
                                     <span class="text-green-600 font-bold">Active</span>

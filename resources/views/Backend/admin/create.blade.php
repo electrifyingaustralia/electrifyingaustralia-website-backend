@@ -39,7 +39,7 @@
 
                             <div class="grid grid-cols-1 gap-6">
                                 <div>
-                                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name <span class="text-red-600">*</span></label>
+                                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name <span class="text-red-600 font-bold">*</span></label>
                                     <input
                                         type="text" id="name" name="name" required
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -50,7 +50,7 @@
                                     @enderror
                                 </div>
                                 <div>
-                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email <span class="text-red-600">*</span></label>
+                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email <span class="text-red-600 font-bold">*</span></label>
                                     <input
                                         type="email" id="email" name="email" required
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -69,6 +69,7 @@
                                         <!-- Media Preview -->
                                         <div class="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50" id="logo-preview">
                                             <div class="text-center text-gray-400">
+                                                <i class="fas fa-image text-2xl mb-2"></i>
                                                 <p class="text-xs">No media selected</p>
                                             </div>
                                         </div>
@@ -90,14 +91,20 @@
                                     <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg hidden">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center space-x-3">
-                                                <img id="selected-logo-preview" src="" alt="Selected logo" class="w-12 h-12 object-cover rounded">
+                                                <!-- This will be dynamically populated based on file type -->
+                                                <div id="selected-logo-preview-container">
+                                                    <img id="selected-logo-preview" src="" alt="Selected media" class="w-12 h-12 object-cover rounded hidden">
+                                                    <div id="selected-logo-icon" class="w-12 h-12 flex items-center justify-center bg-gray-200 rounded hidden">
+                                                        <svg id="selected-logo-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide"></svg>
+                                                    </div>
+                                                </div>
                                                 <div>
                                                     <p id="selected-logo-name" class="text-sm font-medium"></p>
                                                     <p id="selected-logo-size" class="text-xs text-gray-500"></p>
                                                 </div>
                                             </div>
                                             <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                             </button>
                                         </div>
                                     </div>
@@ -110,7 +117,7 @@
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label for="facebook_link" class="block text-sm font-medium text-gray-700 mb-2">Password <span class="text-red-600">*</span></label>
+                                <label for="facebook_link" class="block text-sm font-medium text-gray-700 mb-2">Password <span class="text-red-600 font-bold">*</span></label>
                                 <input
                                     type="password" id="facebook_link" name="password" required
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -121,7 +128,7 @@
                                 @enderror
                             </div>
                             <div>
-                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password <span class="text-red-600">*</span></label>
+                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password <span class="text-red-600 font-bold">*</span></label>
                                 <input
                                     type="password" id="password_confirmation" name="password_confirmation" required
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -789,9 +796,96 @@ $(document).ready(function() {
     function applySelectedMedia() {
         $('#selected-media-id').val(selectedMedia.id);
 
-        $('#logo-preview').html(`<img src="${selectedMedia.url}" alt="${selectedMedia.name}" class="w-full h-full object-cover">`);
+        // Determine file type and show appropriate preview
+        const fileExtension = selectedMedia.name.split('.').pop().toLowerCase();
 
-        $('#selected-logo-preview').attr('src', selectedMedia.url);
+        if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) ||
+            (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('image/'))) {
+            // Image files
+            $('#logo-preview').html(`<img src="${selectedMedia.url}" alt="${selectedMedia.name}" class="w-full h-full object-cover rounded-lg">`);
+        } else if (selectedMedia.url.match(/\.(mp4|webm|ogg|mov|avi|wmv)$/i) ||
+                (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('video/'))) {
+            // Video files
+            $('#logo-preview').html(`
+                <div class="w-full h-full flex items-center justify-center bg-gray-200 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
+                        <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"></path>
+                        <rect x="2" y="6" width="14" height="12" rx="2"></rect>
+                    </svg>
+                </div>
+            `);
+        } else {
+            // Document files - show appropriate icon
+            let bgColor = 'bg-gray-200';
+            let iconSvg = '';
+
+            switch(fileExtension) {
+                case 'pdf':
+                    bgColor = 'bg-red-100';
+                    iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 极 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                    break;
+                case 'doc':
+                case 'docx':
+                    bgColor = 'bg-blue-100';
+                    iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    bgColor = 'bg-green-100';
+                    iconSvg = '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
+                    break;
+                default:
+                    bgColor = 'bg-gray-200';
+                    iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
+            }
+
+            $('#logo-preview').html(`
+                <div class="w-full h-full flex items-center justify-center ${bgColor} rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="极 0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide">
+                        ${iconSvg}
+                    </svg>
+                </div>
+            `);
+        }
+
+        // Update selected logo info
+        if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) ||
+            (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('image/'))) {
+            // Show image preview
+            $('#selected-logo-preview').attr('src', selectedMedia.url).removeClass('hidden');
+            $('#selected-logo-icon').addClass('hidden');
+        } else {
+            // Show icon preview
+            $('#selected-logo-preview').addClass('hidden');
+            $('#selected-logo-icon').removeClass('hidden');
+
+            let bgColor = 'bg-gray-200';
+            let iconSvg = '';
+
+            switch(fileExtension) {
+                case 'pdf':
+                    bgColor = 'bg-red-100';
+                    iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2极 4"/><path d="M极 10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                    break;
+                case 'doc':
+                case 'docx':
+                    bgColor = 'bg-blue-100';
+                    iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                    break;
+                case 'xls':
+                case 'xlsx':
+                    bgColor = 'bg-green-100';
+                    iconSvg = '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
+                    break;
+                default:
+                    bgColor = 'bg-gray-200';
+                    iconSvg = '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
+            }
+
+            $('#selected-logo-icon').removeClass().addClass(`w-12 h-12 flex items-center justify-center ${bgColor} rounded`);
+            $('#selected-logo-svg').html(iconSvg);
+        }
+
         $('#selected-logo-name').text(selectedMedia.name);
         $('#selected-logo-size').text(formatFileSize(selectedMedia.size));
         $('#selected-logo-info').removeClass('hidden');

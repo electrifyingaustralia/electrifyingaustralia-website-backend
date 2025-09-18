@@ -87,8 +87,8 @@
                                     @endif
                                 </div>
                             </td>
-                            <td class="px-6 py-4">{{ $hero->title }}</td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 max-w-[15rem] truncate">{{ $hero->title }}</td>
+                            <td class="px-6 py-4 max-w-[10rem] truncate">
                                 {{ $hero->subtitle ? Str::limit($hero->subtitle, 50) : 'No subtitle' }}
                             </td>
                             <td class="px-6 py-4">

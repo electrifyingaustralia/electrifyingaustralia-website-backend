@@ -93,7 +93,7 @@
                         @endif
 
                         <div class="mb-4">
-                            <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                            <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title <span class="text-red-600 font-bold">*</span></label>
                             <input type="text" id="title" name="title" value="{{ old('title', $quotationToEdit->title ?? '') }}"
                                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
                                 placeholder="Enter your title here..."

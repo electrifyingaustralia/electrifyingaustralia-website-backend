@@ -42,7 +42,7 @@
 
                             <div class="grid grid-cols-1 gap-6">
                                 <div>
-                                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name <span class="text-red-600">*</span></label>
+                                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name <span class="text-red-600 font-bold">*</span></label>
                                     <input
                                         type="text" id="name" name="name" required
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -54,7 +54,7 @@
                                 </div>
 
                                 <div>
-                                    <label for="model_number" class="block text-sm font-medium text-gray-700 mb-2">Model Number <span class="text-red-600">*</span></label>
+                                    <label for="model_number" class="block text-sm font-medium text-gray-700 mb-2">Model Number <span class="text-red-600 font-bold">*</span></label>
                                     <input
                                         type="text" id="model_number" name="model_number" required
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
@@ -106,7 +106,7 @@
 
                                 <!-- Media Selection -->
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Media</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Media <span class="text-red-600 font-bold">*</span></label>
 
                                     <div class="flex flex-col sm:flex-row gap-4">
                                         <!-- Media Preview -->
@@ -160,7 +160,7 @@
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label for="brand_id" class="block text-sm font-medium text-gray-700 mb-1">Select Brand <span class="text-red-600">*</span></label>
+                                <label for="brand_id" class="block text-sm font-medium text-gray-700 mb-1">Select Brand <span class="text-red-600 font-bold">*</span></label>
                                 <select name="brand_id" id="brand_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
                                     <option value="" selected>Select brand</option>
                                     @foreach ($brands as $brand)
@@ -170,7 +170,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="product_type" class="block text-sm font-medium text-gray-700 mb-1">Type <span class="text-red-600">*</span></label></label>
+                                <label for="product_type" class="block text-sm font-medium text-gray-700 mb-1">Type <span class="text-red-600 font-bold">*</span></label></label>
                                 <select name="product_type" id="product_type" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
                                     <option value="solar_panel" selected>Solar Panel</option>
                                     <option value="battery" >Battery</option>
