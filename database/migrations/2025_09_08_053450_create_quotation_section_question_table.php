@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('quotation_section_id')->constrained()->onDelete('cascade');
             $table->foreignId('question_id')->constrained()->onDelete('cascade');
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

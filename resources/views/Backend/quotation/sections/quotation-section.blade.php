@@ -23,7 +23,7 @@
                                     </td>
                                     <td class="px-4 py-4">
                                             <div class="max-w-[10rem] truncate" title="{{ $quotation->subtitle }}">
-                                            {{ $quotation->subtitle }}
+                                            {{ $quotation->subtitle ?? 'No Subtitle' }}
                                         </div>
                                     </td>
                                     <td class="px-4 py-4 flex justify-end items-center gap-x-2">

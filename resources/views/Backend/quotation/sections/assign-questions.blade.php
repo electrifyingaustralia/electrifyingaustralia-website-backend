@@ -9,21 +9,30 @@
             <div class="bg-white rounded-lg shadow overflow-hidden">
                 <div class="px-6 py-5 border-b border-gray-200">
                     <h3 class="text-lg font-medium text-gray-900">Assigned Questions</h3>
-                    <p class="text-sm text-gray-600 mt-1">Questions currently assigned to "{{ $section->title }}"</p>
+                    <p class="text-sm text-gray-600 mt-1">Drag to reorder questions for "{{ $section->title }}"</p>
                 </div>
                 <div class="px-6 py-5">
                     @if($section->questions->count() > 0)
-                        <div class="space-y-4">
+                        <ul id="sortable-questions" class="space-y-4">
                             @foreach($section->questions as $question)
-                                <div class="border border-gray-200 rounded-lg p-4 flex justify-between items-start">
-                                    <div class="flex-1">
-                                        <h4 class="text-md font-medium text-gray-900">{{ $question->question }}</h4>
-                                        <div class="mt-2 flex flex-wrap gap-2">
-                                            @foreach($question->options as $option)
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
-                                                    {{ $option->option }} ({{ $option->type }})
-                                                </span>
-                                            @endforeach
+                                <li data-question-id="{{ $question->id }}" class="border border-gray-200 rounded-lg p-4 flex justify-between items-start cursor-move">
+                                    <div class="flex items-start flex-1">
+                                        <span class="mr-3 mt-1 text-gray-400">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                                            </svg>
+                                        </span>
+                                        <div class="flex-1">
+                                            <h4 class="text-md font-medium text-gray-900">{{ $question->question }}</h4>
+                                            <div class="mt-2 flex flex-wrap gap-2">
+                                                @foreach($question->options as $option)
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+                                                        {{ $option->option }} ({{ $option->type }})
+                                                    </span>
+                                                @endforeach
+                                            </div>
                                         </div>
                                     </div>
                                     <form action="{{ route('admin.quotation.remove-question', [$section->id, $question->id]) }}" method="POST" class="ml-4">
@@ -35,8 +44,11 @@
                                             </svg>
                                         </button>
                                     </form>
-                                </div>
+                                </li>
                             @endforeach
+                        </ul>
+                        <div class="mt-4 text-sm text-gray-500">
+                            <p>Drag questions to reorder. Changes are saved automatically.</p>
                         </div>
                     @else
                         <div class="text-center py-8">
@@ -107,4 +119,85 @@
         </div>
     </div>
 </div>
+@push('styles')
+<style>
+#sortable-questions li.sortable-ghost {
+    opacity: 0.5;
+    background-color: #f0f9ff;
+}
+
+#sortable-questions li.sortable-chosen {
+    background-color: #f0f9ff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+#sortable-questions li.sortable-drag {
+    opacity: 0.8;
+    transform: rotate(2deg);
+}
+</style>
+@endpush
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+<script>
+$(function() {
+    // Initialize drag and drop sorting
+    $("#sortable-questions").sortable({
+        placeholder: "bg-blue-50 border border-dashed border-blue-300 rounded-lg my-4",
+        update: function(event, ui) {
+            // Get the new order of question IDs
+            var questionOrder = [];
+            $("#sortable-questions li").each(function() {
+                questionOrder.push($(this).data('question-id'));
+            });
+
+            // Send AJAX request to update order
+            $.ajax({
+                url: "{{ route('admin.quotation.update-question-order', $section->id) }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    question_order: questionOrder
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Show success message
+                        showFlashMessage('Question order updated successfully', 'success');
+                    } else {
+                        showFlashMessage('Error updating question order', 'error');
+                    }
+                },
+                error: function() {
+                    showFlashMessage('Error updating question order', 'error');
+                }
+            });
+        }
+    });
+
+    $("#sortable-questions").disableSelection();
+
+    // Function to show flash messages
+    function showFlashMessage(message, type) {
+        // Remove any existing flash messages
+        $('.flash-message').remove();
+
+        // Create new flash message
+        var alertClass = type === 'success' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-red-100 border-red-400 text-red-700';
+        var flashMessage = $('<div class="flash-message fixed top-4 right-4 z-50 px-4 py-3 rounded border ' + alertClass + ' shadow-lg">' +
+                            '<span class="block sm:inline">' + message + '</span></div>');
+
+        // Add to page and auto-remove after 3 seconds
+        $('body').append(flashMessage);
+        setTimeout(function() {
+            flashMessage.fadeOut(500, function() {
+                $(this).remove();
+            });
+        }, 3000);
+    }
+});
+</script>
+@endpush
 @endsection

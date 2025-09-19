@@ -20,4 +20,6 @@ interface QuotationRepositoryInterface
     public function attachQuestions($sectionId, $questionIds);
     public function detachQuestion($sectionId, $questionId);
     public function syncQuestions($sectionId, array $questionIds);
+    public function updateQuestionOrder($sectionId, $questionIds);
+    public function getOrderedQuestions($sectionId);
 }

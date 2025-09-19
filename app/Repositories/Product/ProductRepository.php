@@ -18,10 +18,10 @@ class ProductRepository implements ProductRepositoryInterface
         return Product::query();
     }
 
-    public function get(array $columns = ["*"], int $perPage = 15, array $filter = []): object
+    public function get(array $columns = ["*"], int $perPage = 15, array $filters = []): object
     {
-        $q = $this->applyFilters($this->query()->select($columns), $filter);
-        return $q->with('brand')->latest()->paginate($perPage);
+        $q = $this->applyFilters($this->query()->select($columns), $filters);
+        return $q->with('brand')->latest('id')->paginate($perPage);
     }
 
     public function all(): object
@@ -74,6 +74,10 @@ class ProductRepository implements ProductRepositoryInterface
 
     private function applyFilters(Builder $q, array $filters): Builder
     {
+        if (!empty($filters['type'])) {
+            $q->where('product_type', $filters['type']);
+        }
+
         if (!empty($filters['search'])) {
             $term = '%' . $filters['search'] . '%';
             $q->where('name', 'like', $term);

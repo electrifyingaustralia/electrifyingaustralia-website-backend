@@ -149,36 +149,87 @@
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Project Type <span class="text-red-600 font-bold">*</span></label>
-                                <select name="type" id="type" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Project Category <span class="text-red-600 font-bold">*</span></label>
+                                <select name="category" id="category" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
                                     <option value="commercial" selected>Commercial</option>
                                     <option value="residential">Residential</option>
                                 </select>
                             </div>
                             <div>
-                                <label for="solar_panel" class="block text-sm font-medium text-gray-700 mb-2">Project Solar Panel</label>
+                                <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Project Type <span class="text-red-600 font-bold">*</span></label>
+                                <select name="type" id="type" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                    <option value="solar" selected>Solar</option>
+                                    <option value="batteries">Batteries</option>
+                                    <option value="ev_charger">EV Charger</option>
+                                    <option value="heat_pump">Heat pump</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 bg-white p-6 rounded-lg shadow">
+                        <div class="grid grid-cols-1 gap-6">
+                            <div>
+                                <label for="extra_info_1" class="block text-sm font-medium text-gray-700 mb-2">Extra Info 1</label>
                                 <input
-                                    type="text" id="solar_panel" name="solar_panel"
+                                    type="text" id="extra_info_1" name="extra_info_1"
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                     placeholder="Enter solar panel"
+                                    value="{{ old('extra_info_1') }}"
                                 />
-                                @error('solar_panel')
+                                @error('extra_info_1')
                                     <p class="!text-red-600 text-sm">{{$message}}</p>
                                 @enderror
                             </div>
                             <div>
-                                <label for="inverter" class="block text-sm font-medium text-gray-700 mb-2">Project Inverter</label>
+                                <label for="extra_info_2" class="block text-sm font-medium text-gray-700 mb-2">Extra Info 2</label>
                                 <input
-                                    type="text" id="inverter" name="inverter"
+                                    type="text" id="extra_info_2" name="extra_info_2"
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                    placeholder="Enter inverter"
+                                    placeholder="Enter solar panel"
+                                    value="{{ old('extra_info_2') }}"
                                 />
-                                @error('inverter')
+                                @error('extra_info_2')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="extra_info_3" class="block text-sm font-medium text-gray-700 mb-2">Extra Info 3</label>
+                                <input
+                                    type="text" id="extra_info_3" name="extra_info_3"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    placeholder="Enter solar panel"
+                                    value="{{ old('extra_info_3') }}"
+                                />
+                                @error('extra_info_3')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="extra_info_4" class="block text-sm font-medium text-gray-700 mb-2">Extra Info 4</label>
+                                <input
+                                    type="text" id="extra_info_4" name="extra_info_4"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    placeholder="Enter solar panel"
+                                    value="{{ old('extra_info_4') }}"
+                                />
+                                @error('extra_info_4')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="extra_info_5" class="block text-sm font-medium text-gray-700 mb-2">Extra Info 5</label>
+                                <input
+                                    type="text" id="extra_info_5" name="extra_info_5"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    placeholder="Enter solar panel"
+                                    value="{{ old('extra_info_5') }}"
+                                />
+                                @error('extra_info_5')
                                     <p class="!text-red-600 text-sm">{{$message}}</p>
                                 @enderror
                             </div>
                             <!-- Form Actions -->
-                            <div class="mt-4 flex justify-end space-x-3">
+                            <div class="flex justify-end space-x-3">
                                 <button type="submit" class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
                                     <div class="flex items-center gap-x-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save-icon lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>

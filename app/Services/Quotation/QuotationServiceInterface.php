@@ -12,4 +12,5 @@ interface QuotationServiceInterface
     public function getAvailableQuestions($sectionId);
     public function removeQuestion($sectionId, $questionId);
     public function assignMultipleQuestions($sectionId, array $questionIds);
+    public function updateQuestionOrder($sectionId, $questionIds);
 }

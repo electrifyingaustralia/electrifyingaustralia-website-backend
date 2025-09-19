@@ -110,7 +110,7 @@
                     <li class="relative mb-2">
                         <a href="{{ route('admin.solution-card.all') }}" class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.solution-card*') ? '!text-teal-500 bg-teal-50' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-grid2x2-check-icon lucide-grid-2x2-check"><path d="M12 3v17a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1H3"/><path d="m16 19 2 2 4-4"/></svg>
-                            <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Solution Cards</span>
+                            <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Solution Cards (Landing)</span>
                         </a>
                     </li>
 

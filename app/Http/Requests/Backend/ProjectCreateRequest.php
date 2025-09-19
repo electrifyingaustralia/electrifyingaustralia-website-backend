@@ -21,15 +21,25 @@ class ProjectCreateRequest extends BaseRequest
                 'max:255',
             ],
 
+            'description' => [
+                'nullable',
+                'string',
+            ],
+
+            'category' => [
+                'required',
+                Rule::in(['commercial', 'residential']),
+            ],
+
+            'type' => [
+                'required',
+                Rule::in(['solar', 'batteries', 'ev_charger', 'heat_pump']),
+            ],
+
             'location' => [
                 'nullable',
                 'string',
                 'max:255',
-            ],
-
-            'description' => [
-                'nullable',
-                'string',
             ],
 
             'media_id' => [
@@ -37,22 +47,29 @@ class ProjectCreateRequest extends BaseRequest
                 'exists:media_libraries,id',
             ],
 
-            'solar_panel' => [
+            'extra_info_1' => [
                 'nullable',
                 'string',
-                'max:255',
             ],
 
-            'inverter' => [
+            'extra_info_2' => [
                 'nullable',
                 'string',
-                'max:255',
             ],
 
-            'type' => [
+            'extra_info_3' => [
                 'nullable',
                 'string',
-                Rule::in(['commercial', 'residential']),
+            ],
+
+            'extra_info_4' => [
+                'nullable',
+                'string',
+            ],
+
+            'extra_info_5' => [
+                'nullable',
+                'string',
             ],
         ];
     }

@@ -10,49 +10,69 @@ class ProjectUpdateRequest extends BaseRequest
     {
         return [
             'title' => [
-                'required',
+                'sometimes',
                 'string',
                 'max:255',
             ],
 
             'subtitle' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
-            'location' => [
-                'nullable',
+                'sometimes',
                 'string',
                 'max:255',
             ],
 
             'description' => [
+                'sometimes',
                 'nullable',
                 'string',
             ],
 
+            'category' => [
+                'sometimes',
+                Rule::in(['commercial', 'residential']),
+            ],
+
+            'type' => [
+                'sometimes',
+                Rule::in(['solar', 'batteries', 'ev_charger', 'heat_pump']),
+            ],
+
+            'location' => [
+                'sometimes',
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
             'media_id' => [
+                'sometimes',
                 'nullable',
                 'exists:media_libraries,id',
             ],
 
-            'solar_panel' => [
-                'nullable',
-                'url',
-                'max:255',
-            ],
-
-            'inverter' => [
-                'nullable',
-                'url',
-                'max:255',
-            ],
-
-            'type' => [
+            'extra_info_1' => [
                 'nullable',
                 'string',
-                Rule::in(['commercial', 'residential']),
+            ],
+
+            'extra_info_2' => [
+                'nullable',
+                'string',
+            ],
+
+            'extra_info_3' => [
+                'nullable',
+                'string',
+            ],
+
+            'extra_info_4' => [
+                'nullable',
+                'string',
+            ],
+
+            'extra_info_5' => [
+                'nullable',
+                'string',
             ],
         ];
     }

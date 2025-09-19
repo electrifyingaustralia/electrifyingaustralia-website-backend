@@ -14,7 +14,7 @@ class TeamCreateRequest extends BaseRequest
             ],
 
             'email' => [
-                'required',
+                'nullable',
                 'email',
                 'max:255',
             ],

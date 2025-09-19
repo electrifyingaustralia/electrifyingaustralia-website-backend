@@ -83,4 +83,16 @@ class QuotationController extends Controller
         return redirect()->route('admin.quotation.assign-questions', $sectionId)
             ->with('success', 'Question removed successfully!');
     }
+
+    public function updateQuestionOrder(Request $request, $sectionId)
+    {
+        $request->validate([
+            'question_order' => 'required|array',
+            'question_order.*' => 'exists:questions,id'
+        ]);
+
+        $this->quotationService->updateQuestionOrder($sectionId, $request->question_order);
+
+        return response()->json(['success' => true, 'message' => 'Question order updated successfully']);
+    }
 }

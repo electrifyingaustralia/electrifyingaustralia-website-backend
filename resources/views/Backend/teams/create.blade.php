@@ -49,17 +49,6 @@
                                         <p class="!text-red-600 text-sm">{{$message}}</p>
                                     @enderror
                                 </div>
-                                <div>
-                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email <span class="text-red-600">*</span></label>
-                                    <input
-                                        type="email" id="email" name="email" required
-                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        placeholder="Enter team member email"
-                                    />
-                                    @error('email')
-                                        <p class="!text-red-600 text-sm">{{$message}}</p>
-                                    @enderror
-                                </div>
 
                                 <div>
                                     <label for="designation" class="block text-sm font-medium text-gray-700 mb-2">Designation <span class="text-red-600">*</span></label>
@@ -74,9 +63,21 @@
                                 </div>
 
                                 <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                    <input
+                                        type="email" id="email" name="email"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                        placeholder="Enter team member email"
+                                    />
+                                    @error('email')
+                                        <p class="!text-red-600 text-sm">{{$message}}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
                                     <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
                                     <input
-                                        type="text" id="phone" name="phone" required
+                                        type="text" id="phone" name="phone"
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                         placeholder="Enter team member phone"
                                     />

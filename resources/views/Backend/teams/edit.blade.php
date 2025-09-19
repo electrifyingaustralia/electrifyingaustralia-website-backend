@@ -60,19 +60,6 @@
                             </div>
 
                             <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email <span class="text-red-600">*</span></label>
-                                <input
-                                    type="email" id="email" name="email" required
-                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                    value="{{old('email', $team->email)}}"
-                                    placeholder="Enter team member email"
-                                />
-                                @error('email')
-                                    <p class="!text-red-600 text-sm">{{$message}}</p>
-                                @enderror
-                            </div>
-
-                            <div>
                                 <label for="designation" class="block text-sm font-medium text-gray-700 mb-2">Designation <span class="text-red-600">*</span></label>
                                 <input
                                     type="text" id="designation" name="designation" required
@@ -81,6 +68,19 @@
                                     placeholder="Enter team member designation"
                                 />
                                 @error('designation')
+                                    <p class="!text-red-600 text-sm">{{$message}}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                <input
+                                    type="email" id="email" name="email"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                    value="{{old('email', $team->email)}}"
+                                    placeholder="Enter team member email"
+                                />
+                                @error('email')
                                     <p class="!text-red-600 text-sm">{{$message}}</p>
                                 @enderror
                             </div>

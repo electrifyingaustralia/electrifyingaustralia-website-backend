@@ -60,4 +60,11 @@ class QuotationService implements QuotationServiceInterface
             $this->quotationRepository->attachQuestions($sectionId, $questionIds);
         });
     }
+
+    public function updateQuestionOrder($sectionId, $questionIds)
+    {
+        return DB::transaction(function () use ($sectionId, $questionIds) {
+            return $this->quotationRepository->updateQuestionOrder($sectionId, $questionIds);
+        });
+    }
 }

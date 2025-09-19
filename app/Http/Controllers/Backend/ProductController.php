@@ -19,6 +19,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $products = $this->productService->get(['*'], 15, [
+            'type'   => $request->get('type'),
             'search' => $request->get('search'),
         ]);
         return view('backend.product.index', compact('products'));

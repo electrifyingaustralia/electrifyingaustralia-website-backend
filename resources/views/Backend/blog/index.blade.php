@@ -53,6 +53,7 @@
                     <th class="px-6 py-3">Media</th>
                     <th class="px-6 py-3">Title</th>
                     <th class="px-6 py-3">Subtitle</th>
+                    <th class="px-6 py-3">Status</th>
                     <th class="px-6 py-3">Actions</th>
                 </tr>
                 </thead>
@@ -73,9 +74,26 @@
                             </td>
                             <td class="px-6 py-4 max-w-[15rem] truncate">{{ $blog->title }}</td>
                             <td class="px-6 py-4 max-w-[15rem] truncate">{{ $blog->subtitle }}</td>
-                            <td class="px-6 py-8 flex gap-x-2">
+                            <td class="px-6 py-4">
+                                @if($blog->is_active)
+                                    <span class="text-green-600 font-bold">Active</span>
+                                @else
+                                    <span class="text-red-600 font-bold">Inactive</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-8 flex items-center gap-x-2">
+                                <a href="{{ route('admin.blog.show', $blog->id) }}"
+                                    class="text-green-500 hover:text-green-700 rounded">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="w-5 h-5 fill-green-500 hover:fill-green-700"
+                                        viewBox="0 0 24 24">
+                                        <path d="M12 5c-7.633 0-11 7-11 7s3.367 7 11 7 11-7 11-7-3.367-7-11-7zm0 12c-4.411 0-7.757-3.134-9.223-5
+                                                1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </a>
                                 <a href="{{ route('admin.blog.edit', $blog->id) }}" class="text-blue-500 hover:text-blue-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700 ml-2.5"
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700"
                                         viewBox="0 0 348.882 348.882">
                                         <path
                                         d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
@@ -98,7 +116,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-4 text-center font-medium text-gray-700">
+                            <td colspan="5" class="px-6 py-4 text-center font-medium text-gray-700">
                                 <div class="flex flex-col items-center justify-center gap-x-4 py-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
                                     <span class="pt-2 text-lg">No Blog found.</span>

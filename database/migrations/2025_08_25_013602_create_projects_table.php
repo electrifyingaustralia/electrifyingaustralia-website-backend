@@ -20,13 +20,21 @@ return new class extends Migration
 
             $table->longText('description')->nullable();
 
-            $table->string('solar_panel')->nullable();
+            $table->enum('category', ['residential', 'commercial'])->default('commercial');
 
-            $table->string('inverter')->nullable();
-
-            $table->string('type', 50)->default('commercial');
+            $table->enum('type', ['solar', 'batteries', 'ev_charger', 'heat_pump'])->default('solar');
 
             $table->string('location', 255)->nullable();
+
+            $table->string('extra_info_1', 255)->nullable();
+
+            $table->string('extra_info_2', 255)->nullable();
+
+            $table->string('extra_info_3', 255)->nullable();
+
+            $table->string('extra_info_4', 255)->nullable();
+
+            $table->string('extra_info_5', 255)->nullable();
 
             $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
 

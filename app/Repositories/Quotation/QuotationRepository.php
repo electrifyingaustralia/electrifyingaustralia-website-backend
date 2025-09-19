@@ -6,6 +6,7 @@ use App\Models\Question;
 use App\Repositories\Quotation\QuotationRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\QuotationSection;
+use Illuminate\Support\Facades\DB;
 
 class QuotationRepository implements QuotationRepositoryInterface
 {
@@ -99,5 +100,29 @@ class QuotationRepository implements QuotationRepositoryInterface
     {
         $section = QuotationSection::findOrFail($sectionId);
         return $section->questions()->sync($questionIds);
+    }
+
+    public function updateQuestionOrder($sectionId, $questionIds)
+    {
+        $section = QuotationSection::findOrFail($sectionId);
+
+        foreach ($questionIds as $order => $questionId) {
+            DB::table('quotation_section_question')
+                ->where('quotation_section_id', $sectionId)
+                ->where('question_id', $questionId)
+                ->update(['order' => $order + 1]);
+        }
+
+        return true;
+    }
+
+    public function getOrderedQuestions($sectionId)
+    {
+        return DB::table('quotation_section_question')
+            ->where('quotation_section_id', $sectionId)
+            ->join('questions', 'quotation_section_question.question_id', '=', 'questions.id')
+            ->orderBy('quotation_section_question.order')
+            ->select('questions.*', 'quotation_section_question.order')
+            ->get();
     }
 }

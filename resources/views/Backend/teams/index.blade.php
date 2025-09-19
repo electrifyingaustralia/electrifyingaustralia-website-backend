@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">{{ $team->email }}</td>
+                            <td class="px-6 py-4">{{ $team->email ?? '-----' }}</td>
                             <td class="px-6 py-4">{{ $team->designation }}</td>
                             <td class="px-6 py-4">
                                 @if($team->status == 1)

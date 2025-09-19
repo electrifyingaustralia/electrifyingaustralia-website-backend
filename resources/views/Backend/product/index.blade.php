@@ -41,6 +41,15 @@
                             <span>Search</span>
                         </div>
                     </button>
+                    <div class="min-w-1/5">
+                        <select name="type" id="type-filter" class="w-full p-2 border border-gray-300 rounded-lg" onchange="this.form.submit()">
+                            <option value="">All Product Types</option>
+                            <option value="solar_panel" {{ request('type') == 'solar_panel' ? 'selected' : '' }}>Solar Panel</option>
+                            <option value="battery" {{ request('type') == 'battery' ? 'selected' : '' }}>Battery</option>
+                            <option value="ev_charger" {{ request('type') == 'ev_charger' ? 'selected' : '' }}>Ev Charger</option>
+                            <option value="inverter" {{ request('type') == 'inverter' ? 'selected' : '' }}>Inverter</option>
+                        </select>
+                    </div>
                 </div>
             </form>
         </div>
@@ -52,7 +61,7 @@
                     <th class="px-6 py-3">Media</th>
                     <th class="px-6 py-3">Name</th>
                     <th class="px-6 py-3">Brand</th>
-                    <th class="px-6 py-3">Model</th>
+                    <th class="px-6 py-3">Type</th>
                     <th class="px-6 py-3">Status</th>
                     <th class="px-6 py-3">Actions</th>
                 </tr>
@@ -74,7 +83,17 @@
                             </td>
                             <td class="px-6 py-4 max-w-[10rem] truncate">{{ $product->name }}</td>
                             <td class="px-6 py-4 max-w-[10rem] truncate">{{ $product->brand->name }}</td>
-                            <td class="px-6 py-4 max-w-[10rem] truncate">{{ $product->model_number }}</td>
+                            <td class="px-6 py-4 max-w-[10rem] truncate">
+                                @if ($product->product_type === 'solar_panel')
+                                    <span>Solar Panel</span>
+                                @elseif ($product->product_type === 'battery')
+                                    <span>Battery</span>
+                                @elseif ($product->product_type === 'ev_charger')
+                                    <span>Ev Charger</span>
+                                @elseif ($product->product_type === 'inverter')
+                                    <span>Inverter</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4">
                                 @if($product->is_active == 1)
                                     <span class="text-green-600 font-bold">Active</span>
@@ -138,7 +157,7 @@
 <div id="delete-modal" class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white p-6 rounded-lg w-full max-w-md">
         <h3 class="text-lg font-medium mb-4">Confirm Delete</h3>
-        <p class="text-gray-600 mb-6">Are you sure you want to delete this brand? This action cannot be undone.</p>
+        <p class="text-gray-600 mb-6">Are you sure you want to delete this product? This action cannot be undone.</p>
         <div class="flex justify-end gap-x-3">
             <button onclick="closeDeleteModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
             <form id="delete-form" method="POST">
@@ -162,5 +181,14 @@ function confirmDelete(id) {
 function closeDeleteModal() {
     document.getElementById('delete-modal').classList.add('hidden');
 }
+
+// Optional: Set the selected value on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const type = urlParams.get('type');
+    if (type) {
+        document.getElementById('type-filter').value = type;
+    }
+});
 </script>
 @endpush

@@ -37,6 +37,12 @@ class BlogController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        $blog = $this->blogService->findBlog($id);
+        return view('backend.blog.show', compact('blog'));
+    }
+
     public function edit($id)
     {
         $blog = $this->blogService->findBlog($id);

@@ -10,6 +10,8 @@ class QuotationSection extends Model
 
     public function questions()
     {
-        return $this->belongsToMany(Question::class, 'quotation_section_question', 'quotation_section_id', 'question_id');
+        return $this->belongsToMany(Question::class, 'quotation_section_question', 'quotation_section_id', 'question_id')
+            ->withPivot('order')
+            ->orderBy('quotation_section_question.order');
     }
 }

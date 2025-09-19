@@ -72,6 +72,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/blog', 'index')->name('all');
             Route::get('/blog/create', 'create')->name('create');
             Route::post('/blog', 'store')->name('store');
+            Route::get('/blog/{id}',  'show')->name('show');
             Route::get('/blog/{id}/edit',  'edit')->name('edit');
             Route::put('/blog/{id}',  'update')->name('update');
             Route::delete('/blog/{id}',  'destroy')->name('delete');
@@ -195,6 +196,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('quotation/{id}/assign-questions', 'showAssignQuestions')->name('assign-questions');
             Route::post('quotation/{id}/assign-questions', 'assignQuestions')->name('assign-questions');
             Route::delete('quotation/{sectionId}/remove-question/{questionId}', 'removeQuestion')->name('remove-question');
+            Route::post('quotation/{id}/update-question-order', 'updateQuestionOrder')->name('update-question-order');
         });
 
         // ! Question
