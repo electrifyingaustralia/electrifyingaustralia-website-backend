@@ -68,4 +68,24 @@ class EventService implements EventServiceInterface
     {
         return $this->eventRepository->delete($id);
     }
+
+    public function attachImageToEvent(int $eventId, int $mediaId): void
+    {
+        $this->eventRepository->attachImage($eventId, $mediaId);
+    }
+
+    public function detachImageFromEvent(int $eventId, int $mediaId): void
+    {
+        $this->eventRepository->detachImage($eventId, $mediaId);
+    }
+
+    public function syncEventImages(int $eventId, array $mediaIds): void
+    {
+        $this->eventRepository->syncImages($eventId, $mediaIds);
+    }
+
+    public function getEventImages(int $eventId)
+    {
+        return $this->eventRepository->getImages($eventId);
+    }
 }

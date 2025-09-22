@@ -9,7 +9,8 @@
             <div class="bg-white rounded-lg shadow overflow-hidden">
                 <div class="px-6 py-5 border-b border-gray-200">
                     <h3 class="text-lg font-medium text-gray-900">Assigned Questions</h3>
-                    <p class="text-sm text-gray-600 mt-1">Drag to reorder questions for "{{ $section->title }}"</p>
+                    <p class="text-sm text-gray-600 mt-1"><span class="font-bold">Category:</span> "{{ $section->category }}"</p>
+                    <p class="text-sm text-gray-600 mt-1"><span class="font-bold">Subcategory:</span> "{{ $section->subcategory }}"</p>
                 </div>
                 <div class="px-6 py-5">
                     @if($section->questions->count() > 0)

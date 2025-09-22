@@ -84,4 +84,28 @@ class EventRepository implements EventRepositoryInterface
 
         return $q;
     }
+
+    public function attachImage(int $eventId, int $mediaId): void
+    {
+        $event = $this->find($eventId);
+        $event->images()->attach($mediaId);
+    }
+
+    public function detachImage(int $eventId, int $mediaId): void
+    {
+        $event = $this->find($eventId);
+        $event->images()->detach($mediaId);
+    }
+
+    public function syncImages(int $eventId, array $mediaIds): void
+    {
+        $event = $this->find($eventId);
+        $event->images()->sync($mediaIds);
+    }
+
+    public function getImages(int $eventId)
+    {
+        $event = $this->find($eventId);
+        return $event->images;
+    }
 }

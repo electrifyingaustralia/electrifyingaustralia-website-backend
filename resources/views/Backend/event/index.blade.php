@@ -73,7 +73,7 @@
                             </td>
                             <td class="px-6 py-4 max-w-[15rem] truncate">{{ $event->title }}</td>
                             <td class="px-6 py-4 max-w-[15rem] truncate">{{ $event->subtitle }}</td>
-                            <td class="px-6 py-8 flex gap-x-2">
+                            <td class="px-6 py-8 flex items-center gap-x-2">
                                 <a href="{{ route('admin.event.edit', $event->id) }}" class="text-blue-500 hover:text-blue-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700 ml-2.5"
                                         viewBox="0 0 348.882 348.882">
@@ -84,6 +84,9 @@
                                         d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
                                         data-original="#000000" />
                                     </svg>
+                                </a>
+                                <a href="{{ route('admin.event.assign-images', $event->id) }}" class="text-blue-500 hover:text-blue-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 25 25" fill="none" stroke="#1bf40b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-plus-icon lucide-image-plus"><path d="M16 5h6"/><path d="M19 2v6"/><path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/><circle cx="9" cy="9" r="2"/></svg>
                                 </a>
                                 <button class="text-red-500 hover:text-red-700" type="button" onclick="confirmDelete({{ $event->id }})">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">

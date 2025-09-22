@@ -16,4 +16,8 @@ interface EventRepositoryInterface
     public function update(int $id, array $data): object;
     public function exists(int $id): bool;
     public function delete(int $id): bool;
+    public function attachImage(int $eventId, int $mediaId): void;
+    public function detachImage(int $eventId, int $mediaId): void;
+    public function syncImages(int $eventId, array $mediaIds): void;
+    public function getImages(int $eventId);
 }

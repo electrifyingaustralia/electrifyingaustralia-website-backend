@@ -7,15 +7,15 @@ class QuotationRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'title' => [
+            'category' => [
                 'required',
                 'string',
                 'max:255'
             ],
 
-            'subtitle' => [
+            'subcategory' => [
                 'nullable',
-                'unique:quotation_sections,subtitle',
+                'unique:quotation_sections,subcategory',
                 'string',
                 'max:500'
             ]

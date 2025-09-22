@@ -6,10 +6,10 @@
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-600">
-                        <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+                        <thead class="bg-gray-100 text-gray-700 text-xs">
                             <tr>
-                                <th class="px-4 py-3 w-3/5">Title</th>
-                                <th class="px-4 py-3 w-3/5">Subtitle</th>
+                                <th class="px-4 py-3 w-3/5">Category</th>
+                                <th class="px-4 py-3 w-3/5">Subcategory</th>
                                 <th class="pr-8 py-3 w-2/5 text-right">Actions</th>
                             </tr>
                         </thead>
@@ -17,13 +17,13 @@
                             @forelse($quotations as $quotation)
                                 <tr>
                                     <td class="px-4 py-4">
-                                        <div class="max-w-[15rem] truncate" title="{{ $quotation->title }}">
-                                            {{ $quotation->title }}
+                                        <div class="max-w-[15rem] truncate" title="{{ $quotation->category }}">
+                                            {{ $quotation->category }}
                                         </div>
                                     </td>
                                     <td class="px-4 py-4">
-                                            <div class="max-w-[10rem] truncate" title="{{ $quotation->subtitle }}">
-                                            {{ $quotation->subtitle ?? 'No Subtitle' }}
+                                            <div class="max-w-[10rem] truncate" title="{{ $quotation->subcategory }}">
+                                            {{ $quotation->subcategory ?? 'No Subcategory' }}
                                         </div>
                                     </td>
                                     <td class="px-4 py-4 flex justify-end items-center gap-x-2">
@@ -70,7 +70,7 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
                                             <span class="pt-2 text-lg">No Quotation found.</span>
                                         </div>
-                                        <span class="text-gray-500">Create your first sticky header to get started!</span>
+                                        <span class="text-gray-500">Create your first Quotation to get started!</span>
                                     </td>
                                 </tr>
                             @endforelse
@@ -93,22 +93,22 @@
                         @endif
 
                         <div class="mb-4">
-                            <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title <span class="text-red-600 font-bold">*</span></label>
-                            <input type="text" id="title" name="title" value="{{ old('title', $quotationToEdit->title ?? '') }}"
+                            <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category <span class="text-red-600 font-bold">*</span></label>
+                            <input type="text" id="category" name="category" value="{{ old('category', $quotationToEdit->category ?? '') }}"
                                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
-                                placeholder="Enter your title here..."
+                                placeholder="Enter your category here..."
                             />
-                            @error('title')
+                            @error('category')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div class="mb-4">
-                            <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
-                            <textarea name="subtitle" id="answer"
+                            <label for="subcategory" class="block text-sm font-medium text-gray-700 mb-1">Subcategory</label>
+                            <textarea name="subcategory" id="answer"
                                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
-                                placeholder="Enter your answer here...">{{ old('answer', $quotationToEdit->subtitle ?? '') }}</textarea>
-                            @error('subtitle')
+                                placeholder="Enter your subcategory here...">{{ old('subcategory', $quotationToEdit->subcategory ?? '') }}</textarea>
+                            @error('subcategory')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>

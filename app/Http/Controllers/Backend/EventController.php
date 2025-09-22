@@ -60,4 +60,32 @@ class EventController extends Controller
         $this->eventService->deleteEvent($id);
         return redirect()->route('admin.event.all')->with('success', 'Event Deleted Successfully!');
     }
+
+    public function assignImages($id)
+    {
+        $event = $this->eventService->findEvent($id);
+        return view('backend.event.assign-images', compact('event'));
+    }
+
+    public function storeImages(Request $request, $id)
+    {
+        $request->validate([
+            'media_ids' => 'required|array',
+            'media_ids.*' => 'exists:media_libraries,id'
+        ]);
+
+        $this->eventService->syncEventImages($id, $request->media_ids);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Images assigned successfully',
+            'redirect' => route('admin.event.all')
+        ]);
+    }
+
+    public function getEventImages($id)
+    {
+        $images = $this->eventService->getEventImages($id);
+        return response()->json($images);
+    }
 }

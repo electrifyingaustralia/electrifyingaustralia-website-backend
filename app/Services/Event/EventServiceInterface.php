@@ -12,4 +12,8 @@ interface EventServiceInterface
     public function findEvent(int $id): object;
     public function updateEvent(int $id, array $data): object;
     public function deleteEvent(int $id): bool;
+    public function attachImageToEvent(int $eventId, int $mediaId): void;
+    public function detachImageFromEvent(int $eventId, int $mediaId): void;
+    public function syncEventImages(int $eventId, array $mediaIds): void;
+    public function getEventImages(int $eventId);
 }

@@ -4,8 +4,8 @@
         <div class="bg-white p-6 rounded-lg shadow">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="md:col-span-2">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Title: {{ $quotation->title }}</h2>
-                    <p class="text-gray-600 mb-4">Subtitle: {{ $quotation->subtitle }}</p>
+                    <h2 class="text-lg font-bold text-gray-800 mb-2">Category: {{ $quotation->category }}</h2>
+                    <p class="text-gray-600 mb-4">Subcategory: {{ $quotation->subcategory }}</p>
                     <div class="mt-6">
                         <h3 class="text-lg font-normal text-gray-800 mb-3">Assigned Questions</h3>
                         @if($quotation->questions->count() > 0)

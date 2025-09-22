@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('quotation_sections', function (Blueprint $table) {
+        Schema::create('event_images', function (Blueprint $table) {
             $table->id();
-            $table->string('category');
-            $table->string('subcategory')->nullable();
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
             $table->timestamps();
+
+            $table->unique(['event_id', 'media_id']);
         });
     }
 
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('quotation_sections');
+        Schema::dropIfExists('event_images');
     }
 };
