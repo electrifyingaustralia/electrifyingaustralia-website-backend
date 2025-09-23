@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
+
 class MakeRepositoryCommand extends Command
 {
     protected $signature = 'make:repository {name}';
@@ -26,6 +27,7 @@ class MakeRepositoryCommand extends Command
 
         if (file_exists($repositoryPath)) {
             $this->error("Repository already exists!");
+            return;
         } else {
 
             $stub = <<<EOT
@@ -34,6 +36,8 @@ class MakeRepositoryCommand extends Command
 namespace App\Repositories\\{$name};
 
 use App\Repositories\\{$name}\\{$name}RepositoryInterface;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\\{$name};
 
 class {$name}Repository implements {$name}RepositoryInterface
 {
@@ -42,50 +46,60 @@ class {$name}Repository implements {$name}RepositoryInterface
         //
     }
 
-    public function get(array \$filters = [], int \$perPage = 15)
-    {
-        // TODO: implement get method
+    public function query(): Builder{
+        return {$name}::query();
     }
 
-    public function all()
+    public function get(array \$columns = ["*"], int \$perPage = 15): object
     {
-        // TODO: implement all method
+        return \$this->query()->select(\$columns)->paginate(\$perPage);
     }
 
-    public function list()
+    public function all() : object
     {
-        // TODO: implement list method
+        return \$this->query()->all();
     }
 
-    public function find(int \$id)
+    public function list() : object
     {
-        // TODO: implement find method
+        return \$this->query()->get();
     }
 
-    public function view(int \$id)
+    public function find(int \$id) : object
     {
-        // TODO: implement view method
+        return \$this->query()->findOrFail(\$id);
     }
 
-    public function create(array \$data)
+    public function view(int \$id) : object
     {
-        // TODO: implement create method
+        \$instance = \$this->find(\$id);
+        return \$instance;
     }
 
-    public function update(int \$id, array \$data)
+    public function create(array \$data) : object
     {
-        // TODO: implement update method
+        return {$name}::create(\$data);
     }
 
-    public function exists(int \$id): bool
+    public function update(int \$id, array \$data) : object
     {
-        // TODO: implement exists method
-        return true;
+        \$instance = \$this->find(\$id);
+        \$instance->update(\$data);
+        return \$instance;
+    }
+
+    public function exists(int | array \$id): bool
+    {
+        if(is_array(\$id)){
+            return \$this->query()->where(\$id)->exists();
+        }
+
+        return \$this->query()->where("id", \$id)->exists();
     }
 
     public function delete(int \$id): bool
     {
-        // TODO: implement delete method
+        \$instance = \$this->find(\$id);
         return true;
     }
 
@@ -106,6 +120,7 @@ EOT;
 
         if (file_exists($interfacePath)) {
             $this->error("Repository already exists!");
+            return;
         } else {
 
             $stub = <<<EOT
@@ -113,15 +128,18 @@ EOT;
 
 namespace App\Repositories\\{$name};
 
+use Illuminate\Database\Eloquent\Builder;
+
 interface {$name}RepositoryInterface
 {
-    public function get(array \$filters = [], int \$perPage = 15);
-    public function all();
-    public function list();
-    public function find(int \$id);
-    public function view(int \$id);
-    public function create(array \$data);
-    public function update(int \$id, array \$data);
+    public function query(): Builder;
+    public function get(array \$columns = ["*"], int \$perPage = 15): object;
+    public function all(): object;
+    public function list(): object;
+    public function find(int \$id): object;
+    public function view(int \$id): object;
+    public function create(array \$data): object;
+    public function update(int \$id, array \$data): object;
     public function exists(int \$id): bool;
     public function delete(int \$id): bool;
 }
@@ -130,6 +148,46 @@ EOT;
             file_put_contents($interfacePath, $stub);
 
             $this->info("Repository Interface created successfully: {$name}RepositoryInterface");
+        }
+
+
+        $this->addBindingToServiceProvider(
+            "\\App\\Repositories\\{$name}\\{$name}RepositoryInterface",
+            "\\App\\Repositories\\{$name}\\{$name}Repository"
+        );
+    }
+
+
+    protected function addBindingToServiceProvider($interface, $implementation)
+    {
+        $providerPath = app_path('Providers/DependencyServiceProvider.php');
+        $content = file_get_contents($providerPath);
+
+        $pattern = '/\$repositories = \[([\s\S]*?)\];/';
+        preg_match($pattern, $content, $matches);
+
+        if (isset($matches[1])) {
+            $existingBindings = $matches[1];
+
+            $newBinding = "";
+
+            if (strlen($existingBindings) == 0) {
+                $newBinding .= "\n            ";
+            } else {
+                $newBinding .= "    ";
+            }
+
+            $newBinding .= "{$interface}::class => {$implementation}::class,";
+
+            $updatedBindings = $existingBindings . $newBinding;
+
+            $updatedContent = str_replace(
+                $matches[0],
+                '$repositories = [' . $updatedBindings . "\n        ];",
+                $content
+            );
+
+            file_put_contents($providerPath, $updatedContent);
         }
     }
 }

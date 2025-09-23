@@ -67,5 +67,42 @@ EOT;
             file_put_contents($interfacePath, $stub);
             $this->info("Service Interface created successfully: {$name}ServiceInterface");
         }
+        $this->addBindingToServiceProvider(
+            "\\App\\Services\\{$name}\\{$name}ServiceInterface",
+            "\\App\\Services\\{$name}\\{$name}Service"
+        );
+    }
+
+    protected function addBindingToServiceProvider($interface, $implementation)
+    {
+        $providerPath = app_path('Providers/DependencyServiceProvider.php');
+        $content = file_get_contents($providerPath);
+
+        $pattern = '/\$services = \[([\s\S]*?)\];/';
+        preg_match($pattern, $content, $matches);
+
+        if (isset($matches[1])) {
+            $existingBindings = $matches[1];
+
+            $newBinding = "";
+
+            if (strlen($existingBindings) == 0) {
+                $newBinding .= "\n            ";
+            } else {
+                $newBinding .= "    ";
+            }
+
+            $newBinding .= "{$interface}::class => {$implementation}::class,";
+
+            $updatedBindings = $existingBindings . $newBinding;
+
+            $updatedContent = str_replace(
+                $matches[0],
+                '$services = [' . $updatedBindings . "\n        ];",
+                $content
+            );
+
+            file_put_contents($providerPath, $updatedContent);
+        }
     }
 }

@@ -1,7 +1,228 @@
 <?php
 
+use App\Http\Controllers\Backend\AdminAuthController;
+use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\BenefitController;
+use App\Http\Controllers\Backend\BlogController;
+use App\Http\Controllers\Backend\BrandController;
+use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\EventController;
+use App\Http\Controllers\Backend\FaqController;
+use App\Http\Controllers\backend\HeroController;
+use App\Http\Controllers\Backend\MediaLibraryController;
+use App\Http\Controllers\Backend\PackageController;
+use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\ProjectController;
+use App\Http\Controllers\Backend\QuestionController;
+use App\Http\Controllers\Backend\QuotationController;
+use App\Http\Controllers\Backend\SettingController;
+use App\Http\Controllers\Backend\SolutionCardController;
+use App\Http\Controllers\Backend\StickyHeaderController;
+use App\Http\Controllers\Backend\TeamController;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    // !Login & Logout
+    Route::controller(AdminAuthController::class)->group(function () {
+        Route::get('/login', 'showLoginForm')->name('login');
+        Route::post('/login', 'login')->name('login.post');
+        Route::post('/logout', 'logout')->middleware('admin.auth')->name('logout');
+    });
+
+
+    Route::middleware('admin.auth')->group(function () {
+
+        // ! Dashboard
+        Route::controller(DashboardController::class)->group(function () {
+            Route::get('/dashboard', 'index')->name('dashboard');
+        });
+
+        // ! Media Library
+        Route::controller(MediaLibraryController::class)->name('media.')->group(function () {
+            Route::get('/media', 'index')->name('all');
+            Route::get('/media/ajax', 'ajaxIndex')->name('ajax.all');
+            Route::post('/media', 'store')->name('store');
+            Route::delete('/media/{id}', 'destroy')->name('destroy');
+        });
+
+        // ! Admin Users
+        Route::controller(AdminController::class)->name('users.')->group(function () {
+            Route::get('/users', 'index')->name('all');
+            Route::get('/users/create', 'create')->name('create');
+            Route::post('/users', 'store')->name('store');
+            Route::get('/users/{id}/edit',  'edit')->name('edit');
+            Route::put('/users/{id}',  'update')->name('update');
+            Route::delete('/users/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Sticky Header
+        Route::controller(StickyHeaderController::class)->name('sticky-header.')->group(function () {
+            Route::get('/sticky-header', 'index')->name('all');
+            Route::post('/sticky-header', 'store')->name('store');
+            Route::get('/sticky-header/{id}/edit',  'edit')->name('edit');
+            Route::put('/sticky-header/{id}',  'update')->name('update');
+            Route::delete('/sticky-header/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Blog
+        Route::controller(BlogController::class)->name('blog.')->group(function () {
+            Route::get('/blog', 'index')->name('all');
+            Route::get('/blog/create', 'create')->name('create');
+            Route::post('/blog', 'store')->name('store');
+            Route::get('/blog/{id}',  'show')->name('show');
+            Route::get('/blog/{id}/edit',  'edit')->name('edit');
+            Route::put('/blog/{id}',  'update')->name('update');
+            Route::delete('/blog/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Brands
+        Route::controller(BrandController::class)->name('brands.')->group(function () {
+            Route::get('/brands', 'index')->name('all');
+            Route::get('/brands/create', 'create')->name('create');
+            Route::post('/brands', 'store')->name('store');
+            Route::get('/brands/{id}/edit',  'edit')->name('edit');
+            Route::put('/brands/{id}',  'update')->name('update');
+            Route::delete('/brands/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Teams
+        Route::controller(TeamController::class)->name('teams.')->group(function () {
+            Route::get('/teams', 'index')->name('all');
+            Route::get('/teams/create', 'create')->name('create');
+            Route::post('/teams', 'store')->name('store');
+            Route::get('/teams/{id}/edit',  'edit')->name('edit');
+            Route::put('/teams/{id}',  'update')->name('update');
+            Route::delete('/teams/{id}',  'destroy')->name('delete');
+        });
+
+        // ! FAQ
+        Route::controller(FaqController::class)->name('faq.')->group(function () {
+            Route::get('/faq', 'index')->name('all');
+            Route::post('/faq', 'store')->name('store');
+            Route::get('/faq/{id}/edit',  'edit')->name('edit');
+            Route::get('/faq/{id}',  'show')->name('show');
+            Route::put('/faq/{id}',  'update')->name('update');
+            Route::delete('/faq/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Event
+        Route::controller(EventController::class)->name('event.')->group(function () {
+            Route::get('/event', 'index')->name('all');
+            Route::get('/event/create', 'create')->name('create');
+            Route::post('/event', 'store')->name('store');
+            Route::get('/event/{id}/edit',  'edit')->name('edit');
+            Route::get('/event/{id}',  'show')->name('show');
+            Route::put('/event/{id}',  'update')->name('update');
+            Route::delete('/event/{id}',  'destroy')->name('delete');
+
+            Route::get('events/{id}/assign-images', [EventController::class, 'assignImages'])->name('assign-images');
+            Route::post('events/{id}/store-images', [EventController::class, 'storeImages'])->name('store-images');
+            Route::get('events/{id}/images', [EventController::class, 'getEventImages'])->name('images');
+        });
+
+        // ! Project
+        Route::controller(ProjectController::class)->name('project.')->group(function () {
+            Route::get('/project', 'index')->name('all');
+            Route::get('/project/create', 'create')->name('create');
+            Route::post('/project', 'store')->name('store');
+            Route::get('/project/{id}/edit',  'edit')->name('edit');
+            Route::get('/project/{id}',  'show')->name('show');
+            Route::put('/project/{id}',  'update')->name('update');
+            Route::delete('/project/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Package
+        Route::controller(PackageController::class)->name('package.')->group(function () {
+            Route::get('/package', 'index')->name('all');
+            Route::get('/package/create', 'create')->name('create');
+            Route::post('/package', 'store')->name('store');
+            Route::get('/package/{id}/edit',  'edit')->name('edit');
+            Route::get('/package/{id}',  'show')->name('show');
+            Route::put('/package/{id}',  'update')->name('update');
+            Route::delete('/package/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Benefits
+        Route::controller(BenefitController::class)->name('benefit.')->group(function () {
+            Route::get('/benefit', 'index')->name('all');
+            Route::get('/benefit/create', 'create')->name('create');
+            Route::post('/benefit', 'store')->name('store');
+            Route::get('/benefit/{id}/edit',  'edit')->name('edit');
+            Route::get('/benefit/{id}',  'show')->name('show');
+            Route::put('/benefit/{id}',  'update')->name('update');
+            Route::delete('/benefit/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Solution Cards
+        Route::controller(SolutionCardController::class)->name('solution-card.')->group(function () {
+            Route::get('/solution-card', 'index')->name('all');
+            Route::post('/solution-card', 'store')->name('store');
+            Route::get('/solution-card/{id}/edit',  'edit')->name('edit');
+            Route::get('/solution-card/{id}',  'show')->name('show');
+            Route::put('/solution-card/{id}',  'update')->name('update');
+            Route::delete('/solution-card/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Products
+        Route::controller(ProductController::class)->name('product.')->group(function () {
+            Route::get('/product', 'index')->name('all');
+            Route::get('/product/create', 'create')->name('create');
+            Route::post('/product', 'store')->name('store');
+            Route::get('/product/{id}/edit',  'edit')->name('edit');
+            Route::get('/product/{id}',  'show')->name('show');
+            Route::put('/product/{id}',  'update')->name('update');
+            Route::delete('/product/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Settings
+        Route::controller(SettingController::class)->name('setting.')->group(function () {
+            Route::get('/setting', 'index')->name('all');
+            Route::get('/setting/create', 'create')->name('create');
+            Route::post('/setting', 'store')->name('store');
+            Route::get('/setting/{id}/edit',  'edit')->name('edit');
+            Route::get('/setting/{id}',  'show')->name('show');
+            Route::put('/setting/{id}',  'update')->name('update');
+            Route::delete('/setting/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Quotation
+        Route::controller(QuotationController::class)->name('quotation.')->group(function () {
+            Route::get('/quotation', 'index')->name('all');
+            Route::get('/quotation/create', 'create')->name('create');
+            Route::post('/quotation', 'store')->name('store');
+            Route::get('/quotation/{id}/edit',  'edit')->name('edit');
+            Route::get('/quotation/{id}',  'show')->name('show');
+            Route::put('/quotation/{id}',  'update')->name('update');
+            Route::delete('/quotation/{id}',  'destroy')->name('delete');
+            Route::get('quotation/{id}/assign-questions', 'showAssignQuestions')->name('assign-questions');
+            Route::post('quotation/{id}/assign-questions', 'assignQuestions')->name('assign-questions');
+            Route::delete('quotation/{sectionId}/remove-question/{questionId}', 'removeQuestion')->name('remove-question');
+            Route::post('quotation/{id}/update-question-order', 'updateQuestionOrder')->name('update-question-order');
+        });
+
+        // ! Question
+        Route::controller(QuestionController::class)->name('question.')->group(function () {
+            Route::get('/question', 'index')->name('all');
+            Route::get('/question/create', 'create')->name('create');
+            Route::post('/question', 'store')->name('store');
+            Route::get('/question/{id}/edit',  'edit')->name('edit');
+            Route::get('/question/{id}',  'show')->name('show');
+            Route::put('/question/{id}',  'update')->name('update');
+            Route::delete('/question/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Hero
+        Route::controller(HeroController::class)->name('hero.')->group(function () {
+            Route::get('/hero', 'index')->name('all');
+            Route::get('/hero/create', 'create')->name('create');
+            Route::post('/hero', 'store')->name('store');
+            Route::get('/hero/{id}/edit',  'edit')->name('edit');
+            Route::get('/hero/{id}',  'show')->name('show');
+            Route::put('/hero/{id}',  'update')->name('update');
+            Route::delete('/hero/{id}',  'destroy')->name('delete');
+        });
+    });
 });
