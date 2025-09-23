@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
+    // ! Heroes
     Route::get('heroes', [ApiHeroController::class, 'index']);
 
     Route::get('brands', [ApiBrandController::class, 'index']);

@@ -13,7 +13,7 @@
             display: none;
         }
         .media-item:hover .remove-media {
-            display: block;
+            display: block !important;
         }
         .tab-active {
             border-bottom-color: #0d9488 !important;
@@ -173,25 +173,34 @@
 
                     <div id="upload-preview" class="upload-content hidden">
                         <div class="flex flex-col items-center">
-                            <!-- Preview container that will show appropriate content based on file type -->
-                            <div id="preview-container" class="w-32 h-32 flex items-center justify-center mb-4 rounded-lg bg-gray-100">
-                                <!-- Image preview (default) -->
-                                <img id="preview-image" src="" alt="Preview" class="w-full h-full object-contain hidden">
-
-                                <!-- Video preview -->
-                                <video id="preview-video" class="w-full h-full object-contain hidden" controls>
-                                    Your browser does not support the video tag.
-                                </video>
-
-                                <!-- Document preview icons -->
-                                <div id="preview-document" class="hidden flex flex-col items-center justify-center">
-                                    <svg id="preview-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide"></svg>
-                                    <p id="preview-extension" class="text-xs font-medium mt-1"></p>
+                            <!-- Multiple files preview container -->
+                            <div id="multiple-files-preview" class="w-full mb-4 hidden">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="text-sm font-medium text-gray-700">Selected Files (<span id="file-count">0</span>)</h4>
+                                </div>
+                                <div id="files-preview-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-64 overflow-y-auto p-2 border border-gray-200 rounded-lg">
+                                    <!-- Dynamic preview items will be added here -->
                                 </div>
                             </div>
 
-                            <p id="preview-filename" class="text-sm font-medium text-gray-700 mb-2"></p>
-                            <p id="preview-size" class="text-xs text-gray-500 mb-4"></p>
+                            <!-- Single file preview container (for backward compatibility) -->
+                            <div id="single-file-preview" class="hidden">
+                                <div id="preview-container" class="w-32 h-32 flex items-center justify-center mb-4 rounded-lg bg-gray-100">
+                                    <!-- Image preview (default) -->
+                                    <img id="preview-image" src="" alt="Preview" class="w-full h-full object-scale-down hidden">
+                                    <!-- Video preview -->
+                                    <video id="preview-video" class="w-full h-full object-contain hidden" controls>
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <!-- Document preview icons -->
+                                    <div id="preview-document" class="hidden flex flex-col items-center justify-center">
+                                        <svg id="preview-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide"></svg>
+                                        <p id="preview-extension" class="text-xs font-medium mt-1"></p>
+                                    </div>
+                                </div>
+                                <p id="preview-filename" class="text-sm font-medium text-gray-700 mb-2"></p>
+                                <p id="preview-size" class="text-xs text-gray-500 mb-4"></p>
+                            </div>
 
                             <!-- Progress Bar -->
                             <div id="upload-progress-container" class="w-full bg-gray-200 rounded-full h-2.5 mb-4 hidden">
@@ -311,7 +320,7 @@ $(document).ready(function() {
                         <p class="text-xs font-medium truncate">${media.original_name || media.name}</p>
                     </div>
                     <button type="button" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 remove-media" data-media-id="${media.id}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e81717" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                     </button>
                 </div>
             `);
@@ -345,46 +354,138 @@ $(document).ready(function() {
 
     // ========== UPLOAD PREVIEW & UPLOAD TAB FUNCTIONS ==========
     function renderUploadPreview() {
-        if (uploadedFiles.length === 0) {
-            $('#upload-preview').addClass('hidden');
-            $('#upload-default').removeClass('hidden');
-            $('#upload-progress-container').addClass('hidden');
-            $('#upload-status').addClass('hidden');
-            $('#preview-image').attr('src', '').addClass('hidden');
-            $('#preview-video').attr('src', '').addClass('hidden');
-            $('#preview-document').addClass('hidden');
-            $('#preview-filename').text('');
-            $('#preview-size').text('');
-            return;
-        }
-
-        // Show preview for the first file in uploadedFiles
-        const media = uploadedFiles[0]; // object: { file, url, ... }
-        const file = media.file;
-        $('#upload-default').addClass('hidden');
-        $('#upload-preview').removeClass('hidden');
+    if (uploadedFiles.length === 0) {
+        $('#upload-preview').addClass('hidden');
+        $('#upload-default').removeClass('hidden');
         $('#upload-progress-container').addClass('hidden');
         $('#upload-status').addClass('hidden');
+        $('#multiple-files-preview').addClass('hidden');
+        $('#single-file-preview').addClass('hidden');
+        return;
+    }
 
-        // hide all sub-previews first
-        $('#preview-image').addClass('hidden').attr('src','');
-        $('#preview-video').addClass('hidden').attr('src','');
-        $('#preview-document').addClass('hidden');
+    $('#upload-default').addClass('hidden');
+    $('#upload-preview').removeClass('hidden');
+    $('#upload-progress-container').addClass('hidden');
+    $('#upload-status').addClass('hidden');
 
-        if (file.type && file.type.startsWith('image/')) {
-            $('#preview-image').attr('src', media.url).removeClass('hidden');
-        } else if (file.type && file.type.startsWith('video/')) {
-            // media.url for video is a blob URL we created
-            $('#preview-video').attr('src', media.previewUrl || media.url).removeClass('hidden');
-        } else {
-            // document / other
-            const ext = (media.name || '').split('.').pop() || '';
-            $('#preview-extension').text(ext.toUpperCase());
-            $('#preview-document').removeClass('hidden');
+    // Show appropriate preview based on number of files
+    if (uploadedFiles.length === 1) {
+        // Single file preview
+        $('#multiple-files-preview').addClass('hidden');
+        $('#single-file-preview').removeClass('hidden');
+        renderSingleFilePreview(uploadedFiles[0]);
+    } else {
+        // Multiple files preview
+        $('#single-file-preview').addClass('hidden');
+        $('#multiple-files-preview').removeClass('hidden');
+        renderMultipleFilesPreview();
+    }
+}
+
+function renderSingleFilePreview(media) {
+    const file = media.file;
+
+    // hide all sub-previews first
+    $('#preview-image').addClass('hidden').attr('src','');
+    $('#preview-video').addClass('hidden').attr('src','');
+    $('#preview-document').addClass('hidden');
+
+    if (file.type && file.type.startsWith('image/')) {
+        $('#preview-image').attr('src', media.url).removeClass('hidden');
+    } else if (file.type && file.type.startsWith('video/')) {
+        $('#preview-video').attr('src', media.previewUrl || media.url).removeClass('hidden');
+    } else {
+        // document / other
+        const ext = (media.name || '').split('.').pop() || '';
+        $('#preview-extension').text(ext.toUpperCase());
+        $('#preview-document').removeClass('hidden');
+    }
+
+    $('#preview-filename').text(media.name || '');
+    $('#preview-size').text(humanFileSize(media.size || 0));
+}
+
+    function renderMultipleFilesPreview() {
+        const $filesGrid = $('#files-preview-grid');
+        const $fileCount = $('#file-count');
+
+        $filesGrid.empty();
+        $fileCount.text(uploadedFiles.length);
+
+        uploadedFiles.forEach((media, index) => {
+            const file = media.file;
+            let previewHtml = '';
+            const fileExtension = (media.name || '').split('.').pop().toLowerCase();
+
+            if (file.type && file.type.startsWith('image/')) {
+                previewHtml = `<img src="${media.url}" alt="${media.name}" class="w-full h-16 object-cover rounded">`;
+            } else if (file.type && file.type.startsWith('video/')) {
+                previewHtml = `
+                    <div class="w-full h-16 flex items-center justify-center bg-gray-200 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
+                            <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
+                            <rect x="2" y="6" width="14" height="12" rx="2"/>
+                        </svg>
+                    </div>
+                `;
+            } else if (['pdf'].includes(fileExtension)) {
+                previewHtml = `
+                    <div class="w-full h-16 flex items-center justify-center bg-red-100 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-red-600">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        </svg>
+                    </div>
+                `;
+            } else {
+                previewHtml = `
+                    <div class="w-full h-16 flex items-center justify-center bg-gray-200 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file text-gray-600">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        </svg>
+                    </div>
+                `;
+            }
+
+            $filesGrid.append(`
+                <div class="file-preview-item relative bg-white rounded-lg border border-gray-200 p-2">
+                    <div class="file-preview">
+                        ${previewHtml}
+                    </div>
+                    <div class="mt-1">
+                        <p class="text-xs font-medium truncate" title="${media.name}">${media.name}</p>
+                        <p class="text-xs text-gray-500">${humanFileSize(media.size || 0)}</p>
+                    </div>
+                    <button type="button" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1 remove-single-file" data-file-index="${index}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            `);
+        });
+
+        // Add event listeners for remove buttons
+        $filesGrid.find('.remove-single-file').off('click').on('click', function() {
+            const fileIndex = parseInt($(this).data('file-index'));
+            removeSingleFile(fileIndex);
+        });
+    }
+
+    function removeSingleFile(fileIndex) {
+        if (fileIndex >= 0 && fileIndex < uploadedFiles.length) {
+            // Revoke object URL if it exists
+            const media = uploadedFiles[fileIndex];
+            if (media.previewUrl) {
+                try { URL.revokeObjectURL(media.previewUrl); } catch(e) { /* ignore */ }
+            }
+
+            uploadedFiles.splice(fileIndex, 1);
+            renderUploadPreview();
+            updateUploadButtonState();
         }
-
-        $('#preview-filename').text(media.name || '');
-        $('#preview-size').text(humanFileSize(media.size || 0));
     }
 
     function setupDragAndDrop() {
@@ -428,15 +529,7 @@ $(document).ready(function() {
                 preventDefaults(e);
                 handleDrop(e);
             });
-
-        // Click to open file dialog
-        $uploadArea.on('click', function(e) {
-            // only trigger if click target is not file input itself
-            if (!$(e.target).is('#modal-logo-upload') && !$(e.target).closest('label[for="modal-logo-upload"]').length) {
-                $('#modal-logo-upload').trigger('click');
-            }
-        });
-    }
+        }
 
     function handleDroppedFiles(files) {
         Array.from(files).forEach(file => {
@@ -476,17 +569,17 @@ $(document).ready(function() {
     }
 
     function clearUploadPreview() {
-        // revoke any object URLs created
-        uploadedFiles.forEach(m => {
-            if (m.previewUrl) {
-                try { URL.revokeObjectURL(m.previewUrl); } catch(e) { /* ignore */ }
-            }
-        });
-        uploadedFiles = [];
-        renderUploadPreview();
-        updateUploadButtonState();
-        $('#modal-logo-upload').val('');
-    }
+    // revoke any object URLs created
+    uploadedFiles.forEach(m => {
+        if (m.previewUrl) {
+            try { URL.revokeObjectURL(m.previewUrl); } catch(e) { /* ignore */ }
+        }
+    });
+    uploadedFiles = [];
+    renderUploadPreview();
+    updateUploadButtonState();
+    $('#modal-logo-upload').val('');
+}
 
     function updateUploadButtonState() {
         const $uploadButton = $('#upload-to-library');
@@ -926,6 +1019,10 @@ $(document).ready(function() {
         contentType: false, // Important for FormData
         success: function(response) {
             if (response.success) {
+                // Store the success message in localStorage
+                localStorage.setItem('toastr_success', response.message) || '{{ route('admin.event.all') }}';
+
+                // Redirect to index page
                 window.location.href = response.redirect;
             } else {
                 alert('Error saving images: ' + (response.message || 'Unknown error'));

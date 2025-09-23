@@ -37,6 +37,12 @@ class EventController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        $event = $this->eventService->findEvent($id);
+        return view('backend.event.show', compact('event'));
+    }
+
     public function edit($id)
     {
         $event = $this->eventService->findEvent($id);
