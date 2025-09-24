@@ -19,7 +19,7 @@ class StickyHeaderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:sticky_headers,title',
         ]);
 
         $this->stickyHeaderService->createStickyHeader($request->all());
@@ -36,7 +36,7 @@ class StickyHeaderController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required|string|max:255'
+            'title' => 'required|string|max:255|unique:sticky_headers,title,' . $id
         ]);
 
         $this->stickyHeaderService->updateStickyHeader($id, $request->all());

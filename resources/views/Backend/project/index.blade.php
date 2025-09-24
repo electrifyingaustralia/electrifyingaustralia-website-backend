@@ -53,6 +53,8 @@
                     <th class="px-6 py-3">Media</th>
                     <th class="px-6 py-3">Title</th>
                     <th class="px-6 py-3">Subtitle</th>
+                    <th class="px-6 py-3">Category</th>
+                    <th class="px-6 py-3">Type</th>
                     <th class="px-6 py-3">Actions</th>
                 </tr>
                 </thead>
@@ -71,8 +73,10 @@
                                     @endif
                                 </div>
                             </td>
-                            <td class="px-6 py-4 max-w-[15rem] truncate">{{ $project->title }}</td>
-                            <td class="px-6 py-4 max-w-[15rem] truncate">{{ $project->subtitle }}</td>
+                            <td class="px-6 py-4 max-w-[10rem] truncate">{{ $project->title }}</td>
+                            <td class="px-6 py-4 max-w-[10rem] truncate">{{ $project->subtitle }}</td>
+                            <td class="px-6 py-4">{{ $project->category->name }}</td>
+                            <td class="px-6 py-4">{{ $project->type->name }}</td>
                             <td class="px-6 py-8 flex gap-x-2">
                                 <a href="{{ route('admin.project.edit', $project->id) }}" class="text-blue-500 hover:text-blue-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700 ml-2.5"
@@ -98,7 +102,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-4 text-center font-medium text-gray-700">
+                            <td colspan="6" class="px-6 py-4 text-center font-medium text-gray-700">
                                 <div class="flex flex-col items-center justify-center gap-x-4 py-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
                                     <span class="pt-2 text-lg">No Project found.</span>

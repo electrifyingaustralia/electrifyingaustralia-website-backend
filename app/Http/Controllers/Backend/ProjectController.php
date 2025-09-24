@@ -6,11 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\ProjectCreateRequest;
 use App\Http\Requests\Backend\ProjectUpdateRequest;
 use App\Services\Project\ProjectServiceInterface;
+use App\Services\ProjectCategory\ProjectCategoryServiceInterface;
+use App\Services\ProjectType\ProjectTypeServiceInterface;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function __construct(protected ProjectServiceInterface $projectService) {}
+    public function __construct(
+        protected ProjectServiceInterface $projectService,
+        protected ProjectCategoryServiceInterface $projectCategoryService,
+        protected ProjectTypeServiceInterface $projectTypeService
+    ) {}
 
     public function index()
     {
@@ -20,7 +26,9 @@ class ProjectController extends Controller
 
     public function create()
     {
-        return view('backend.project.create');
+        $categories = $this->projectCategoryService->get();
+        $types = $this->projectTypeService->get();
+        return view('backend.project.create', compact('categories', 'types'));
     }
 
     public function store(ProjectCreateRequest $request)
@@ -38,7 +46,9 @@ class ProjectController extends Controller
     public function edit($id)
     {
         $project = $this->projectService->findProject($id);
-        return view('backend.project.edit', compact('project'));
+        $categories = $this->projectCategoryService->get();
+        $types = $this->projectTypeService->get();
+        return view('backend.project.edit', compact('project', 'categories', 'types'));
     }
 
     public function update(ProjectUpdateRequest $request, $id)

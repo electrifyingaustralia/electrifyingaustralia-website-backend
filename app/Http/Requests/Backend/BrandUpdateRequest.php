@@ -18,6 +18,12 @@ class BrandUpdateRequest extends FormRequest
                 Rule::unique('brands', 'name')->ignore($brandId),
             ],
 
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
             'logo_id' => [
                 'required',
                 'integer',

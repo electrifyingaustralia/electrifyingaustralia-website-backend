@@ -83,17 +83,7 @@
                             </td>
                             <td class="px-6 py-4 max-w-[10rem] truncate">{{ $product->name }}</td>
                             <td class="px-6 py-4 max-w-[10rem] truncate">{{ $product->brand->name }}</td>
-                            <td class="px-6 py-4 max-w-[10rem] truncate">
-                                @if ($product->product_type === 'solar_panel')
-                                    <span>Solar Panel</span>
-                                @elseif ($product->product_type === 'battery')
-                                    <span>Battery</span>
-                                @elseif ($product->product_type === 'ev_charger')
-                                    <span>Ev Charger</span>
-                                @elseif ($product->product_type === 'inverter')
-                                    <span>Inverter</span>
-                                @endif
-                            </td>
+                            <td class="px-6 py-4 max-w-[10rem] truncate">{{ $product->type->name }}</td>
                             <td class="px-6 py-4">
                                 @if($product->is_active == 1)
                                     <span class="text-green-600 font-bold">Active</span>

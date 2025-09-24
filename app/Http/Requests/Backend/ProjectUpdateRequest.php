@@ -8,11 +8,13 @@ class ProjectUpdateRequest extends BaseRequest
 {
     public function rules(): array
     {
+        $projectId = $this->route('project') ?? $this->route('id');
         return [
             'title' => [
-                'sometimes',
+                'required',
                 'string',
                 'max:255',
+                Rule::unique('projects', 'title')->ignore($projectId),
             ],
 
             'subtitle' => [
@@ -27,14 +29,14 @@ class ProjectUpdateRequest extends BaseRequest
                 'string',
             ],
 
-            'category' => [
-                'sometimes',
-                Rule::in(['commercial', 'residential']),
+            'project_category_id' => [
+                'required',
+                'exists:project_categories,id',
             ],
 
-            'type' => [
-                'sometimes',
-                Rule::in(['solar', 'batteries', 'ev_charger', 'heat_pump']),
+            'project_type_id' => [
+                'required',
+                'exists:project_types,id',
             ],
 
             'location' => [

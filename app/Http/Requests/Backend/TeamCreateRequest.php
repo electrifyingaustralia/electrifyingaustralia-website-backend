@@ -9,6 +9,13 @@ class TeamCreateRequest extends BaseRequest
         return [
             'name' => [
                 'required',
+                'unique:teams,name',
+                'string',
+                'max:255',
+            ],
+
+            'slug' => [
+                'nullable',
                 'string',
                 'max:255',
             ],

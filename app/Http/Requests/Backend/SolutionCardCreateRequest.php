@@ -13,6 +13,7 @@ class SolutionCardCreateRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
+                'unique:solution_cards,title'
             ],
 
             'description' => [

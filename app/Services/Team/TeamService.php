@@ -6,6 +6,7 @@ use App\Repositories\Team\TeamRepositoryInterface;
 use App\Services\MediaLibrary\MediaLibraryServiceInterface;
 use App\Services\Team\TeamServiceInterface;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 
 class TeamService implements TeamServiceInterface
 {
@@ -48,6 +49,8 @@ class TeamService implements TeamServiceInterface
             }
         }
 
+        $data['slug'] = Str::slug($data['name']);
+
         return $this->teamRepository->create($data);
     }
 
@@ -64,6 +67,9 @@ class TeamService implements TeamServiceInterface
                 }
             }
         }
+
+        $data['slug'] = Str::slug($data['name']);
+
         return $this->teamRepository->update($id, $data);
     }
 

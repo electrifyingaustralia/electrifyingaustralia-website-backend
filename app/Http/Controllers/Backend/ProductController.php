@@ -7,12 +7,14 @@ use App\Http\Requests\Backend\ProductCreateRequest;
 use App\Http\Requests\Backend\ProductUpdateRequest;
 use App\Repositories\Brand\BrandRepositoryInterface;
 use App\Services\Product\ProductServiceInterface;
+use App\Services\ProductType\ProductTypeServiceInterface;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function __construct(
         protected ProductServiceInterface $productService,
+        protected ProductTypeServiceInterface $productTypeService,
         protected BrandRepositoryInterface $brandRepository
     ) {}
 
@@ -28,7 +30,8 @@ class ProductController extends Controller
     public function create()
     {
         $brands = $this->brandRepository->all();
-        return view('backend.product.create', compact('brands'));
+        $types = $this->productTypeService->get();
+        return view('backend.product.create', compact('brands', 'types'));
     }
 
     public function store(ProductCreateRequest $request)
@@ -47,7 +50,8 @@ class ProductController extends Controller
     {
         $product = $this->productService->findProduct($id);
         $brands = $this->brandRepository->all();
-        return view('backend.product.edit', compact('product', 'brands'));
+        $types = $this->productTypeService->get();
+        return view('backend.product.edit', compact('product', 'brands', 'types'));
     }
 
     public function show($id)

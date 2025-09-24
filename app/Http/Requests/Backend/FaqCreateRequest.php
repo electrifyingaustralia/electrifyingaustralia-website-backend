@@ -13,6 +13,7 @@ class FaqCreateRequest extends BaseRequest
                 'required',
                 'string',
                 'max:255',
+                'unique:faqs,question',
             ],
 
             'answer' => [

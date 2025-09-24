@@ -170,12 +170,13 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="product_type" class="block text-sm font-medium text-gray-700 mb-1">Type <span class="text-red-600 font-bold">*</span></label></label>
-                                <select name="product_type" id="product_type" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
-                                    <option value="solar_panel" selected>Solar Panel</option>
-                                    <option value="battery" >Battery</option>
-                                    <option value="ev_charger" >EV Charger</option>
-                                    <option value="inverter" >Inverter</option>
+                                <label for="product_type_id" class="block text-sm font-medium text-gray-700 mb-1">Product Type <span class="text-red-600 font-bold">*</span></label>
+                                <select name="product_type_id" id="product_type_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                    <option value="" selected>Select Type</option>
+                                    @foreach ($types as $type)
+
+                                    <option value="{{ $type->id }}" >{{ $type->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div>

@@ -18,10 +18,9 @@ class ProductResource extends JsonResource
             'is_featured'       => $this->is_featured,
             'is_active'         => $this->is_active,
             'product_link'      => $this->product_link,
-            'product_type'      => $this->product_type,
+            'type'              => $this->type->name,
             'media_id'          => $this->media_id,
             'media_url'         => $this->media_url,
-            'brand_id'          => $this->brand_id,
             'brand'             => $this->whenLoaded('brand', function () {
                 return $this->brand ? [
 

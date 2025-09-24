@@ -5,6 +5,7 @@ namespace App\Services\Package;
 use App\Repositories\Package\PackageRepositoryInterface;
 use App\Services\Package\PackageServiceInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PackageService implements PackageServiceInterface
 {
@@ -22,6 +23,7 @@ class PackageService implements PackageServiceInterface
             // Create the package
             $package = $this->packageRepository->create([
                 'name' => $data['name'],
+                'slug' => Str::slug($data['name']),
                 'subtitle' => $data['subtitle'],
                 'is_best_deal' => $data['is_best_deal'] ?? false,
             ]);
@@ -55,6 +57,7 @@ class PackageService implements PackageServiceInterface
             // Update the package
             $package = $this->packageRepository->update($id, [
                 'name' => $data['name'],
+                'slug' => Str::slug($data['name']),
                 'subtitle' => $data['subtitle'],
                 'is_best_deal' => $data['is_best_deal'] ?? false,
             ]);

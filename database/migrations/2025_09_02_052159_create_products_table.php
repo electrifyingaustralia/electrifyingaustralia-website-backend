@@ -13,16 +13,27 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
+
+            $table->string('slug');
+
             $table->string('model_number');
+
             $table->text('short_description')->nullable();
+
             $table->foreignId('brand_id')->nullable()->constrained('brands')->nullOnDelete();
+
+            $table->foreignId('product_type_id')->constrained('product_types')->cascadeOnDelete();
+
             $table->string('warranty')->nullable();
+
             $table->boolean('is_featured')->default(false);
+
             $table->boolean('is_active')->default(true);
+
             $table->string('product_link')->nullable();
+
             $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
-            $table->enum('product_type', ['solar_panel', 'battery', 'ev_charger', 'inverter']);
             // $table->string('weight')->nullable();
             // $table->longText('description')->nullable();
 

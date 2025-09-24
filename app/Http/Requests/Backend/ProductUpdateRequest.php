@@ -8,11 +8,20 @@ class ProductUpdateRequest extends BaseRequest
 {
     public function rules(): array
     {
+        $productId = $this->route('product') ?? $this->route('id');
+
         return [
             'name' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
+                Rule::unique('products', 'name')->ignore($productId),
+            ],
+
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
             ],
 
             'model_number' => [
@@ -29,6 +38,11 @@ class ProductUpdateRequest extends BaseRequest
             'brand_id' => [
                 'nullable',
                 'exists:brands,id'
+            ],
+
+            'product_type_id' => [
+                'required',
+                'exists:product_types,id',
             ],
 
             'warranty' => [
@@ -49,16 +63,6 @@ class ProductUpdateRequest extends BaseRequest
             'media_id' => [
                 'nullable',
                 'exists:media_libraries,id'
-            ],
-
-            'product_type' => [
-                'required',
-                Rule::in([
-                    'solar_panel',
-                    'battery',
-                    'ev_charger',
-                    'inverter'
-                ]),
             ],
         ];
     }

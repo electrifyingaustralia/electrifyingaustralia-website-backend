@@ -11,6 +11,7 @@ class EventCreateRequest extends BaseRequest
                 'required',
                 'string',
                 'max:255',
+                'unique:events,title'
             ],
 
             'subtitle' => [

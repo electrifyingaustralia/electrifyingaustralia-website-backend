@@ -8,10 +8,6 @@ class Project extends Model
 {
     protected $guarded = [];
 
-    protected $casts = [
-        'type' => 'string',
-    ];
-
     protected $appends = ['media_url'];
 
     public function media()
@@ -19,17 +15,18 @@ class Project extends Model
         return $this->belongsTo(MediaLibrary::class);
     }
 
-    public function getTypeNameAttribute(): string
-    {
-        return match ($this->type) {
-            'commercial'  => 'Commercial',
-            'residential' => 'Residential',
-            default       => ucfirst($this->type),
-        };
-    }
-
     public function getMediaUrlAttribute(): ?string
     {
         return $this->media?->url;
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(ProjectType::class, 'project_type_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ProjectCategory::class, 'project_category_id');
     }
 }
