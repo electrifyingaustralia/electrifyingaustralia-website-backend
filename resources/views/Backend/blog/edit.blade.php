@@ -229,6 +229,16 @@
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="grid grid-cols-1 gap-6">
                             <div>
+                                <label for="blog_category_id" class="block text-sm font-medium text-gray-700 mb-1">Select Category <span class="text-red-600 font-bold">*</span></label>
+                                <select name="blog_category_id" id="blog_category_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ $category->blog_category_id == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
                                 <label for="facebook_link" class="block text-sm font-medium text-gray-700 mb-2">Facebook Link</label>
                                 <input
                                     type="text" id="facebook_link" name="facebook_link"

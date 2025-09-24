@@ -6,11 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\BlogCreateRequest;
 use App\Http\Requests\Backend\BlogUpdateRequest;
 use App\Services\Blog\BlogServiceInterface;
+use App\Services\BlogCategory\BlogCategoryServiceInterface;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    public function __construct(protected BlogServiceInterface $blogService) {}
+    public function __construct(
+        protected BlogServiceInterface $blogService,
+        protected BlogCategoryServiceInterface $blogCategoryServiceInterface
+    ) {}
     public function index(Request $request)
     {
         $blogs = $this->blogService->get(['*'], 15, [
@@ -22,7 +26,8 @@ class BlogController extends Controller
 
     public function create()
     {
-        return view('backend.blog.create');
+        $categories = $this->blogCategoryServiceInterface->get();
+        return view('backend.blog.create', compact('categories'));
     }
 
     public function store(BlogCreateRequest $request)
@@ -46,7 +51,8 @@ class BlogController extends Controller
     public function edit($id)
     {
         $blog = $this->blogService->findBlog($id);
-        return view('Backend.blog.edit', compact('blog'));
+        $categories = $this->blogCategoryServiceInterface->get();
+        return view('Backend.blog.edit', compact('blog', 'categories'));
     }
 
     public function update(BlogUpdateRequest $request, $id)

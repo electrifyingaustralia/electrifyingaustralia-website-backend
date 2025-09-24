@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\AdminAuthController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\BenefitController;
+use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\DashboardController;
@@ -65,6 +66,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/sticky-header/{id}/edit',  'edit')->name('edit');
             Route::put('/sticky-header/{id}',  'update')->name('update');
             Route::delete('/sticky-header/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Blog-Category
+        Route::controller(BlogCategoryController::class)->name('blog-category.')->group(function () {
+            Route::get('/blog-category', 'index')->name('all');
+            Route::post('/blog-category', 'store')->name('store');
+            Route::get('/blog-category/{id}/edit',  'edit')->name('edit');
+            Route::put('/blog-category/{id}',  'update')->name('update');
+            Route::delete('/blog-category/{id}',  'destroy')->name('delete');
         });
 
         // ! Blog

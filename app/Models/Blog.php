@@ -15,6 +15,11 @@ class Blog extends Model
         return $this->belongsTo(MediaLibrary::class, 'media_id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo(BlogCategory::class, 'blog_category_id');
+    }
+
     public function getMediaUrlAttribute(): ?string
     {
         return $this->media?->url;

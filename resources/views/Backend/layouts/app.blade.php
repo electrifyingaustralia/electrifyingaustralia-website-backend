@@ -83,7 +83,39 @@
             @endif
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Define all menu items that should have dropdown functionality
+            const menuItems = [
+                { selector: 'li.group\\/blog', path: '/admin/blog' },
+                { selector: 'li.group\\/product', path: '/admin/product' },
+                { selector: 'li.group\\/event', path: '/admin/event' },
+                { selector: 'li.group\\/project', path: '/admin/project' },
+                { selector: 'li.group\\/package', path: '/admin/package' }
+            ];
 
+            menuItems.forEach(menu => {
+                const menuElements = document.querySelectorAll(menu.selector);
+
+                menuElements.forEach(item => {
+                    const menuLink = item.querySelector('a[href="javascript:void(0);"]');
+
+                    if (menuLink) {
+                        menuLink.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            item.classList.toggle('active');
+                        });
+                    }
+
+                    // Auto-expand if current route matches the menu path
+                    const currentPath = window.location.pathname;
+                    if (currentPath.includes(menu.path)) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
     @stack('scripts')
  </body>
 

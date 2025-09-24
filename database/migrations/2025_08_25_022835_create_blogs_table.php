@@ -16,11 +16,15 @@ return new class extends Migration
 
             $table->string('title');
 
+            $table->string('slug');
+
             $table->string('subtitle')->nullable();
 
             $table->longText('description')->nullable();
 
             $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
+
+            $table->foreignId('blog_category_id')->constrained('blog_categories')->cascadeOnDelete();
 
             $table->string('facebook_link')->nullable();
 
