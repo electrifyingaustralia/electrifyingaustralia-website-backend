@@ -43,6 +43,12 @@ class ProjectController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        $project = $this->projectService->findProject($id);
+        return view('backend.project.show', compact('project'));
+    }
+
     public function edit($id)
     {
         $project = $this->projectService->findProject($id);
@@ -67,5 +73,33 @@ class ProjectController extends Controller
     {
         $this->projectService->deleteProject($id);
         return redirect()->route('admin.project.all')->with('success', 'Project Deleted Successfully!');
+    }
+
+    public function assignImages($id)
+    {
+        $project = $this->projectService->findProject($id);
+        return view('backend.project.assign-images', compact('project'));
+    }
+
+    public function storeImages(Request $request, $id)
+    {
+        $request->validate([
+            'media_ids' => 'required|array',
+            'media_ids.*' => 'exists:media_libraries,id'
+        ]);
+
+        $this->projectService->syncProjectImages($id, $request->media_ids);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Images assigned successfully',
+            'redirect' => route('admin.project.all')
+        ]);
+    }
+
+    public function getProjectImages($id)
+    {
+        $images = $this->projectService->getProjectImages($id);
+        return response()->json($images);
     }
 }

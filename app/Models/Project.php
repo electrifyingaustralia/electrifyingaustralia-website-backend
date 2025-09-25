@@ -12,12 +12,25 @@ class Project extends Model
 
     public function media()
     {
-        return $this->belongsTo(MediaLibrary::class);
+        return $this->belongsTo(MediaLibrary::class, 'media_id');
+    }
+
+    public function images()
+    {
+        return $this->belongsToMany(MediaLibrary::class, 'project_images', 'project_id', 'media_id')
+            ->withTimestamps();
     }
 
     public function getMediaUrlAttribute(): ?string
     {
         return $this->media?->url;
+    }
+
+    public function getImageUrlsAttribute(): array
+    {
+        return $this->images->map(function ($image) {
+            return $image->url;
+        })->toArray();
     }
 
     public function type()
