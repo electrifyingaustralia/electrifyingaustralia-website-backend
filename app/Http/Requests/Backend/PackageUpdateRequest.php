@@ -2,15 +2,20 @@
 
 namespace App\Http\Requests\Backend;
 
+use Illuminate\Validation\Rule;
+
 class PackageUpdateRequest extends BaseRequest
 {
     public function rules(): array
     {
+        $packageId = $this->route('package') ?? $this->route('id');
+
         return [
             'name' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
+                Rule::unique('packages', 'name')->ignore($packageId),
             ],
 
             'subtitle' => [

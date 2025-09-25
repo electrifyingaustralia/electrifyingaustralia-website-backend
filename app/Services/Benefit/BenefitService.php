@@ -7,6 +7,7 @@ use App\Services\Benefit\BenefitServiceInterface;
 use App\Services\MediaLibrary\MediaLibraryServiceInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 class BenefitService implements BenefitServiceInterface
 {
@@ -34,6 +35,8 @@ class BenefitService implements BenefitServiceInterface
             }
         }
 
+        $data['slug'] = Str::slug($data['title']);
+
         return $this->benefitRepository->create($data);
     }
 
@@ -58,6 +61,8 @@ class BenefitService implements BenefitServiceInterface
                 }
             }
         }
+
+        $data['slug'] = Str::slug($data['title']);
 
         return $this->benefitRepository->update($id, $data);
     }

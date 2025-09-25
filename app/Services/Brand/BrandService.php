@@ -6,6 +6,7 @@ use App\Repositories\Brand\BrandRepositoryInterface;
 use App\Services\Brand\BrandServiceInterface;
 use App\Services\MediaLibrary\MediaLibraryServiceInterface;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 
 class BrandService implements BrandServiceInterface
 {
@@ -26,6 +27,8 @@ class BrandService implements BrandServiceInterface
             $data['logo_id'] = $media->id;
         }
 
+        $data['slug'] = Str::slug($data['name']);
+
         return $this->brandRepository->create($data);
     }
 
@@ -45,6 +48,8 @@ class BrandService implements BrandServiceInterface
             $media = $this->mediaLibrary->upload($logo);
             $data['logo_id'] = $media->id;
         }
+
+        $data['slug'] = Str::slug($data['name']);
 
         return $this->brandRepository->update($id, $data);
     }

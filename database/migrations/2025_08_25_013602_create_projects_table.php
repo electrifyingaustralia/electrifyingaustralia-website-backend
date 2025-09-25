@@ -14,15 +14,17 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
 
-            $table->string('title');
+            $table->string('title')->unique();
+
+            $table->string('slug');
 
             $table->string('subtitle');
 
             $table->longText('description')->nullable();
 
-            $table->enum('category', ['residential', 'commercial'])->default('commercial');
+            $table->foreignId('project_category_id')->constrained('project_categories')->cascadeOnDelete();
 
-            $table->enum('type', ['solar', 'batteries', 'ev_charger', 'heat_pump'])->default('solar');
+            $table->foreignId('project_type_id')->constrained('project_types')->cascadeOnDelete();
 
             $table->string('location', 255)->nullable();
 

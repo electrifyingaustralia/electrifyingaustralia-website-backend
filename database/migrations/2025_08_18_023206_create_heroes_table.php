@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('heroes', function (Blueprint $table) {
             $table->id();
 
-            $table->string('title');
+            $table->string('title')->unique();
+
+            $table->string('slug');
 
             $table->text('subtitle')->nullable();
 

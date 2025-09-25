@@ -252,28 +252,13 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="product_type" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Type <span class="text-red-600 font-bold">*</span>
-                                </label>
-
-                                <select name="product_type" id="product_type"
-                                    class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
-                                    <option value="solar_panel"
-                                        {{ old('product_type', $product->product_type) == 'solar_panel' ? 'selected' : '' }}>
-                                        Solar Panel
-                                    </option>
-                                    <option value="battery"
-                                        {{ old('product_type', $product->product_type) == 'battery' ? 'selected' : '' }}>
-                                        Battery
-                                    </option>
-                                    <option value="ev_charger"
-                                        {{ old('product_type', $product->product_type) == 'ev_charger' ? 'selected' : '' }}>
-                                        EV Charger
-                                    </option>
-                                    <option value="inverter"
-                                        {{ old('product_type', $product->product_type) == 'inverter' ? 'selected' : '' }}>
-                                        Inverter
-                                    </option>
+                                <label for="product_type_id" class="block text-sm font-medium text-gray-700 mb-1">Select Type <span class="text-red-600 font-bold">*</span></label>
+                                <select name="product_type_id" id="product_type_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                    @foreach($types as $type)
+                                        <option value="{{ $type->id }}" {{ $type->product_type_id == $type->id ? 'selected' : '' }}>
+                                            {{ $type->name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div>

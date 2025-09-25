@@ -147,7 +147,7 @@
     <script>
         function confirmDelete(id) {
             const form = document.getElementById('delete-form');
-            form.action = `/admin/sticky-header/${id}`;
+            form.action = `/admin/blog-category/${id}`;
             document.getElementById('delete-modal').classList.remove('hidden');
         }
 

@@ -7,6 +7,7 @@ use App\Services\MediaLibrary\MediaLibraryServiceInterface;
 use App\Services\Product\ProductServiceInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 
 class ProductService implements ProductServiceInterface
@@ -34,6 +35,8 @@ class ProductService implements ProductServiceInterface
                 $data['media_id'] = $uploaded->id;
             }
         }
+
+        $data['slug'] = Str::slug($data['name']);
 
         return $this->productRepository->create($data);
     }
@@ -64,6 +67,8 @@ class ProductService implements ProductServiceInterface
         if (isset($data['is_active'])) {
             $data['is_active'] = (bool)$data['is_active'];
         }
+
+        $data['slug'] = Str::slug($data['name']);
 
         return $this->productRepository->update($id, $data);
     }

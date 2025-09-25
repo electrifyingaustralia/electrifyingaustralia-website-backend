@@ -13,6 +13,7 @@ class ProjectCreateRequest extends BaseRequest
                 'required',
                 'string',
                 'max:255',
+                'unique:projects,title',
             ],
 
             'subtitle' => [
@@ -26,14 +27,14 @@ class ProjectCreateRequest extends BaseRequest
                 'string',
             ],
 
-            'category' => [
+            'project_category_id' => [
                 'required',
-                Rule::in(['commercial', 'residential']),
+                'exists:project_categories,id',
             ],
 
-            'type' => [
+            'project_type_id' => [
                 'required',
-                Rule::in(['solar', 'batteries', 'ev_charger', 'heat_pump']),
+                'exists:project_types,id',
             ],
 
             'location' => [

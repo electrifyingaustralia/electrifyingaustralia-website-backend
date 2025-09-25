@@ -16,6 +16,12 @@ class BrandCreateRequest extends BaseRequest
                 Rule::unique('brands', 'name')
             ],
 
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
             'logo_id' => [
                 'required',
                 'integer',

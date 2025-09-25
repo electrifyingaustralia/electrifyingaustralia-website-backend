@@ -6,6 +6,7 @@ use App\Repositories\Project\ProjectRepositoryInterface;
 use App\Services\MediaLibrary\MediaLibraryServiceInterface;
 use App\Services\Project\ProjectServiceInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 class ProjectService implements ProjectServiceInterface
 {
@@ -33,6 +34,8 @@ class ProjectService implements ProjectServiceInterface
             }
         }
 
+        $data['slug'] = Str::slug($data['title']);
+
         return $this->projectRepository->create($data);
     }
 
@@ -54,6 +57,8 @@ class ProjectService implements ProjectServiceInterface
                 }
             }
         }
+
+        $data['slug'] = Str::slug($data['title']);
 
         return $this->projectRepository->update($id, $data);
     }

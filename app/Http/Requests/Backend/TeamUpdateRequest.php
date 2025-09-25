@@ -2,14 +2,24 @@
 
 namespace App\Http\Requests\Backend;
 
+use Illuminate\Validation\Rule;
+
 
 class TeamUpdateRequest extends BaseRequest
 {
     public function rules(): array
     {
+        $teamId = $this->route('team') ?? $this->route('id');
         return [
             'name' => [
                 'required',
+                'string',
+                'max:255',
+                Rule::unique('teams', 'name')->ignore($teamId),
+            ],
+
+            'slug' => [
+                'nullable',
                 'string',
                 'max:255',
             ],
