@@ -242,7 +242,7 @@
                         <div class="grid grid-cols-1 gap-6">
                             <div>
                                 <label for="brand_id" class="block text-sm font-medium text-gray-700 mb-1">Select Brand <span class="text-red-600 font-bold">*</span></label>
-                                <select name="brand_id" id="brand_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                <select name="brand_id" id="brand_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500" required>
                                     {{-- <option value="" selected>Select brand</option> --}}
                                     @foreach($brands as $brand)
                                         <option value="{{ $brand->id }}" {{ $product->brand_id == $brand->id ? 'selected' : '' }}>
@@ -253,7 +253,7 @@
                             </div>
                             <div>
                                 <label for="product_type_id" class="block text-sm font-medium text-gray-700 mb-1">Select Type <span class="text-red-600 font-bold">*</span></label>
-                                <select name="product_type_id" id="product_type_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                <select name="product_type_id" id="product_type_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500" required>
                                     @foreach($types as $type)
                                         <option value="{{ $type->id }}" {{ $type->product_type_id == $type->id ? 'selected' : '' }}>
                                             {{ $type->name }}

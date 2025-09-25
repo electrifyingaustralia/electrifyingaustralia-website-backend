@@ -150,7 +150,7 @@
                         <div class="grid grid-cols-1 gap-6">
                             <div>
                                 <label for="project_category_id" class="block text-sm font-medium text-gray-700 mb-1">Project Category <span class="text-red-600 font-bold">*</span></label>
-                                <select name="project_category_id" id="project_category_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                <select name="project_category_id" id="project_category_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500" required>
                                     <option value="" selected>Select Category</option>
                                     @foreach ($categories as $category)
 
@@ -160,7 +160,7 @@
                             </div>
                             <div>
                                 <label for="project_type_id" class="block text-sm font-medium text-gray-700 mb-1">Project Type <span class="text-red-600 font-bold">*</span></label>
-                                <select name="project_type_id" id="project_type_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                <select name="project_type_id" id="project_type_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500" required>
                                     <option value="" selected>Select Type</option>
                                     @foreach ($types as $type)
 
