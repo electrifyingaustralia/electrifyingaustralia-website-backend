@@ -67,4 +67,24 @@ class ProjectService implements ProjectServiceInterface
     {
         return $this->projectRepository->delete($id);
     }
+
+    public function attachImageToProject(int $projectId, int $mediaId): void
+    {
+        $this->projectRepository->attachImage($projectId, $mediaId);
+    }
+
+    public function detachImageFromProject(int $projectId, int $mediaId): void
+    {
+        $this->projectRepository->detachImage($projectId, $mediaId);
+    }
+
+    public function syncProjectImages(int $projectId, array $mediaIds): void
+    {
+        $this->projectRepository->syncImages($projectId, $mediaIds);
+    }
+
+    public function getProjectImages(int $projectId)
+    {
+        return $this->projectRepository->getImages($projectId);
+    }
 }

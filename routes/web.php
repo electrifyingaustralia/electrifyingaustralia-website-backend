@@ -131,9 +131,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/event/{id}',  'update')->name('update');
             Route::delete('/event/{id}',  'destroy')->name('delete');
 
-            Route::get('events/{id}/assign-images', [EventController::class, 'assignImages'])->name('assign-images');
-            Route::post('events/{id}/store-images', [EventController::class, 'storeImages'])->name('store-images');
-            Route::get('events/{id}/images', [EventController::class, 'getEventImages'])->name('images');
+            Route::get('events/{id}/assign-images',  'assignImages')->name('assign-images');
+            Route::post('events/{id}/store-images',  'storeImages')->name('store-images');
+            Route::get('events/{id}/images',  'getEventImages')->name('images');
         });
 
         // ! Project-Type
@@ -163,6 +163,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/project/{id}',  'show')->name('show');
             Route::put('/project/{id}',  'update')->name('update');
             Route::delete('/project/{id}',  'destroy')->name('delete');
+
+            Route::get('/project/{id}/assign-images',  'assignImages')->name('assign-images');
+            Route::post('/project/{id}/store-images',  'storeImages')->name('store-images');
+            Route::get('/project/{id}/images',  'getProjectImages')->name('images');
         });
 
         // ! Package
