@@ -24,7 +24,9 @@ class ProductController extends Controller
             'type'   => $request->get('type'),
             'search' => $request->get('search'),
         ]);
-        return view('backend.product.index', compact('products'));
+
+        $productTypes = $this->productTypeService->get();
+        return view('backend.product.index', compact('products', 'productTypes'));
     }
 
     public function create()

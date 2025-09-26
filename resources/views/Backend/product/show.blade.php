@@ -69,8 +69,8 @@
                                         <span class="text-teal-800 font-medium">{{ $product->warranty }}</span>
                                     </li>
                                     <li class="flex justify-between">
-                                        <span class="text-teal-600">Brand</span>
-                                        <span class="text-teal-800 font-medium">{{ $product->brand->name }}</span>
+                                        <span class="text-teal-600">Type</span>
+                                        <span class="text-teal-800 font-medium">{{ $product->type->name }}</span>
                                     </li>
                                     <li class="flex justify-between">
                                         <span class="text-teal-600">Featured</span>
