@@ -4,6 +4,7 @@ namespace App\Services\SolutionCard;
 
 use App\Repositories\SolutionCard\SolutionCardRepositoryInterface;
 use App\Services\SolutionCard\SolutionCardServiceInterface;
+use Illuminate\Support\Str;
 
 class SolutionCardService implements SolutionCardServiceInterface
 {
@@ -16,6 +17,7 @@ class SolutionCardService implements SolutionCardServiceInterface
 
     public function createSolutionCard(array $data): object
     {
+        $data['slug'] = Str::slug($data['title']);
         return $this->solutionCardRepository->create($data);
     }
 
@@ -26,6 +28,7 @@ class SolutionCardService implements SolutionCardServiceInterface
 
     public function updateSolutionCard(int $id, array $data): object
     {
+        $data['slug'] = Str::slug($data['title']);
         return $this->solutionCardRepository->update($id, $data);
     }
 

@@ -70,4 +70,28 @@ class ProjectRepository implements ProjectRepositoryInterface
         $instance = $this->find($id);
         return (bool) $instance->delete();
     }
+
+    public function attachImage(int $projectId, int $mediaId): void
+    {
+        $project = $this->find($projectId);
+        $project->images()->attach($mediaId);
+    }
+
+    public function detachImage(int $projectId, int $mediaId): void
+    {
+        $project = $this->find($projectId);
+        $project->images()->detach($mediaId);
+    }
+
+    public function syncImages(int $projectId, array $mediaIds): void
+    {
+        $project = $this->find($projectId);
+        $project->images()->sync($mediaIds);
+    }
+
+    public function getImages(int $projectId)
+    {
+        $project = $this->find($projectId);
+        return $project->images;
+    }
 }

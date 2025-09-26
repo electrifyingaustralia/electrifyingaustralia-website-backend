@@ -8,12 +8,14 @@ class FaqUpdateRequest extends BaseRequest
 {
     public function rules(): array
     {
+        $faqId = $this->route('faq') ?? $this->route('id');
+
         return [
             'question' => [
-                'sometimes',
                 'required',
                 'string',
                 'max:255',
+                Rule::unique('events', 'title')->ignore($faqId),
             ],
             'answer' => [
                 'sometimes',

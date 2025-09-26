@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
+            $table->string('slug');
             $table->text('subtitle');
             $table->boolean('is_best_deal')->default(false);
             $table->timestamps();

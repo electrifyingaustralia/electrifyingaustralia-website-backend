@@ -10,7 +10,14 @@ class BenefitCreateRequest extends BaseRequest
             'title' => [
                 'required',
                 'string',
+                'unique:benefits,title',
                 'max:255',
+            ],
+
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255'
             ],
 
             'subtitle' => [

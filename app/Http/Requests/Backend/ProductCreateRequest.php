@@ -12,7 +12,14 @@ class ProductCreateRequest extends BaseRequest
             'name' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
+                'unique:products,name'
+            ],
+
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
             ],
 
             'model_number' => [
@@ -29,6 +36,11 @@ class ProductCreateRequest extends BaseRequest
             'brand_id' => [
                 'nullable',
                 'exists:brands,id'
+            ],
+
+            'product_type_id' => [
+                'required',
+                'exists:product_types,id',
             ],
 
             'warranty' => [
@@ -51,15 +63,7 @@ class ProductCreateRequest extends BaseRequest
                 'exists:media_libraries,id'
             ],
 
-            'product_type' => [
-                'required',
-                Rule::in([
-                    'solar_panel',
-                    'battery',
-                    'ev_charger',
-                    'inverter'
-                ]),
-            ],
+
         ];
     }
 }

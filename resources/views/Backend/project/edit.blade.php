@@ -233,37 +233,23 @@
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label for="category" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Project Category <span class="text-red-600 font-bold">*</span>
-                                </label>
-                                <select name="category" id="category"
-                                    class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
-                                    <option value="commercial" {{ old('category', $project->category ?? '') == 'commercial' ? 'selected' : '' }}>
-                                        Commercial
-                                    </option>
-                                    <option value="residential" {{ old('category', $project->category ?? '') == 'residential' ? 'selected' : '' }}>
-                                        Residential
-                                    </option>
+                                <label for="project_category_id" class="block text-sm font-medium text-gray-700 mb-1">Select Category <span class="text-red-600 font-bold">*</span></label>
+                                <select name="project_category_id" id="project_category_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500" required>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ $category->project_category_id == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div>
-                                <label for="type" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Project Type <span class="text-red-600 font-bold">*</span>
-                                </label>
-                                <select name="type" id="type"
-                                    class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
-                                    <option value="solar" {{ old('type', $project->type ?? '') == 'solar' ? 'selected' : '' }}>
-                                        Solar
-                                    </option>
-                                    <option value="batteries" {{ old('type', $project->type ?? '') == 'batteries' ? 'selected' : '' }}>
-                                        Batteries
-                                    </option>
-                                    <option value="ev_charger" {{ old('type', $project->type ?? '') == 'ev_charger' ? 'selected' : '' }}>
-                                        EV Charger
-                                    </option>
-                                    <option value="heat_pump" {{ old('type', $project->type ?? '') == 'heat_pump' ? 'selected' : '' }}>
-                                        Heat pump
-                                    </option>
+                                <label for="project_type_id" class="block text-sm font-medium text-gray-700 mb-1">Select Type <span class="text-red-600 font-bold">*</span></label>
+                                <select name="project_type_id" id="project_type_id" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500" required>
+                                    @foreach($types as $type)
+                                        <option value="{{ $type->id }}" {{ $type->project_type_id == $type->id ? 'selected' : '' }}>
+                                            {{ $type->name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

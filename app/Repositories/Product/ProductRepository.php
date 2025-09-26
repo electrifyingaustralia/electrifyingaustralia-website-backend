@@ -75,7 +75,9 @@ class ProductRepository implements ProductRepositoryInterface
     private function applyFilters(Builder $q, array $filters): Builder
     {
         if (!empty($filters['type'])) {
-            $q->where('product_type', $filters['type']);
+            $q->whereHas('type', function ($query) use ($filters) {
+                $query->where('slug', $filters['type']);
+            });
         }
 
         if (!empty($filters['search'])) {

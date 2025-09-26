@@ -44,10 +44,11 @@
                     <div class="min-w-1/5">
                         <select name="type" id="type-filter" class="w-full p-2 border border-gray-300 rounded-lg" onchange="this.form.submit()">
                             <option value="">All Product Types</option>
-                            <option value="solar_panel" {{ request('type') == 'solar_panel' ? 'selected' : '' }}>Solar Panel</option>
-                            <option value="battery" {{ request('type') == 'battery' ? 'selected' : '' }}>Battery</option>
-                            <option value="ev_charger" {{ request('type') == 'ev_charger' ? 'selected' : '' }}>Ev Charger</option>
-                            <option value="inverter" {{ request('type') == 'inverter' ? 'selected' : '' }}>Inverter</option>
+                            @foreach($productTypes as $type)
+                                <option value="{{ $type->slug }}" {{ request('type') == $type->slug ? 'selected' : '' }}>
+                                    {{ $type->name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -83,17 +84,7 @@
                             </td>
                             <td class="px-6 py-4 max-w-[10rem] truncate">{{ $product->name }}</td>
                             <td class="px-6 py-4 max-w-[10rem] truncate">{{ $product->brand->name }}</td>
-                            <td class="px-6 py-4 max-w-[10rem] truncate">
-                                @if ($product->product_type === 'solar_panel')
-                                    <span>Solar Panel</span>
-                                @elseif ($product->product_type === 'battery')
-                                    <span>Battery</span>
-                                @elseif ($product->product_type === 'ev_charger')
-                                    <span>Ev Charger</span>
-                                @elseif ($product->product_type === 'inverter')
-                                    <span>Inverter</span>
-                                @endif
-                            </td>
+                            <td class="px-6 py-4 max-w-[10rem] truncate">{{ $product->type->name }}</td>
                             <td class="px-6 py-4">
                                 @if($product->is_active == 1)
                                     <span class="text-green-600 font-bold">Active</span>

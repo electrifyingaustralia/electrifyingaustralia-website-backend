@@ -12,6 +12,11 @@ class BlogUpdateRequest extends BaseRequest
                 'string',
                 'max:255',
             ],
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
             'subtitle' => [
                 'nullable',
                 'string',
@@ -24,6 +29,10 @@ class BlogUpdateRequest extends BaseRequest
             'media_id' => [
                 'nullable',
                 'exists:media_libraries,id',
+            ],
+            'blog_category_id' => [
+                'required',
+                'exists:blog_categories,id',
             ],
             'facebook_link' => [
                 'nullable',

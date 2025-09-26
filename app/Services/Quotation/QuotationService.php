@@ -5,6 +5,7 @@ namespace App\Services\Quotation;
 use App\Repositories\Quotation\QuotationRepositoryInterface;
 use App\Services\Quotation\QuotationServiceInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class QuotationService implements QuotationServiceInterface
 {
@@ -17,6 +18,7 @@ class QuotationService implements QuotationServiceInterface
 
     public function createQuotation(array $data): object
     {
+        $data['slug'] = Str::slug($data['category']);
         return $this->quotationRepository->create($data);
     }
 
@@ -27,6 +29,7 @@ class QuotationService implements QuotationServiceInterface
 
     public function updateQuotation(int $id, array $data): object
     {
+        $data['slug'] = Str::slug($data['category']);
         return $this->quotationRepository->update($id, $data);
     }
 

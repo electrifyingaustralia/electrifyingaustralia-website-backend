@@ -7,6 +7,7 @@ use App\Services\Hero\HeroServiceInterface;
 use App\Services\MediaLibrary\MediaLibraryServiceInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 class HeroService implements HeroServiceInterface
 {
@@ -44,6 +45,8 @@ class HeroService implements HeroServiceInterface
             }
         }
 
+        $data['slug'] = Str::slug($data['title']);
+
         return $this->heroRepository->create($data);
     }
 
@@ -64,6 +67,8 @@ class HeroService implements HeroServiceInterface
         if (isset($data['is_active'])) {
             $data['is_active'] = (bool)$data['is_active'];
         }
+
+        $data['slug'] = Str::slug($data['title']);
 
         return $this->heroRepository->update($id, $data);
     }

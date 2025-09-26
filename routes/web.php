@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\AdminAuthController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\BenefitController;
+use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\DashboardController;
@@ -12,7 +13,10 @@ use App\Http\Controllers\backend\HeroController;
 use App\Http\Controllers\Backend\MediaLibraryController;
 use App\Http\Controllers\Backend\PackageController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\ProductTypeController;
+use App\Http\Controllers\Backend\ProjectCategoryController;
 use App\Http\Controllers\Backend\ProjectController;
+use App\Http\Controllers\Backend\ProjectTypeController;
 use App\Http\Controllers\Backend\QuestionController;
 use App\Http\Controllers\Backend\QuotationController;
 use App\Http\Controllers\Backend\SettingController;
@@ -22,6 +26,8 @@ use App\Http\Controllers\Backend\TeamController;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
+
+Route::redirect('/', '/admin/login');
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -65,6 +71,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/sticky-header/{id}/edit',  'edit')->name('edit');
             Route::put('/sticky-header/{id}',  'update')->name('update');
             Route::delete('/sticky-header/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Blog-Category
+        Route::controller(BlogCategoryController::class)->name('blog-category.')->group(function () {
+            Route::get('/blog-category', 'index')->name('all');
+            Route::post('/blog-category', 'store')->name('store');
+            Route::get('/blog-category/{id}/edit',  'edit')->name('edit');
+            Route::put('/blog-category/{id}',  'update')->name('update');
+            Route::delete('/blog-category/{id}',  'destroy')->name('delete');
         });
 
         // ! Blog
@@ -118,9 +133,27 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/event/{id}',  'update')->name('update');
             Route::delete('/event/{id}',  'destroy')->name('delete');
 
-            Route::get('events/{id}/assign-images', [EventController::class, 'assignImages'])->name('assign-images');
-            Route::post('events/{id}/store-images', [EventController::class, 'storeImages'])->name('store-images');
-            Route::get('events/{id}/images', [EventController::class, 'getEventImages'])->name('images');
+            Route::get('events/{id}/assign-images',  'assignImages')->name('assign-images');
+            Route::post('events/{id}/store-images',  'storeImages')->name('store-images');
+            Route::get('events/{id}/images',  'getEventImages')->name('images');
+        });
+
+        // ! Project-Type
+        Route::controller(ProjectTypeController::class)->name('project-type.')->group(function () {
+            Route::get('/project-type', 'index')->name('all');
+            Route::post('/project-type', 'store')->name('store');
+            Route::get('/project-type/{id}/edit',  'edit')->name('edit');
+            Route::put('/project-type/{id}',  'update')->name('update');
+            Route::delete('/project-type/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Project-Category
+        Route::controller(ProjectCategoryController::class)->name('project-category.')->group(function () {
+            Route::get('/project-category', 'index')->name('all');
+            Route::post('/project-category', 'store')->name('store');
+            Route::get('/project-category/{id}/edit',  'edit')->name('edit');
+            Route::put('/project-category/{id}',  'update')->name('update');
+            Route::delete('/project-category/{id}',  'destroy')->name('delete');
         });
 
         // ! Project
@@ -132,6 +165,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/project/{id}',  'show')->name('show');
             Route::put('/project/{id}',  'update')->name('update');
             Route::delete('/project/{id}',  'destroy')->name('delete');
+
+            Route::get('/project/{id}/assign-images',  'assignImages')->name('assign-images');
+            Route::post('/project/{id}/store-images',  'storeImages')->name('store-images');
+            Route::get('/project/{id}/images',  'getProjectImages')->name('images');
         });
 
         // ! Package
@@ -164,6 +201,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/solution-card/{id}',  'show')->name('show');
             Route::put('/solution-card/{id}',  'update')->name('update');
             Route::delete('/solution-card/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Product-Type
+        Route::controller(ProductTypeController::class)->name('product-type.')->group(function () {
+            Route::get('/product-type', 'index')->name('all');
+            Route::post('/product-type', 'store')->name('store');
+            Route::get('/product-type/{id}/edit',  'edit')->name('edit');
+            Route::put('/product-type/{id}',  'update')->name('update');
+            Route::delete('/product-type/{id}',  'destroy')->name('delete');
         });
 
         // ! Products

@@ -4,6 +4,7 @@ namespace App\Services\Faq;
 
 use App\Repositories\Faq\FaqRepositoryInterface;
 use App\Services\Faq\FaqServiceInterface;
+use Illuminate\Support\Str;
 
 class FaqService implements FaqServiceInterface
 {
@@ -16,6 +17,7 @@ class FaqService implements FaqServiceInterface
 
     public function createFaq(array $data): object
     {
+        $data['slug'] = Str::slug($data['question']);
         return $this->faqRepository->create($data);
     }
 
@@ -26,6 +28,7 @@ class FaqService implements FaqServiceInterface
 
     public function updateFaq(int $id, array $data): object
     {
+        $data['slug'] = Str::slug($data['question']);
         return $this->faqRepository->update($id, $data);
     }
 

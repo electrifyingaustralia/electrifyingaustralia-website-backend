@@ -6,11 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\ProjectCreateRequest;
 use App\Http\Requests\Backend\ProjectUpdateRequest;
 use App\Services\Project\ProjectServiceInterface;
+use App\Services\ProjectCategory\ProjectCategoryServiceInterface;
+use App\Services\ProjectType\ProjectTypeServiceInterface;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function __construct(protected ProjectServiceInterface $projectService) {}
+    public function __construct(
+        protected ProjectServiceInterface $projectService,
+        protected ProjectCategoryServiceInterface $projectCategoryService,
+        protected ProjectTypeServiceInterface $projectTypeService
+    ) {}
 
     public function index()
     {
@@ -20,7 +26,9 @@ class ProjectController extends Controller
 
     public function create()
     {
-        return view('backend.project.create');
+        $categories = $this->projectCategoryService->get();
+        $types = $this->projectTypeService->get();
+        return view('backend.project.create', compact('categories', 'types'));
     }
 
     public function store(ProjectCreateRequest $request)
@@ -35,10 +43,18 @@ class ProjectController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        $project = $this->projectService->findProject($id);
+        return view('backend.project.show', compact('project'));
+    }
+
     public function edit($id)
     {
         $project = $this->projectService->findProject($id);
-        return view('backend.project.edit', compact('project'));
+        $categories = $this->projectCategoryService->get();
+        $types = $this->projectTypeService->get();
+        return view('backend.project.edit', compact('project', 'categories', 'types'));
     }
 
     public function update(ProjectUpdateRequest $request, $id)
@@ -57,5 +73,33 @@ class ProjectController extends Controller
     {
         $this->projectService->deleteProject($id);
         return redirect()->route('admin.project.all')->with('success', 'Project Deleted Successfully!');
+    }
+
+    public function assignImages($id)
+    {
+        $project = $this->projectService->findProject($id);
+        return view('backend.project.assign-images', compact('project'));
+    }
+
+    public function storeImages(Request $request, $id)
+    {
+        $request->validate([
+            'media_ids' => 'required|array',
+            'media_ids.*' => 'exists:media_libraries,id'
+        ]);
+
+        $this->projectService->syncProjectImages($id, $request->media_ids);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Images assigned successfully',
+            'redirect' => route('admin.project.all')
+        ]);
+    }
+
+    public function getProjectImages($id)
+    {
+        $images = $this->projectService->getProjectImages($id);
+        return response()->json($images);
     }
 }

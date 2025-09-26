@@ -6,6 +6,7 @@ use App\Repositories\Project\ProjectRepositoryInterface;
 use App\Services\MediaLibrary\MediaLibraryServiceInterface;
 use App\Services\Project\ProjectServiceInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 class ProjectService implements ProjectServiceInterface
 {
@@ -33,6 +34,8 @@ class ProjectService implements ProjectServiceInterface
             }
         }
 
+        $data['slug'] = Str::slug($data['title']);
+
         return $this->projectRepository->create($data);
     }
 
@@ -55,11 +58,33 @@ class ProjectService implements ProjectServiceInterface
             }
         }
 
+        $data['slug'] = Str::slug($data['title']);
+
         return $this->projectRepository->update($id, $data);
     }
 
     public function deleteProject(int $id): bool
     {
         return $this->projectRepository->delete($id);
+    }
+
+    public function attachImageToProject(int $projectId, int $mediaId): void
+    {
+        $this->projectRepository->attachImage($projectId, $mediaId);
+    }
+
+    public function detachImageFromProject(int $projectId, int $mediaId): void
+    {
+        $this->projectRepository->detachImage($projectId, $mediaId);
+    }
+
+    public function syncProjectImages(int $projectId, array $mediaIds): void
+    {
+        $this->projectRepository->syncImages($projectId, $mediaIds);
+    }
+
+    public function getProjectImages(int $projectId)
+    {
+        return $this->projectRepository->getImages($projectId);
     }
 }

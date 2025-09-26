@@ -5,6 +5,7 @@ namespace App\Services\Question;
 use App\Repositories\Question\QuestionRepositoryInterface;
 use App\Services\Question\QuestionServiceInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -20,6 +21,7 @@ class QuestionService implements QuestionServiceInterface
             // Create the question
             $question = $this->questionRepository->create([
                 'question' => $data['question'],
+                'slug' => Str::slug($data['question']),
             ]);
 
             // Add options
@@ -45,6 +47,7 @@ class QuestionService implements QuestionServiceInterface
             // Update the question
             $question = $this->questionRepository->update($id, [
                 'question' => $data['question'],
+                'slug' => Str::slug($data['question']),
             ]);
 
             // Remove existing options

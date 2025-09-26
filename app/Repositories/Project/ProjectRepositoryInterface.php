@@ -16,4 +16,8 @@ interface ProjectRepositoryInterface
     public function update(int $id, array $data): object;
     public function exists(int $id): bool;
     public function delete(int $id): bool;
+    public function attachImage(int $projectId, int $mediaId): void;
+    public function detachImage(int $projectId, int $mediaId): void;
+    public function syncImages(int $projectId, array $mediaIds): void;
+    public function getImages(int $projectId);
 }

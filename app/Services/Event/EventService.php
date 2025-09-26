@@ -7,6 +7,7 @@ use App\Services\Event\EventServiceInterface;
 use App\Services\MediaLibrary\MediaLibraryServiceInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 
 class EventService implements EventServiceInterface
@@ -35,6 +36,8 @@ class EventService implements EventServiceInterface
             }
         }
 
+        $data['slug'] = Str::slug($data['title']);
+
         return $this->eventRepository->create($data);
     }
 
@@ -60,6 +63,8 @@ class EventService implements EventServiceInterface
         if (isset($data['is_active'])) {
             $data['is_active'] = (bool)$data['is_active'];
         }
+
+        $data['slug'] = Str::slug($data['title']);
 
         return $this->eventRepository->update($id, $data);
     }

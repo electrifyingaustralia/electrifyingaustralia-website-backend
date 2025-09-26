@@ -12,4 +12,8 @@ interface ProjectServiceInterface
     public function findProject(int $id): object;
     public function updateProject(int $id, array $data): object;
     public function deleteProject(int $id): bool;
+    public function attachImageToProject(int $projectId, int $mediaId): void;
+    public function detachImageFromProject(int $projectId, int $mediaId): void;
+    public function syncProjectImages(int $projectId, array $mediaIds): void;
+    public function getProjectImages(int $projectId);
 }

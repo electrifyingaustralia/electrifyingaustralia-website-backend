@@ -7,6 +7,7 @@ use App\Services\Blog\BlogServiceInterface;
 use App\Services\MediaLibrary\MediaLibraryServiceInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 class BlogService implements BlogServiceInterface
 {
@@ -34,6 +35,8 @@ class BlogService implements BlogServiceInterface
             }
         }
 
+        $data['slug'] = Str::slug($data['title']);
+
         return $this->blogRepository->create($data);
     }
 
@@ -60,6 +63,8 @@ class BlogService implements BlogServiceInterface
         if (isset($data['is_active'])) {
             $data['is_active'] = (bool)$data['is_active'];
         }
+
+        $data['slug'] = Str::slug($data['title']);
 
         return $this->blogRepository->update($id, $data);
     }

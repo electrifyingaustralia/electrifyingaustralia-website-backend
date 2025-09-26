@@ -32,6 +32,10 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Repositories\Product\ProductRepositoryInterface::class => \App\Repositories\Product\ProductRepository::class,
             \App\Repositories\Quotation\QuotationRepositoryInterface::class => \App\Repositories\Quotation\QuotationRepository::class,
             \App\Repositories\Question\QuestionRepositoryInterface::class => \App\Repositories\Question\QuestionRepository::class,
+            \App\Repositories\BlogCategory\BlogCategoryRepositoryInterface::class => \App\Repositories\BlogCategory\BlogCategoryRepository::class,
+            \App\Repositories\ProductType\ProductTypeRepositoryInterface::class => \App\Repositories\ProductType\ProductTypeRepository::class,
+            \App\Repositories\ProjectType\ProjectTypeRepositoryInterface::class => \App\Repositories\ProjectType\ProjectTypeRepository::class,
+            \App\Repositories\ProjectCategory\ProjectCategoryRepositoryInterface::class => \App\Repositories\ProjectCategory\ProjectCategoryRepository::class,
         ];
 
         $services = [
@@ -57,6 +61,10 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Services\Quotation\QuotationServiceInterface::class => \App\Services\Quotation\QuotationService::class,
             \App\Services\Question\QuestionServiceInterface::class => \App\Services\Question\QuestionService::class,
             \App\Services\Question\QuestionServiceInterface::class => \App\Services\Question\QuestionService::class,
+            \App\Services\BlogCategory\BlogCategoryServiceInterface::class => \App\Services\BlogCategory\BlogCategoryService::class,
+            \App\Services\ProductType\ProductTypeServiceInterface::class => \App\Services\ProductType\ProductTypeService::class,
+            \App\Services\ProjectCategory\ProjectCategoryServiceInterface::class => \App\Services\ProjectCategory\ProjectCategoryService::class,
+            \App\Services\ProjectType\ProjectTypeServiceInterface::class => \App\Services\ProjectType\ProjectTypeService::class,
         ];
 
         $bindings = array_merge($repositories, $services);

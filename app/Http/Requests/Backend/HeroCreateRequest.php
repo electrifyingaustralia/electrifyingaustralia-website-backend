@@ -10,7 +10,8 @@ class HeroCreateRequest extends BaseRequest
             'title' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
+                'unique:heroes,title'
             ],
 
             'subtitle' => [

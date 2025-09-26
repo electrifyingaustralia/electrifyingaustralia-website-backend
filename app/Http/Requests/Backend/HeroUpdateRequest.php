@@ -2,15 +2,20 @@
 
 namespace App\Http\Requests\Backend;
 
+use Illuminate\Validation\Rule;
+
 class HeroUpdateRequest extends BaseRequest
 {
     public function rules(): array
     {
+        $heroId = $this->route('hero') ?? $this->route('id');
+
         return [
             'title' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
+                Rule::unique('heroes', 'title')->ignore($heroId),
             ],
 
             'subtitle' => [
