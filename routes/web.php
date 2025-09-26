@@ -27,6 +27,8 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 
+Route::redirect('/', '/admin/login');
+
 Route::prefix('admin')->name('admin.')->group(function () {
 
     // !Login & Logout
