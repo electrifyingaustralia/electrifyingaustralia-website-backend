@@ -15,11 +15,10 @@ class TeamResource extends JsonResource
             // change
             'slug' => $this->slug,
             // change
-            'email' => $this->email,
             'designation' => $this->designation,
+            'email' => $this->email,
             'phone' => $this->phone,
             'description' => $this->description,
-            'short_description' => $this->short_description,
             'media_id' => $this->media_id,
             'media_url' => $this->media_url,
             'status' => $this->status,

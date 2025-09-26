@@ -16,6 +16,7 @@ class HeroResource extends JsonResource
             'slug' => $this->slug,
             // change
             'subtitle' => $this->subtitle,
+            'video_url' => $this->video_url,
             'media_url' => $this->media_url,
             'media_id' => $this->media_id,
             'is_active' => $this->is_active,

@@ -10,13 +10,14 @@ class BenefitResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'         => $this->id,
-            'title'      => $this->title,
-            'subtitle'   => $this->subtitle,
-            'bold_info'  => $this->bold_info,
-            'media_id'   => $this->media_id,
-            'media_url'  => $this->media_url,
-            'is_active'  => $this->is_active,
+            'id' => $this->id,
+            'title' => $this->title,
+            'slug' => $this->slug,
+            'subtitle' => $this->subtitle,
+            'bold_info' => $this->bold_info,
+            'media_id' => $this->media_id,
+            'media_url' => $this->media_url,
+            'is_active' => $this->is_active,
             'created_at' => $this->created_at->toISOString(),
             'updated_at' => $this->updated_at->toISOString(),
         ];

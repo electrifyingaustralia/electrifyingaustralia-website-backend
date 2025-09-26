@@ -10,14 +10,15 @@ class PackageResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'           => $this->id,
-            'name'         => $this->name,
-            'subtitle'     => $this->subtitle,
+            'id' => $this->id,
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'subtitle' => $this->subtitle,
             'is_best_deal' => $this->is_best_deal,
-            'features'     => $this->whenLoaded('features', function () {
+            'features' => $this->whenLoaded('features', function () {
                 return $this->features->map(function ($feature) {
                     return [
-                        'id'      => $feature->id,
+                        'id' => $feature->id,
                         'feature' => $feature->feature,
                     ];
                 });
