@@ -22,17 +22,9 @@ class FaqUpdateRequest extends BaseRequest
                 'required',
                 'string',
             ],
-            'type' => [
-                'sometimes',
+            'faq_type_id' => [
                 'required',
-                'string',
-                Rule::in([
-                    'General',
-                    'Solar & Battery',
-                    'EV Charger',
-                    'VPP & Energy Solutions',
-                    'Installation & Support',
-                ]),
+                'exists:faq_types,id'
             ],
             'is_active' => [
                 'sometimes',

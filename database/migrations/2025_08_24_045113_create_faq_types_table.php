@@ -11,19 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('faqs', function (Blueprint $table) {
+        Schema::create('faq_types', function (Blueprint $table) {
             $table->id();
-
-            $table->string('question')->unique();
-
+            $table->string('name')->unique();
             $table->string('slug');
-
-            $table->longText('answer');
-
-            $table->foreignId('faq_type_id')->constrained('faq_types')->cascadeOnDelete();
-
-            $table->boolean('is_active')->default(true);
-
             $table->timestamps();
         });
     }
@@ -33,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('faqs');
+        Schema::dropIfExists('faq_types');
     }
 };

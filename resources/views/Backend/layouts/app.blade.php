@@ -91,7 +91,8 @@
                 { selector: 'li.group\\/product', path: '/admin/product' },
                 { selector: 'li.group\\/event', path: '/admin/event' },
                 { selector: 'li.group\\/project', path: '/admin/project' },
-                { selector: 'li.group\\/package', path: '/admin/package' }
+                { selector: 'li.group\\/package', path: '/admin/package' },
+                { selector: 'li.group\\/faq', path: '/admin/faq' }
             ];
 
             menuItems.forEach(menu => {

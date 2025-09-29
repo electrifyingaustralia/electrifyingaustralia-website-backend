@@ -72,8 +72,8 @@
                             <tbody class="divide-y divide-gray-200">
                                     <tr>
                                         <td class="px-4 py-4">
-                                            <div class="max-w-2xl" title="{{ $faq->type }}">
-                                                {{ $faq->type }}
+                                            <div class="max-w-2xl" title="{{ $faq->type->name }}">
+                                                {{ $faq->type->name }}
                                             </div>
                                         </td>
                                         <td class="px-4 py-4">

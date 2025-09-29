@@ -1,14 +1,14 @@
 @extends('Backend.layouts.app')
 @section('contents')
-<div class="flex-1 p-3">
+    <div class="flex-1 p-3">
         <div class="max-w-[90rem] mx-auto">
             <div class="flex justify-between items-center mb-5" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-2">
                     <li class="inline-flex items-center">
                         <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center text-lg font-medium text-gray-700 hover:!text-teal-600">
                             <svg class="w-5 h-5 mr-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
-                            </svg>
+                            <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                        </svg>
                             Dashboard
                         </a>
                     </li>
@@ -17,7 +17,7 @@
                             <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                             </svg>
-                            <span class="ml-1 text-lg font-medium text-gray-500 md:ml-2">All FAQ's</span>
+                            <span class="ml-1 text-lg font-medium text-gray-500 md:ml-2">All Faq Types</span>
                         </div>
                     </li>
                 </ol>
@@ -33,34 +33,20 @@
                             <table class="w-full text-sm text-left text-gray-600">
                                 <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
                                     <tr>
-                                        <th class="px-4 py-3 w-3/5">Questions</th>
-                                        <th class="px-4 py-3 w-3/5">Type</th>
-                                        <th class="pr-8 py-3 w-2/5 text-right">Actions</th>
+                                        <th class="px-14 py-3 w-3/5">Name</th>
+                                        <th class="px-14 py-3 w-2/5 text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200">
-                                    @forelse($faqs as $faq)
+                                    @forelse($types as $type)
                                         <tr>
-                                            <td class="px-4 py-4">
-                                                <div class="max-w-[25rem] truncate" title="{{ $faq->question }}">
-                                                    {{ $faq->question }}
+                                            <td class="px-14 py-4">
+                                                <div class="max-w-2xl truncate" title="{{ $type->name }}">
+                                                    {{ $type->name }}
                                                 </div>
                                             </td>
-                                            <td class="px-4 py-4">
-                                                    {{ $faq->type->name }}
-                                            </td>
-                                            <td class="px-4 py-4 flex justify-end items-center gap-x-2">
-                                                <a href="{{ route('admin.faq.show', $faq->id) }}"
-                                                class="text-green-500 hover:text-green-700 p-1 rounded hover:bg-green-50">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="w-5 h-5 fill-green-500 hover:fill-green-700"
-                                                        viewBox="0 0 24 24">
-                                                        <path d="M12 5c-7.633 0-11 7-11 7s3.367 7 11 7 11-7 11-7-3.367-7-11-7zm0 12c-4.411 0-7.757-3.134-9.223-5
-                                                                1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z"/>
-                                                        <circle cx="12" cy="12" r="3"/>
-                                                    </svg>
-                                                </a>
-                                                <a href="{{ route('admin.faq.edit', $faq->id) }}" class="text-blue-500 hover:text-blue-700 p-1 rounded hover:bg-blue-50">
+                                            <td class="px-14 py-4 flex justify-end gap-x-2">
+                                                <a href="{{ route('admin.faq-type.edit', $type->id) }}" class="text-blue-500 hover:text-blue-700 p-1 rounded hover:bg-blue-50">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-blue-500 hover:fill-blue-700"
                                                         viewBox="0 0 348.882 348.882">
                                                         <path
@@ -71,7 +57,7 @@
                                                         data-original="#000000" />
                                                     </svg>
                                                 </a>
-                                                <button class="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50" type="button" onclick="confirmDelete({{ $faq->id }})">
+                                                <button class="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50" type="button" onclick="confirmDelete({{ $type->id }})">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
                                                         <path
                                                         d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
@@ -84,89 +70,53 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="3" class="px-6 py-4 text-center font-medium text-gray-700">
+                                            <td colspan="2" class="px-6 py-4 text-center font-medium text-gray-700">
                                                 <div class="flex flex-col items-center justify-center gap-x-4 py-2">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
-                                                    <span class="pt-2 text-lg">No FAQ's found.</span>
+                                                    <span class="pt-2 text-lg">No Faq Types found.</span>
                                                 </div>
-                                                <span class="text-gray-500">Create your first sticky header to get started!</span>
+                                                <span class="text-gray-500">Create your first faq type to get started!</span>
                                             </td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
                         </div>
-                        @include('Backend.components.pagination', ['paginator' => $faqs])
                     </div>
                 </div>
+
                 <!-- Right Column - Form -->
                 <div class="w-full lg:!w-1/3">
                     <div class="bg-white p-6 rounded-lg shadow-md">
                         <h2 class="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">
-                            {{ isset($faqToEdit) ? 'Edit FAQ' : 'Add New FAQ' }}
+                            {{ isset($typeToEdit) ? 'Edit Faq Type' : 'Add New Faq Type' }}
                         </h2>
 
-                        <form action="{{ isset($faqToEdit) ? route('admin.faq.update', $faqToEdit->id) : route('admin.faq.store') }}" method="POST">
+                        <form action="{{ isset($typeToEdit) ? route('admin.faq-type.update', $typeToEdit->id) : route('admin.faq-type.store') }}" method="POST">
                             @csrf
-                            @if(isset($faqToEdit))
+                            @if(isset($typeToEdit))
                                 @method('PUT')
                             @endif
 
                             <div class="mb-4">
-                                <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Question <span class="text-red-600 font-bold">*</span></label>
-                                <input type="text" id="question" name="question" value="{{ old('question', $faqToEdit->question ?? '') }}"
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name <span class="text-red-600 font-bold">*</span></label>
+                                <input type="text" id="name" name="name" value="{{ old('name', $typeToEdit->name ?? '') }}"
                                     class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
-                                    placeholder="Enter your question here..."
+                                    placeholder="Enter your faq type here..."
                                 />
-                                @error('question')
+                                @error('name')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
-
-                            <div class="mb-4">
-                                <label for="answer" class="block text-sm font-medium text-gray-700 mb-1">Answer <span class="text-red-600 font-bold">*</span></label>
-                                <textarea name="answer" id="answer"
-                                    class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
-                                    placeholder="Enter your answer here...">{{ old('answer', $faqToEdit->answer ?? '') }}</textarea>
-                                @error('answer')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="is_active" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                                <select name="is_active" id="is_active" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
-                                    <option value="1" {{ old('is_active', $faqToEdit->is_active ?? 1) == 1 ? 'selected': '' }}>Active</option>
-                                    <option value="0" {{ old('is_active', $faqToEdit->is_active ?? 1) == 0 ? 'selected': '' }}>Inactive</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="faq_type_id" class="block text-sm font-medium text-gray-700 mb-1">Type <span class="text-red-600 font-bold">*</span></label>
-                                <select id="faq_type_id" name="faq_type_id"
-                                    class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
-                                    <option value="">Select Type</option>
-                                    @foreach($types as $type)
-                                        <option value="{{ $type->id }}"
-                                            {{ old('faq_type_id', $faqToEdit->faq_type_id ?? '') == $type->id ? 'selected' : '' }}>
-                                            {{ $type->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('faq_type_id')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
 
                             <div class="flex justify-end mt-6">
-                                @if(isset($faqToEdit))
-                                    <a href="{{ route('admin.faq.all') }}" class="px-4 py-2 border !border-gray-300 rounded-lg text-gray-700 hover:!bg-gray-50 mr-2">
+                                @if(isset($typeToEdit))
+                                    <a href="{{ route('admin.faq-type.all') }}" class="px-4 py-2 border !border-gray-300 rounded-lg text-gray-700 hover:!bg-gray-50 mr-2">
                                         Cancel
                                     </a>
                                 @endif
                                 <button type="submit" class="px-4 py-2 !bg-teal-600 text-white rounded-lg hover:!bg-teal-700">
-                                    {{ isset($faqToEdit) ? 'Update' : 'Create' }} FAQ
+                                    {{ isset($typeToEdit) ? 'Update' : 'Create' }} Faq Type
                                 </button>
                             </div>
                         </form>
@@ -180,7 +130,7 @@
     <div id="delete-modal" class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded-lg w-full max-w-md">
             <h3 class="text-lg font-medium mb-4">Confirm Delete</h3>
-            <p class="text-gray-600 mb-6">Are you sure you want to delete this FAQ? This action cannot be undone.</p>
+            <p class="text-gray-600 mb-6">Are you sure you want to delete this faq? This action cannot be undone.</p>
             <div class="flex justify-end gap-x-3">
                 <button onclick="closeDeleteModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
                 <form id="delete-form" method="POST">
@@ -197,7 +147,7 @@
     <script>
         function confirmDelete(id) {
             const form = document.getElementById('delete-form');
-            form.action = `/admin/faq/${id}`;
+            form.action = `/admin/faq-type/${id}`;
             document.getElementById('delete-modal').classList.remove('hidden');
         }
 

@@ -21,16 +21,9 @@ class FaqCreateRequest extends BaseRequest
                 'string',
             ],
 
-            'type' => [
+            'faq_type_id' => [
                 'required',
-                'string',
-                Rule::in([
-                    'General',
-                    'Solar & Battery',
-                    'EV Charger',
-                    'VPP & Energy Solutions',
-                    'Installation & Support',
-                ]),
+                'exists:faq_types,id'
             ],
 
             'is_active' => [

@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            // $table->string('status')->default('pending');
+            $table->string('type')->nullable();
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

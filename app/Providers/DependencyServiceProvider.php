@@ -36,6 +36,7 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Repositories\ProductType\ProductTypeRepositoryInterface::class => \App\Repositories\ProductType\ProductTypeRepository::class,
             \App\Repositories\ProjectType\ProjectTypeRepositoryInterface::class => \App\Repositories\ProjectType\ProjectTypeRepository::class,
             \App\Repositories\ProjectCategory\ProjectCategoryRepositoryInterface::class => \App\Repositories\ProjectCategory\ProjectCategoryRepository::class,
+            \App\Repositories\FaqType\FaqTypeRepositoryInterface::class => \App\Repositories\FaqType\FaqTypeRepository::class,
         ];
 
         $services = [
@@ -65,6 +66,7 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Services\ProductType\ProductTypeServiceInterface::class => \App\Services\ProductType\ProductTypeService::class,
             \App\Services\ProjectCategory\ProjectCategoryServiceInterface::class => \App\Services\ProjectCategory\ProjectCategoryService::class,
             \App\Services\ProjectType\ProjectTypeServiceInterface::class => \App\Services\ProjectType\ProjectTypeService::class,
+            \App\Services\FaqType\FaqTypeServiceInterface::class => \App\Services\FaqType\FaqTypeService::class,
         ];
 
         $bindings = array_merge($repositories, $services);

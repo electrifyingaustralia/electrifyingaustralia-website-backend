@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EventController;
 use App\Http\Controllers\Backend\FaqController;
+use App\Http\Controllers\Backend\FaqTypeController;
 use App\Http\Controllers\backend\HeroController;
 use App\Http\Controllers\Backend\MediaLibraryController;
 use App\Http\Controllers\Backend\PackageController;
@@ -111,6 +112,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/teams/{id}/edit',  'edit')->name('edit');
             Route::put('/teams/{id}',  'update')->name('update');
             Route::delete('/teams/{id}',  'destroy')->name('delete');
+        });
+
+        // ! FAQ-Type
+        Route::controller(FaqTypeController::class)->name('faq-type.')->group(function () {
+            Route::get('/faq-type', 'index')->name('all');
+            Route::post('/faq-type', 'store')->name('store');
+            Route::get('/faq-type/{id}/edit',  'edit')->name('edit');
+            Route::put('/faq-type/{id}',  'update')->name('update');
+            Route::delete('/faq-type/{id}',  'destroy')->name('delete');
         });
 
         // ! FAQ

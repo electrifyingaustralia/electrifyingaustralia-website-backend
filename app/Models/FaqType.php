@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Faq extends Model
+class FaqType extends Model
 {
     protected $guarded = [];
 
-    public function type()
+    public function products()
     {
-        return $this->belongsTo(FaqType::class, 'faq_type_id');
+        return $this->hasMany(Faq::class, 'faq_type_id');
     }
 }

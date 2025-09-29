@@ -12,9 +12,7 @@ class HeroResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            // change
             'slug' => $this->slug,
-            // change
             'subtitle' => $this->subtitle,
             'video_url' => $this->video_url,
             'media_url' => $this->media_url,

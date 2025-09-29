@@ -6,16 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\FaqCreateRequest;
 use App\Http\Requests\Backend\FaqUpdateRequest;
 use App\Services\Faq\FaqServiceInterface;
+use App\Services\FaqType\FaqTypeServiceInterface;
 use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
-    public function __construct(protected FaqServiceInterface $faqService) {}
+    public function __construct(
+        protected FaqServiceInterface $faqService,
+        protected FaqTypeServiceInterface $faqTypeServiceInterface
+    ) {}
 
     public function index()
     {
         $faqs = $this->faqService->get();
-        return view('Backend.faq.index', compact('faqs'));
+        $types = $this->faqTypeServiceInterface->get();
+        return view('Backend.faq.index', compact('faqs', 'types'));
     }
 
     public function store(FaqCreateRequest $request)
@@ -35,7 +40,8 @@ class FaqController extends Controller
     {
         $faqToEdit = $this->faqService->findFaq($id);
         $faqs = $this->faqService->get();
-        return view('Backend.faq.index', compact('faqToEdit', 'faqs'));
+        $types = $this->faqTypeServiceInterface->get();
+        return view('Backend.faq.index', compact('faqToEdit', 'faqs', 'types'));
     }
 
     public function update(FaqUpdateRequest $request, $id)
