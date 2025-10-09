@@ -10,4 +10,22 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    build: {
+        outDir: "public/assets/resource",
+        rollupOptions: {
+            output: {
+                entryFileNames: (chunk) => {
+                    if (
+                        chunk.facadeModuleId &&
+                        chunk.facadeModuleId.includes("resources/js/app.js")
+                    ) {
+                        return "app.js";
+                    }
+                    return "[name]-script.js";
+                },
+                // chunkFileNames: "[name].js",
+                assetFileNames: "[name].[ext]",
+            },
+        },
+    },
 });

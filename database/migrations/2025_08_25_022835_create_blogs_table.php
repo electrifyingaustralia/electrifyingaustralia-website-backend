@@ -19,6 +19,8 @@ return new class extends Migration {
 
             $table->string('subtitle')->nullable();
 
+            $table->longText('short_description')->nullable();
+
             $table->longText('description')->nullable();
 
             $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();

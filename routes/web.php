@@ -24,9 +24,9 @@ use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\SolutionCardController;
 use App\Http\Controllers\Backend\StickyHeaderController;
 use App\Http\Controllers\Backend\TeamController;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
-
 
 Route::redirect('/', '/admin/login');
 
@@ -111,6 +111,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/teams', 'store')->name('store');
             Route::get('/teams/{id}/edit',  'edit')->name('edit');
             Route::put('/teams/{id}',  'update')->name('update');
+            Route::post('/teams/update-order', 'updateOrder')->name('update-order');
             Route::delete('/teams/{id}',  'destroy')->name('delete');
         });
 

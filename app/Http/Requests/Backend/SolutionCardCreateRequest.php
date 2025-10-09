@@ -17,7 +17,7 @@ class SolutionCardCreateRequest extends FormRequest
             ],
 
             'description' => [
-                'nullable',
+                'required',
                 'string',
             ],
 

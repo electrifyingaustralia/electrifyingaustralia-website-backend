@@ -12,5 +12,6 @@ interface TeamServiceInterface
     public function findTeamMember(int $id): object;
     public function createTeamMember(array $data, ?UploadedFile $media = null): object;
     public function updateTeamMember(int $id, array $data): object;
+    public function updateTeamMemberOrder(array $orderData): bool;
     public function deleteTeamMember(int $id): bool;
 }

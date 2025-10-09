@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BrandResource extends JsonResource
+class BlogCategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,14 +17,9 @@ class BrandResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            // change
             'slug' => $this->slug,
-            // change
-            'link' => $this->link,
-            'logo_id' => $this->logo_id,
-            'media_url' => $this->logo_url,
-            'created_at' => $this->created_at->toISOString(),
-            'updated_at' => $this->updated_at->toISOString(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

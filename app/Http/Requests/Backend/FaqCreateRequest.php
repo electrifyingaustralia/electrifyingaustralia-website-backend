@@ -2,10 +2,15 @@
 
 namespace App\Http\Requests\Backend;
 
-use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
-class FaqCreateRequest extends BaseRequest
+class FaqCreateRequest extends FormRequest
 {
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     public function rules(): array
     {
         return [

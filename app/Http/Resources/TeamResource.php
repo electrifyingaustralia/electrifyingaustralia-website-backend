@@ -10,16 +10,13 @@ class TeamResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            // 'id' => $this->id,
             'name' => $this->name,
-            // change
             'slug' => $this->slug,
-            // change
             'designation' => $this->designation,
             'email' => $this->email,
             'phone' => $this->phone,
             'description' => $this->description,
-            'media_id' => $this->media_id,
             'media_url' => $this->media_url,
             'status' => $this->status,
             'twitter_link' => $this->twitter_link,

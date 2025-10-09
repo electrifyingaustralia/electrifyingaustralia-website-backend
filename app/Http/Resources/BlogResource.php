@@ -13,8 +13,13 @@ class BlogResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
-            'category_id' => $this->blog_category_id,
-            'category_name' => $this->category->name,
+            'category' => $this->whenLoaded('category', function () {
+                return [
+                    'id' => $this->category->id,
+                    'name' => $this->category->name,
+                    'slug' => $this->category->slug,
+                ];
+            }),
             'subtitle' => $this->subtitle,
             'description' => $this->description,
             'short_description' => $this->short_description,

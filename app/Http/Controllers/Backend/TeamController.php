@@ -61,6 +61,22 @@ class TeamController extends Controller
         ]);
     }
 
+    public function updateOrder(Request $request)
+    {
+        $request->validate([
+            'order' => 'required|array',
+            'order.*.id' => 'required|exists:teams,id',
+            'order.*.order' => 'required|integer',
+        ]);
+
+        $this->teamService->updateTeamMemberOrder($request->order);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Team member order updated successfully!'
+        ]);
+    }
+
     public function destroy($id)
     {
         $this->teamService->deleteTeamMember($id);

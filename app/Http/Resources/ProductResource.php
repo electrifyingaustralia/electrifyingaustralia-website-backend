@@ -19,7 +19,13 @@ class ProductResource extends JsonResource
             'is_featured' => $this->is_featured,
             'is_active' => $this->is_active,
             'product_link' => $this->product_link,
-            'type' => $this->type->name,
+            'type' => $this->whenLoaded('type', function () {
+                return [
+                    'id' => $this->type->id,
+                    'name' => $this->type->name,
+                    'slug' => $this->type->slug,
+                ];
+            }),
             'media_id' => $this->media_id,
             'media_url' => $this->media_url,
             'brand' => $this->whenLoaded('brand', function () {
@@ -28,7 +34,7 @@ class ProductResource extends JsonResource
                     'id' => $this->brand->id,
                     'name' => $this->brand->name,
                     'link' => $this->brand->link,
-                    'logo_url' => $this->brand->logo_url
+                    'media_url' => $this->brand->logo_url
                 ] : null;
             }),
 

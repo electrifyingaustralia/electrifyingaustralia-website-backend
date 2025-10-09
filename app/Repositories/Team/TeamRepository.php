@@ -21,12 +21,12 @@ class TeamRepository implements TeamRepositoryInterface
     public function get(array $columns = ["*"], int $perPage = 15, array $filters = []): object
     {
         $q = $this->applyFilters($this->query()->select($columns), $filters);
-        return $q->latest('id')->paginate($perPage);
+        return $q->orderBy('order')->latest('id')->paginate($perPage);
     }
 
     public function all(): object
     {
-        return $this->query()->all();
+        return $this->query()->orderBy('order')->all();
     }
 
     public function list(): object
@@ -47,6 +47,11 @@ class TeamRepository implements TeamRepositoryInterface
 
     public function create(array $data): object
     {
+        if (!isset($data['order'])) {
+            $lastOrder = $this->query()->max('order') ?? 0;
+            $data['order'] = $lastOrder + 1;
+        }
+
         return Team::create($data);
     }
 
@@ -55,6 +60,14 @@ class TeamRepository implements TeamRepositoryInterface
         $instance = $this->find($id);
         $instance->update($data);
         return $instance;
+    }
+
+    public function updateOrder(array $orderData): bool
+    {
+        foreach ($orderData as $item) {
+            $this->query()->where('id', $item['id'])->update(['order' => $item['order']]);
+        }
+        return true;
     }
 
     public function exists(int | array $id): bool

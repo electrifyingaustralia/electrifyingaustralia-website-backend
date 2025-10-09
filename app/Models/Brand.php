@@ -15,6 +15,11 @@ class Brand extends Model
         return $this->belongsTo(MediaLibrary::class, 'logo_id');
     }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'brand_id');
+    }
+
     public function getLogoUrlAttribute(): ?string
     {
         return $this->logo?->url;

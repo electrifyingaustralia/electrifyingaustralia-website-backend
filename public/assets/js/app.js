@@ -1051,7 +1051,7 @@ function init() {
     windowLoadContent();
     resetLayout();
     updateHorizontalMenus();
-    lightDarkMode();
+    // lightDarkMode();
     initLanguage();
     initFilters();
     initMenuItemScroll();

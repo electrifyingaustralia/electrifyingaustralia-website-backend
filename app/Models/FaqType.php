@@ -8,7 +8,7 @@ class FaqType extends Model
 {
     protected $guarded = [];
 
-    public function products()
+    public function faqs()
     {
         return $this->hasMany(Faq::class, 'faq_type_id');
     }

@@ -12,7 +12,7 @@ class ApiPackageController extends Controller
     public function index()
     {
         $packages = Package::with('features')
-            ->latest()
+            ->orderBy('id', 'ASC')
             ->get();
 
         return PackageResource::collection($packages);

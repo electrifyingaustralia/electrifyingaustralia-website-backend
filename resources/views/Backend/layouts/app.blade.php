@@ -12,7 +12,9 @@
      <link rel="shortcut icon" href="{{ asset('assets/images/Electrifyingonebackend.png') }}">
      <link rel="stylesheet" href="{{ asset('assets/css/tailwind2.css') }}">
      <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}">
-     @vite('resources/css/app.css')
+     <link rel="stylesheet" href="{{ asset('assets/resource/app.css') }}">
+
+     {{-- @vite('resources/css/app.css') --}}
      @stack('styles')
  </head>
 
@@ -52,7 +54,7 @@
     <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
 
     <!-- dashboard ecommerce init js -->
-    <script src="{{ asset('assets/js/pages/dashboards-ecommerce.init.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/pages/dashboards-ecommerce.init.js') }}"></script> --}}
 
     <!-- App js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>

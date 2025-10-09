@@ -30,6 +30,8 @@ return new class extends Migration
 
             $table->boolean('status')->default(true);
 
+            $table->integer('order')->default(0);
+
             $table->string('twitter_link')->nullable();
 
             $table->string('instagram_link')->nullable();

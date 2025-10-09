@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Backend;
 
-class FaqTypeRequest extends BaseRequest
+use Illuminate\Foundation\Http\FormRequest;
+
+class FaqTypeRequest extends FormRequest
 {
     public function rules(): array
     {

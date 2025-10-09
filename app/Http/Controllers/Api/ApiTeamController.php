@@ -13,7 +13,7 @@ class ApiTeamController extends Controller
     {
         $teams = Team::with('media')
             ->where('status', true)
-            ->orderBy('name', 'ASC')
+            ->orderBy('order', 'ASC')
             ->get();
 
         return TeamResource::collection($teams);

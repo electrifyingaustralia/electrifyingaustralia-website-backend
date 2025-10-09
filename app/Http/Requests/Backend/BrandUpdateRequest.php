@@ -31,7 +31,7 @@ class BrandUpdateRequest extends FormRequest
             ],
 
             'link' => [
-                'nullable',
+                'required',
                 'url',
                 'max:500',
             ],
