@@ -13,13 +13,43 @@ class QuotationService implements QuotationServiceInterface
 
     public function get(array $columns = ['*'], int $perPage = 15): object
     {
-        return $this->quotationRepository->get($columns, $perPage);
+        return $this->quotationRepository->query()
+            ->select($columns)
+            ->latest('id')
+            ->paginate($perPage);
     }
 
     public function createQuotation(array $data): object
     {
-        $data['slug'] = Str::slug($data['category']);
-        return $this->quotationRepository->create($data);
+        $slug = Str::slug($data['category']);
+
+        $payload = [
+            "slug" => $slug,
+            "category" => $data["category"],
+        ];
+
+        $parent = $this->quotationRepository->create($payload);
+
+        $categories = array_filter((array) ($data["subcategory"] ?? []), function ($category) {
+            return !empty(trim($category));
+        });
+
+        foreach ($categories as $category) {
+            $trimmedCategory = trim($category);
+            if (!empty($trimmedCategory)) {
+                $slug = Str::slug($trimmedCategory);
+
+                $payload = [
+                    "parent_id" => $parent->id,
+                    "slug" => $slug,
+                    "category" => $trimmedCategory,
+                ];
+
+                $this->quotationRepository->create($payload);
+            }
+        }
+
+        return $parent;
     }
 
     public function findQuotation(int $id): object
@@ -30,7 +60,37 @@ class QuotationService implements QuotationServiceInterface
     public function updateQuotation(int $id, array $data): object
     {
         $data['slug'] = Str::slug($data['category']);
-        return $this->quotationRepository->update($id, $data);
+
+        $slug = Str::slug($data['category']);
+
+        $payload = [
+            "slug" => $slug,
+            "category" => $data["category"],
+        ];
+
+        $parent = $this->quotationRepository->update($id, $payload);
+
+        // Filter out empty sub-categories
+        $categories = array_filter((array) ($data["subcategory"] ?? []), function ($category) {
+            return !empty(trim($category));
+        });
+
+        foreach ($categories as $category) {
+            $trimmedCategory = trim($category);
+            if (!empty($trimmedCategory)) {
+                $slug = Str::slug($trimmedCategory);
+
+                $payload = [
+                    "parent_id" => $id,
+                    "slug" => $slug,
+                    "category" => $trimmedCategory,
+                ];
+
+                $this->quotationRepository->create($payload);
+            }
+        }
+
+        return $parent;
     }
 
     public function deleteQuotation(int $id): bool

@@ -27,7 +27,6 @@ Route::prefix('v1')->group(function () {
     // ! Products
     Route::get('products', [ApiProductController::class, 'index']);
     Route::get('products/types', [ApiProductController::class, 'getProductTypes']);
-    // Route::get('product-types/{slug}/products', [ApiProductController::class, 'getProductsByType']);
 
     // ! Benefits
     Route::get('benefits', [ApiBenefitController::class, 'index']);
@@ -47,7 +46,7 @@ Route::prefix('v1')->group(function () {
     Route::get('solution-cards', [ApiSolutionCardController::class, 'index']);
 
     // ! Events
-    Route::get('events', [ApiEventController::class, 'index']);
+    Route::get('events/groups', [ApiEventController::class, 'index']);
 
     // ! Projects
     Route::get('projects', [ApiProjectController::class, 'index']);
@@ -62,6 +61,11 @@ Route::prefix('v1')->group(function () {
     Route::get('faqs', [ApiFaqController::class, 'index']);
     Route::get('faqs/types', [ApiFaqController::class, 'getFaqTypes']);
     Route::get('faqs/questions', [ApiFaqController::class, 'getFaqByType']);
+
+    // !Quotation
+    Route::get('quotation/categories', [ApiQuotationController::class, 'index']);
+    Route::get('quotation/category/{id}', [ApiQuotationController::class, 'findSubcategories']);
+    Route::get('quotation/questions', [ApiQuotationController::class, 'findQuestions']);
 
 
     // ! Answers

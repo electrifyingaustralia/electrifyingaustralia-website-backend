@@ -13,17 +13,23 @@ class ApiProductController extends Controller
 {
     public function index(Request $request)
     {
-
-        $type = ProductType::when($request->filled('type'), function ($query) use ($request) {
-            $query->where('slug', $request->query('type'));
-        }, function ($query) {
-            $query->orderBy("id", "ASC");
-        })->first();
-
-        $products = Product::with('type')
-            ->where('product_type_id', $type->id ?? 0)
+        $products = Product::with(['type', 'brand'])
             ->where('is_active', true)
-            ->latest()
+            ->when($request->filled('search') || $request->filled('type'), function ($q) use ($request) {
+                $q->where(function ($query) use ($request) {
+                    if ($request->filled('search')) {
+                        $query->where('name', 'LIKE', "%{$request->get('search')}%");
+                    }
+
+                    if ($request->filled('type')) {
+                        $query->orWhereHas('type', function ($typeQuery) use ($request) {
+                            $typeQuery->where('slug', $request->query('type'));
+                        });
+                    }
+                });
+            })
+            ->inRandomOrder()
+            ->limit(20)
             ->get();
 
         return ProductResource::collection($products);
@@ -58,12 +64,5 @@ class ApiProductController extends Controller
             'type' => new ProductTypeResource($type),
             'products' => ProductResource::collection($products)
         ]);
-    }
-
-    private function applyTypeFilter($query, $typeSlug)
-    {
-        return $query->whereHas('type', function ($q) use ($typeSlug) {
-            $q->where('slug', $typeSlug);
-        });
     }
 }

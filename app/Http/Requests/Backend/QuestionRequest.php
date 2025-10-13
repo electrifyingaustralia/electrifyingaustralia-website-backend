@@ -13,20 +13,14 @@ class QuestionRequest extends BaseRequest
                 'max:255'
             ],
 
+            'input_type' => [
+                'required',
+                'string',
+            ],
+
             'options' => [
-                'required',
+                'nullable',
                 'array',
-                'min:1'
-            ],
-
-            'options.*.option' => [
-                'required',
-                'string'
-            ],
-
-            'options.*.type' => [
-                'required',
-                'in:input,radio,checkbox,file,number'
             ],
         ];
     }
