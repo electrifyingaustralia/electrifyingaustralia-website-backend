@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->nullable()->constrained('quotation_sections', 'id')->nullOnDelete();
+            $table->foreignId('sub_category_id')->nullable()->constrained('quotation_sections', 'id')->nullOnDelete();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email')->nullable();

@@ -16,7 +16,12 @@ class QuotationRequest extends BaseRequest
             'subcategory' => [
                 'nullable',
                 'array',
-            ]
+            ],
+
+            'media_id' => [
+                'nullable',
+                'exists:media_libraries,id',
+            ],
         ];
     }
 }

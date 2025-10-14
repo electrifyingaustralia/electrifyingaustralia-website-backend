@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('parent_id')->nullable()->constrained('quotation_sections', 'id')->cascadeOnDelete();
             $table->string('category');
             $table->string('slug');
+            $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
             $table->timestamps();
         });
     }

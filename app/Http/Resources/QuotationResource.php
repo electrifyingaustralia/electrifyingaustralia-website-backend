@@ -13,6 +13,7 @@ class QuotationResource extends JsonResource
             'id' => $this->id,
             'slug' => $this->slug,
             'name' => $this->category,
+            'media_url' => $this->media_url,
             'created_at' => $this->created_at->toISOString(),
             'updated_at' => $this->updated_at->toISOString(),
             "sub_cats" => QuotationResource::collection($this->subCats),

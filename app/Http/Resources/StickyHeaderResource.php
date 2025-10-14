@@ -12,9 +12,7 @@ class StickyHeaderResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            // change
             'slug' => $this->slug,
-            // change
             'created_at' => $this->created_at->toISOString(),
             'updated_at' => $this->updated_at->toISOString(),
 

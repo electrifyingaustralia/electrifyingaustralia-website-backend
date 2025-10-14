@@ -22,6 +22,10 @@ class QuestionRequest extends BaseRequest
                 'nullable',
                 'array',
             ],
+
+            'is_required' => [
+                'boolean',
+            ],
         ];
     }
 }

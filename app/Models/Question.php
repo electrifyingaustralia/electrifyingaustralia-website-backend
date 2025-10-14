@@ -9,6 +9,10 @@ class Question extends Model
     protected $guarded = [];
     protected $hidden = ["pivot"];
 
+    protected $casts = [
+        'is_required' => 'boolean',
+    ];
+
     public function quotationSections()
     {
         return $this->belongsToMany(QuotationSection::class, 'quotation_section_question', 'question_id', 'quotation_section_id');

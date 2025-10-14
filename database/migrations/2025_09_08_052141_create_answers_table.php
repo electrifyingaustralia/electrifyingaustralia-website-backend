@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
+            $table->foreignId('customer_id')->nullable()->constrained('customers')->onDelete('cascade');
             $table->foreignId('question_id')->constrained('questions')->onDelete('cascade');
-            $table->text('answer')->nullable();
-            $table->string('type')->nullable();
+            $table->json('answer')->nullable();
+            $table->string('answer_type')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

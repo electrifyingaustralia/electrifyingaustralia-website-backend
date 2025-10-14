@@ -66,6 +66,7 @@ Route::prefix('v1')->group(function () {
     Route::get('quotation/categories', [ApiQuotationController::class, 'index']);
     Route::get('quotation/category/{id}', [ApiQuotationController::class, 'findSubcategories']);
     Route::get('quotation/questions', [ApiQuotationController::class, 'findQuestions']);
+    Route::post('quotation/save', [ApiQuotationController::class, 'saveCustomerQuotation']);
 
 
     // ! Answers

@@ -23,6 +23,7 @@ class QuestionService implements QuestionServiceInterface
                 'question' => $data['question'],
                 'input_type' => $data['input_type'],
                 'slug' => Str::slug($data['question']),
+                'is_required' => $data['is_required'],
             ]);
 
             // Add options
@@ -49,6 +50,7 @@ class QuestionService implements QuestionServiceInterface
                 'question' => $data['question'],
                 'input_type' => $data['input_type'],
                 'slug' => Str::slug($data['question']),
+                'is_required' => $data['is_required'],
             ]);
 
             // Remove existing options

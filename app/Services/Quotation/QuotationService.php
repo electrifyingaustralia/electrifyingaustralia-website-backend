@@ -3,13 +3,18 @@
 namespace App\Services\Quotation;
 
 use App\Repositories\Quotation\QuotationRepositoryInterface;
+use App\Services\MediaLibrary\MediaLibraryServiceInterface;
 use App\Services\Quotation\QuotationServiceInterface;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class QuotationService implements QuotationServiceInterface
 {
-    public function __construct(protected QuotationRepositoryInterface $quotationRepository) {}
+    public function __construct(
+        protected QuotationRepositoryInterface $quotationRepository,
+        protected MediaLibraryServiceInterface $mediaLibrary
+    ) {}
 
     public function get(array $columns = ['*'], int $perPage = 15): object
     {
@@ -19,7 +24,7 @@ class QuotationService implements QuotationServiceInterface
             ->paginate($perPage);
     }
 
-    public function createQuotation(array $data): object
+    public function createQuotation(array $data, ?UploadedFile $media = null): object
     {
         $slug = Str::slug($data['category']);
 
@@ -27,6 +32,25 @@ class QuotationService implements QuotationServiceInterface
             "slug" => $slug,
             "category" => $data["category"],
         ];
+
+        // Handle media upload if file is provided
+        if ($media) {
+            $existingMedia = $this->mediaLibrary->query()->where('original_name', $media->getClientOriginalName())->first();
+
+            if ($existingMedia) {
+                $payload['media_id'] = $existingMedia->id;
+            } else {
+                $uploaded = $this->mediaLibrary->upload($media);
+                $payload['media_id'] = $uploaded->id;
+            }
+        }
+        // Handle media_id from form if provided (from media library selection)
+        elseif (isset($data['media_id']) && !empty($data['media_id'])) {
+            $existingMedia = $this->mediaLibrary->findMedia($data['media_id']);
+            if ($existingMedia) {
+                $payload['media_id'] = $existingMedia->id;
+            }
+        }
 
         $parent = $this->quotationRepository->create($payload);
 
@@ -39,13 +63,13 @@ class QuotationService implements QuotationServiceInterface
             if (!empty($trimmedCategory)) {
                 $slug = Str::slug($trimmedCategory);
 
-                $payload = [
+                $subPayload = [
                     "parent_id" => $parent->id,
                     "slug" => $slug,
                     "category" => $trimmedCategory,
                 ];
 
-                $this->quotationRepository->create($payload);
+                $this->quotationRepository->create($subPayload);
             }
         }
 
@@ -57,16 +81,39 @@ class QuotationService implements QuotationServiceInterface
         return $this->quotationRepository->find($id);
     }
 
-    public function updateQuotation(int $id, array $data): object
+    public function updateQuotation(int $id, array $data, ?UploadedFile $media = null): object
     {
-        $data['slug'] = Str::slug($data['category']);
-
         $slug = Str::slug($data['category']);
 
         $payload = [
             "slug" => $slug,
             "category" => $data["category"],
         ];
+
+        // Handle media upload if file is provided
+        if ($media) {
+            $existingMedia = $this->mediaLibrary->query()->where('original_name', $media->getClientOriginalName())->first();
+
+            if ($existingMedia) {
+                $payload['media_id'] = $existingMedia->id;
+            } else {
+                $uploaded = $this->mediaLibrary->upload($media);
+                $payload['media_id'] = $uploaded->id;
+            }
+        }
+        // Handle media_id from form if provided (from media library selection)
+        elseif (isset($data['media_id'])) {
+            if (empty($data['media_id']) || $data['media_id'] === 'null') {
+                $payload['media_id'] = null;
+            } else {
+                $existingMedia = $this->mediaLibrary->findMedia($data['media_id']);
+                if ($existingMedia) {
+                    $payload['media_id'] = $existingMedia->id;
+                } else {
+                    $payload['media_id'] = null;
+                }
+            }
+        }
 
         $parent = $this->quotationRepository->update($id, $payload);
 
@@ -80,13 +127,13 @@ class QuotationService implements QuotationServiceInterface
             if (!empty($trimmedCategory)) {
                 $slug = Str::slug($trimmedCategory);
 
-                $payload = [
+                $subPayload = [
                     "parent_id" => $id,
                     "slug" => $slug,
                     "category" => $trimmedCategory,
                 ];
 
-                $this->quotationRepository->create($payload);
+                $this->quotationRepository->create($subPayload);
             }
         }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\BenefitController;
 use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\BrandController;
+use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EventController;
 use App\Http\Controllers\Backend\FaqController;
@@ -280,6 +281,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/hero/{id}',  'show')->name('show');
             Route::put('/hero/{id}',  'update')->name('update');
             Route::delete('/hero/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Customer
+        Route::controller(CustomerController::class)->name('customer.')->group(function () {
+            Route::get('/customers', 'index')->name('all');
+            Route::get('/customers/{customer}', 'show')->name('show');
+            Route::delete('/customers/{customer}', 'destroy')->name('delete');
         });
     });
 });

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('question')->unique();
             $table->string('input_type');
             $table->string('slug');
+            $table->boolean('is_required')->default(false);
             $table->timestamps();
         });
     }

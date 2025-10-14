@@ -12,4 +12,20 @@ class Customer extends Model
     {
         return $this->hasMany(Answer::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(QuotationSection::class, 'category_id');
+    }
+
+    public function subCategory()
+    {
+        return $this->belongsTo(QuotationSection::class, 'sub_category_id');
+    }
+
+    // Helper method to get full name
+    public function getFullNameAttribute()
+    {
+        return trim($this->first_name . ' ' . $this->last_name);
+    }
 }
