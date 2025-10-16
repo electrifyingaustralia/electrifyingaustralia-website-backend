@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\QuotationResource;
+use App\Jobs\SendQuotationNotificationJob;
 use App\Models\Answer;
 use App\Models\Customer;
 use App\Models\Question;
@@ -54,6 +55,7 @@ class ApiQuotationController extends Controller
             $customer = Customer::create([
                 "category_id" => $catId,
                 "sub_category_id" => $subCatId,
+                "type" => "quotation"
             ]);
 
             foreach ($answers as $answer) {
@@ -115,6 +117,8 @@ class ApiQuotationController extends Controller
             }
             DB::commit();
 
+            SendQuotationNotificationJob::dispatch($customer);
+
             return response()->json([
                 'message' => 'Customer quotation submitted successful!',
             ]);
@@ -124,91 +128,6 @@ class ApiQuotationController extends Controller
                 'message' => 'Failed to save quotation',
                 'error' => $e->getMessage()
             ], 500);
-        }
-
-
-        try {
-            DB::beginTransaction();
-            $customer = Customer::create([
-                'first_name' => $request->input('customer_info.first_name'),
-                'last_name' => $request->input('customer_info.last_name'),
-                'email' => $request->input('customer_info.email'),
-                'phone' => $request->input('customer_info.phone'),
-                'address' => $request->input('customer_info.address'),
-                'type' => $request->input('customer_info.type'),
-                'status' => 'pending',
-            ]);
-
-            $answers = $request->input('answers', []);
-            foreach ($answers as $answerData) {
-                $answerValue = $this->processAnswerBasedOnType($answerData);
-
-                Answer::create([
-                    'customer_id' => $customer->id,
-                    'question_id' => $answerData['question_id'] ?? null,
-                    'answer' => $answerValue,
-                    'type' => $answerData['type'] ?? 'text',
-                ]);
-            }
-
-            if ($request->hasFile('files')) {
-                $this->handleFileUploads($request->file('files'), $customer->id);
-            }
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return response()->json([
-                'message' => 'Failed to save quotation',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    private function processAnswerBasedOnType($answerData)
-    {
-        $type = $answerData['type'] ?? 'text';
-        $answer = $answerData['answer'] ?? null;
-
-        switch ($type) {
-            case 'radio':
-            case 'select':
-                return $answer;
-
-            case 'checkbox':
-                if (is_array($answer)) {
-                    return implode(', ', $answer);
-                }
-                return $answer;
-
-            case 'file':
-                return $answerData['file_path'] ?? null;
-
-            case 'text':
-            case 'number':
-            default:
-                return $answer;
-        }
-    }
-
-    private function handleFileUploads($files, $customerId)
-    {
-        foreach ($files as $fileData) {
-            if (isset($fileData['file']) && $fileData['file']->isValid()) {
-                $file = $fileData['file'];
-                $questionId = $fileData['question_id'] ?? null;
-
-                $filename = 'quotation_' . $customerId . '_' . time() . '_' . $file->getClientOriginalName();
-                $path = $file->storeAs('quotations/files', $filename, 'public');
-
-                if ($questionId) {
-                    Answer::create([
-                        'customer_id' => $customerId,
-                        'question_id' => $questionId,
-                        'answer' => $path,
-                        'type' => 'file',
-                    ]);
-                }
-            }
         }
     }
 }

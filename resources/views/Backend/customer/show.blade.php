@@ -3,7 +3,6 @@
 @section('contents')
     <div class="flex-1 p-3">
         <div class="max-w-6xl mx-auto">
-            {{-- Breadcrumb --}}
             <div class="flex justify-between items-center mb-5" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-2">
                     <li class="inline-flex items-center">
@@ -48,66 +47,134 @@
                         class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
                         Back to List
                     </a>
-                    <button onclick="confirmDelete({{ $customer->id }})"
-                        class="!bg-red-600 hover:!bg-red-700 text-white px-4 py-2 rounded-lg">
-                        Delete
-                    </button>
+                    @if (!$editMode)
+                        <button onclick="confirmDelete({{ $customer->id }})"
+                            class="!bg-red-600 hover:!bg-red-700 text-white px-4 py-2 rounded-lg">
+                            Delete
+                        </button>
+                    @endif
                 </div>
             </div>
 
             {{-- Customer Information --}}
             <div class="bg-white rounded-lg shadow mb-6">
-                <div class="px-6 py-4 border-b border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">Customer Information</h2>
+                    @if (!$editMode)
+                        <a href="{{ request()->fullUrlWithQuery(['edit' => 'true']) }}"
+                            class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg">
+                            Edit Information
+                        </a>
+                    @endif
                 </div>
-                <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                        <p class="text-gray-900">{{ $customer->full_name }}</p>
+
+                @if ($editMode)
+                    <form action="{{ route('admin.customer.update', $customer) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                                <input type="text" name="first_name"
+                                    value="{{ old('first_name', $customer->first_name) }}"
+                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                                @error('first_name')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                                <input type="text" name="last_name" value="{{ old('last_name', $customer->last_name) }}"
+                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                                @error('last_name')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" name="email" value="{{ old('email', $customer->email) }}"
+                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                                @error('email')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                                <input type="text" name="phone" value="{{ old('phone', $customer->phone) }}"
+                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                                @error('phone')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="md:col-span-2 lg:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                <textarea name="address" rows="3"
+                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent">{{ old('address', $customer->address) }}</textarea>
+                                @error('address')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+                            <a href="{{ route('admin.customer.show', $customer) }}"
+                                class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                Cancel
+                            </a>
+                            <button type="submit" class="px-4 py-2 !bg-teal-600 text-white rounded-lg hover:!bg-teal-700">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                @else
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                            <p class="text-gray-900">{{ $customer->full_name }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <p class="text-gray-900">{{ $customer->email ?? 'N/A' }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                            <p class="text-gray-900">{{ $customer->phone ?? 'N/A' }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                            <p class="text-gray-900">{{ $customer->address ?? 'N/A' }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                            <p class="text-gray-900">{{ $customer->category->category ?? 'N/A' }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Sub Category</label>
+                            <p class="text-gray-900">{{ $customer->subCategory->category ?? 'N/A' }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                            <p class="text-gray-900">{{ $customer->type ?? 'N/A' }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                            @php
+                                $statusColors = [
+                                    'pending' => 'bg-yellow-100 text-yellow-800',
+                                    'viewed' => 'bg-green-100 text-green-800',
+                                    'cancelled' => 'bg-red-100 text-red-800',
+                                ];
+                                $color = $statusColors[$customer->status] ?? 'bg-gray-100 text-gray-800';
+                            @endphp
+                            <span class="px-3 py-1 rounded-full text-sm font-medium {{ $color }}">
+                                {{ ucfirst($customer->status) }}
+                            </span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Submitted On</label>
+                            <p class="text-gray-900">{{ $customer->created_at->format('M d, Y \a\t h:i A') }}</p>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                        <p class="text-gray-900">{{ $customer->email ?? 'N/A' }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                        <p class="text-gray-900">{{ $customer->phone ?? 'N/A' }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                        <p class="text-gray-900">{{ $customer->address ?? 'N/A' }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                        <p class="text-gray-900">{{ $customer->category->category ?? 'N/A' }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Sub Category</label>
-                        <p class="text-gray-900">{{ $customer->subCategory->category ?? 'N/A' }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-                        <p class="text-gray-900">{{ $customer->type ?? 'N/A' }}</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                        @php
-                            $statusColors = [
-                                'pending' => 'bg-yellow-100 text-yellow-800',
-                                'completed' => 'bg-green-100 text-green-800',
-                                'cancelled' => 'bg-red-100 text-red-800',
-                            ];
-                            $color = $statusColors[$customer->status] ?? 'bg-gray-100 text-gray-800';
-                        @endphp
-                        <span class="px-3 py-1 rounded-full text-sm font-medium {{ $color }}">
-                            {{ ucfirst($customer->status) }}
-                        </span>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Submitted On</label>
-                        <p class="text-gray-900">{{ $customer->created_at->format('M d, Y \a\t h:i A') }}</p>
-                    </div>
-                </div>
+                @endif
             </div>
 
             {{-- Quotation Answers --}}
@@ -130,7 +197,8 @@
                                                 <div class="size-14">
                                                     @if (in_array($answer->attrs['extension'], ['jpeg', 'jpg', 'png', 'gif', 'webp', 'svg']))
                                                         <img class="w-full object-contain rounded-lg"
-                                                            src="{{ asset('/' . $answer->attrs['path']) }}" alt="">
+                                                            src="{{ asset('/' . $answer->attrs['path']) }}"
+                                                            alt="">
                                                     @elseif ($answer->attrs['extension'] == 'pdf')
                                                         <img class="w-full object-contain rounded-lg"
                                                             src="{{ asset('/assets/images/pdf-image.jpg') }}"
@@ -191,27 +259,29 @@
     </div>
 
     {{-- Delete Confirmation Modal --}}
-    <div id="delete-modal" class="fixed inset-0 bg-black/30 flex items-center justify-center hidden z-50">
-        <div class="bg-white p-6 rounded-lg w-full max-w-md">
-            <h3 class="text-lg font-medium mb-4">Confirm Delete</h3>
-            <p class="text-gray-600 mb-6">
-                Are you sure you want to delete this customer quotation? This action cannot be undone.
-            </p>
-            <div class="flex justify-end gap-x-3">
-                <button onclick="closeDeleteModal()"
-                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
-                    Cancel
-                </button>
-                <form id="delete-form" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="px-4 py-2 !bg-red-600 text-white rounded-lg hover:!bg-red-700">
-                        Delete
+    @if (!$editMode)
+        <div id="delete-modal" class="fixed inset-0 bg-black/30 flex items-center justify-center hidden z-50">
+            <div class="bg-white p-6 rounded-lg w-full max-w-md">
+                <h3 class="text-lg font-medium mb-4">Confirm Delete</h3>
+                <p class="text-gray-600 mb-6">
+                    Are you sure you want to delete this customer quotation? This action cannot be undone.
+                </p>
+                <div class="flex justify-end gap-x-3">
+                    <button onclick="closeDeleteModal()"
+                        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        Cancel
                     </button>
-                </form>
+                    <form id="delete-form" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 !bg-red-600 text-white rounded-lg hover:!bg-red-700">
+                            Delete
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 @endsection
 
 @push('scripts')

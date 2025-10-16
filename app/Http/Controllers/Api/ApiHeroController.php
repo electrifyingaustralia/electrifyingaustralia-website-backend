@@ -11,10 +11,9 @@ class ApiHeroController extends Controller
 {
     public function index()
     {
-        $heroes = Hero::where('is_active', true)
-            ->with('media')
-            ->get();
-
-        return HeroResource::collection($heroes);
+        $hero = Hero::where('is_active', true)
+            ->latest()
+            ->first();
+        return response()->json($hero->only(["title", "subtitle", "media_url"]));
     }
 }

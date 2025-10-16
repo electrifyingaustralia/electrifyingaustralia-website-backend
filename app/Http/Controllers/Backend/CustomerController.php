@@ -28,11 +28,27 @@ class CustomerController extends Controller
         return view('Backend.customer.index', compact('customers'));
     }
 
-    public function show(Customer $customer)
+    public function show(Customer $customer,  Request $request)
     {
-        $customer->load(['category', 'subCategory', 'answers.question']);
+        if ($customer->status === 'pending') {
+            $customer->update([
+                'status'     => 'viewed',
+                'updated_at' => now(),
+            ]);
+        }
 
-        return view('Backend.customer.show', compact('customer'));
+        $customer->load(['category', 'subCategory', 'answers.question']);
+        $editMode = $request->has('edit') && $request->edit === 'true';
+
+        return view('Backend.customer.show', compact('customer', 'editMode'));
+    }
+
+    public function update(Request $request, Customer $customer)
+    {
+        $customer->update($request->all());
+
+        return redirect()->route('admin.customer.show', $customer)
+            ->with('success', 'Customer information updated successfully.');
     }
 
     public function destroy(Customer $customer)

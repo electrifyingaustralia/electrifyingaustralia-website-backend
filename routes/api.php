@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ApiBenefitController;
 use App\Http\Controllers\Api\ApiBlogCategoryController;
 use App\Http\Controllers\Api\ApiBlogController;
 use App\Http\Controllers\Api\ApiBrandController;
+use App\Http\Controllers\Api\ApiCustomerController;
 use App\Http\Controllers\Api\ApiEventController;
 use App\Http\Controllers\Api\ApiFaqController;
 use App\Http\Controllers\Api\ApiHeroController;
@@ -68,7 +69,6 @@ Route::prefix('v1')->group(function () {
     Route::get('quotation/questions', [ApiQuotationController::class, 'findQuestions']);
     Route::post('quotation/save', [ApiQuotationController::class, 'saveCustomerQuotation']);
 
-
-    // ! Answers
     // ! Customers
+    Route::post('/customers', [ApiCustomerController::class, 'store']);
 });

@@ -76,6 +76,26 @@
                                                 Number</option>
                                         </select>
                                     </div>
+                                    <div>
+                                        <label for="is_required" class="block text-sm font-medium text-gray-700 my-3">
+                                            Question Type <span class="text-red-600">*</span>
+                                        </label>
+                                        <select id="is_required" name="is_required" required
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                                            <option value="">Select question type</option>
+                                            <option value="1"
+                                                {{ old('is_required', $question->is_required ?? '') == '1' ? 'selected' : '' }}>
+                                                Required Question
+                                            </option>
+                                            <option value="0"
+                                                {{ old('is_required', $question->is_required ?? '') == '0' ? 'selected' : '' }}>
+                                                Optional Question
+                                            </option>
+                                        </select>
+                                        @error('is_required')
+                                            <p class="!text-red-600 text-sm">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                     <div class="mt-4 flex justify-end space-x-3">
                                         <button type="submit"
                                             class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">

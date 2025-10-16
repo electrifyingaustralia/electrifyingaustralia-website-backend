@@ -21,10 +21,11 @@ use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\ProjectTypeController;
 use App\Http\Controllers\Backend\QuestionController;
 use App\Http\Controllers\Backend\QuotationController;
-use App\Http\Controllers\Backend\SettingController;
+// use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\SolutionCardController;
 use App\Http\Controllers\Backend\StickyHeaderController;
 use App\Http\Controllers\Backend\TeamController;
+use App\Http\Controllers\SettingOptionController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -235,16 +236,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/product/{id}',  'destroy')->name('delete');
         });
 
-        // ! Settings
-        Route::controller(SettingController::class)->name('setting.')->group(function () {
-            Route::get('/setting', 'index')->name('all');
-            Route::get('/setting/create', 'create')->name('create');
-            Route::post('/setting', 'store')->name('store');
-            Route::get('/setting/{id}/edit',  'edit')->name('edit');
-            Route::get('/setting/{id}',  'show')->name('show');
-            Route::put('/setting/{id}',  'update')->name('update');
-            Route::delete('/setting/{id}',  'destroy')->name('delete');
-        });
+        // // ! Settings
+        // Route::controller(SettingController::class)->name('setting.')->group(function () {
+        //     Route::get('/setting', 'index')->name('all');
+        //     Route::get('/setting/create', 'create')->name('create');
+        //     Route::post('/setting', 'store')->name('store');
+        //     Route::get('/setting/{id}/edit',  'edit')->name('edit');
+        //     Route::get('/setting/{id}',  'show')->name('show');
+        //     Route::put('/setting/{id}',  'update')->name('update');
+        //     Route::delete('/setting/{id}',  'destroy')->name('delete');
+        // });
 
         // ! Quotation
         Route::controller(QuotationController::class)->name('quotation.')->group(function () {
@@ -287,7 +288,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::controller(CustomerController::class)->name('customer.')->group(function () {
             Route::get('/customers', 'index')->name('all');
             Route::get('/customers/{customer}', 'show')->name('show');
+            Route::put('/customers/{customer}', 'update')->name('update');
             Route::delete('/customers/{customer}', 'destroy')->name('delete');
+        });
+
+        // ! Settings
+        Route::controller(SettingOptionController::class)->name('settings.')->group(function () {
+            Route::get('/settings', 'index')->name('all');
+            Route::post('/settings/update', 'update')->name('update');
         });
     });
 });

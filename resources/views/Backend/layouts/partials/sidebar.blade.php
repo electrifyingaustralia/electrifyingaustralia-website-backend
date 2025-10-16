@@ -219,6 +219,22 @@
                   </li>
 
                   <li class="relative mb-2">
+                      <a href="{{ route('admin.quotation.all') }}"
+                          class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.quotation*') || request()->routeIs('admin.question*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round" class="lucide lucide-scroll-text-icon lucide-scroll-text">
+                              <path d="M15 12h-5" />
+                              <path d="M15 8h-5" />
+                              <path d="M19 17V5a2 2 0 0 0-2-2H4" />
+                              <path
+                                  d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" />
+                          </svg>
+                          <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Quotation</span>
+                      </a>
+                  </li>
+
+                  <li class="relative mb-2">
                       <a href="{{ route('admin.sticky-header.all') }}"
                           class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.sticky-header*') ? '!text-teal-500 bg-teal-50' : '' }}">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -445,22 +461,6 @@
                       </a>
                   </li>
 
-                  <li class="relative mb-2">
-                      <a href="{{ route('admin.quotation.all') }}"
-                          class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.quotation*') || request()->routeIs('admin.question*') ? '!text-teal-500 bg-teal-50' : '' }}">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                              stroke-linejoin="round" class="lucide lucide-scroll-text-icon lucide-scroll-text">
-                              <path d="M15 12h-5" />
-                              <path d="M15 8h-5" />
-                              <path d="M19 17V5a2 2 0 0 0-2-2H4" />
-                              <path
-                                  d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3" />
-                          </svg>
-                          <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Quotation</span>
-                      </a>
-                  </li>
-
                   <li class="relative mb-2 group/product">
                       <a href="javascript:void(0);"
                           class="flex items-center justify-between px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.faq*') || request()->routeIs('admin.faq-type*') ? '!text-teal-500 bg-teal-50' : '' }}">
@@ -515,6 +515,27 @@
                               </a>
                           </li>
                       </ul>
+                  </li>
+                  <li class="relative mb-2">
+                      <a href="{{ route('admin.settings.all') }}"
+                          class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.settings*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round" class="lucide lucide-file-cog-icon lucide-file-cog">
+                              <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                              <path d="m2.305 15.53.923-.382" />
+                              <path d="m3.228 12.852-.924-.383" />
+                              <path d="M4.677 21.5a2 2 0 0 0 1.313.5H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v2.5" />
+                              <path d="m4.852 11.228-.383-.923" />
+                              <path d="m4.852 16.772-.383.924" />
+                              <path d="m7.148 11.228.383-.923" />
+                              <path d="m7.53 17.696-.382-.924" />
+                              <path d="m8.772 12.852.923-.383" />
+                              <path d="m8.772 15.148.923.383" />
+                              <circle cx="6" cy="14" r="3" />
+                          </svg>
+                          <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Mail Settings</span>
+                      </a>
                   </li>
               </ul>
           </div>

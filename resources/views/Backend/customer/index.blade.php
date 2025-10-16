@@ -42,7 +42,7 @@
                                 <option value="">All Status</option>
                                 <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending
                                 </option>
-                                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed
+                                <option value="viewed" {{ request('status') == 'viewed' ? 'selected' : '' }}>Viewed
                                 </option>
                                 <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled
                                 </option>
@@ -75,7 +75,7 @@
                                 <th class="px-6 py-3">Customer</th>
                                 <th class="px-6 py-3">Contact</th>
                                 <th class="px-6 py-3">Category</th>
-                                {{-- <th class="px-6 py-3">Type</th> --}}
+                                <th class="px-6 py-3">Type</th>
                                 <th class="px-6 py-3">Status</th>
                                 <th class="px-6 py-3">Date</th>
                                 <th class="px-6 py-3">Actions</th>
@@ -85,19 +85,19 @@
                             @forelse($customers as $customer)
                                 <tr>
                                     <td class="px-6 py-4">
-                                        <div class="font-medium text-gray-900">{{ $customer->full_name }}</div>
-                                        <div class="text-gray-500 text-xs">{{ $customer->address }}</div>
+                                        <div class="font-medium text-gray-900">{{ $customer->full_name ?? '---' }}</div>
+                                        <div class="text-gray-500 text-xs">{{ $customer->address ?? '---' }}</div>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div>{{ $customer->email }}</div>
-                                        <div class="text-gray-500 text-xs">{{ $customer->phone }}</div>
+                                        <div class="text-gray-500 text-xs">{{ $customer->phone ?? '---' }}</div>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div>{{ $customer->category->category ?? 'N/A' }}</div>
                                         <div class="text-gray-500 text-xs">{{ $customer->subCategory->category ?? '' }}
                                         </div>
                                     </td>
-                                    {{-- <td class="px-6 py-4">{{ $customer->type ?? 'N/A' }}</td> --}}
+                                    <td class="px-6 py-4 capitalize">{{ $customer->type ?? 'N/A' }}</td>
                                     <td class="px-6 py-4">
                                         @php
                                             $statusColors = [
@@ -119,7 +119,7 @@
                                                 class="w-5 h-5 fill-green-500 hover:fill-green-700" viewBox="0 0 24 24">
                                                 <path
                                                     d="M12 5c-7.633 0-11 7-11 7s3.367 7 11 7 11-7 11-7-3.367-7-11-7zm0 12c-4.411 0-7.757-3.134-9.223-5
-                                                                            1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z" />
+                                                                                                                                                    1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z" />
                                                 <circle cx="12" cy="12" r="3" />
                                             </svg>
                                         </a>
@@ -142,8 +142,8 @@
                                     <td colspan="7" class="px-6 py-4 text-center font-medium text-gray-700">
                                         <div class="flex flex-col items-center justify-center gap-x-4 py-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                                 class="lucide lucide-users-icon lucide-users">
                                                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                                                 <circle cx="9" cy="7" r="4" />
