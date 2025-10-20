@@ -11,7 +11,6 @@ class QuotationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'slug' => $this->slug,
             'title' => $this->title,
             'subtitle' => $this->subtitle,
             'questions' => $this->whenLoaded('questions', function () {
