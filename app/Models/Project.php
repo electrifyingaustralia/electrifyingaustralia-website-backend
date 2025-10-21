@@ -10,6 +10,11 @@ class Project extends Model
 
     protected $appends = ['media_url'];
 
+    protected $casts = [
+        'is_solution' => 'boolean',
+        'category' => 'string',
+    ];
+
     public function media()
     {
         return $this->belongsTo(MediaLibrary::class, 'media_id');
@@ -38,8 +43,8 @@ class Project extends Model
         return $this->belongsTo(ProjectType::class, 'project_type_id');
     }
 
-    public function category()
-    {
-        return $this->belongsTo(ProjectCategory::class, 'project_category_id');
-    }
+    // public function category()
+    // {
+    //     return $this->belongsTo(ProjectCategory::class, 'project_category_id');
+    // }
 }

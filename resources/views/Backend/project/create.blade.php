@@ -175,19 +175,21 @@
                         <div class="bg-white p-6 rounded-lg shadow">
                             <div class="grid grid-cols-1 gap-6">
                                 <div>
-                                    <label for="project_category_id"
-                                        class="block text-sm font-medium text-gray-700 mb-1">Project Category <span
-                                            class="text-red-600 font-bold">*</span></label>
-                                    <select name="project_category_id" id="project_category_id"
-                                        class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
-                                        required remove="project_category_id">
-                                        <option value="" selected>Select Category</option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <div failed="project_category_id"></div>
+                                    <label for="category" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Project Category <span class="text-red-600 font-bold">*</span>
+                                    </label>
 
+                                    <select name="category" id="category"
+                                        class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
+                                        required>
+                                        <option value="" selected>Select Category</option>
+                                        <option value="residential"
+                                            {{ old('category') == 'residential' ? 'selected' : '' }}>Residential</option>
+                                        <option value="commercial" {{ old('category') == 'commercial' ? 'selected' : '' }}>
+                                            Commercial</option>
+                                    </select>
+
+                                    <div failed="category"></div>
                                 </div>
                                 <div>
                                     <label for="project_type_id"
@@ -202,6 +204,15 @@
                                         @endforeach
                                     </select>
                                     <div failed="project_type_id"></div>
+                                </div>
+                                <div>
+                                    <label for="is_solution" class="block text-sm font-medium text-gray-700 mb-2">Is
+                                        Solution <span class="text-red-600 font-bold">*</span></label>
+                                    <select name="is_solution" id="is_solution" required remove="is_solution"
+                                        class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                                        <option value="0" selected>No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

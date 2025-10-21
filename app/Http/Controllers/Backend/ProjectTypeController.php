@@ -36,7 +36,7 @@ class ProjectTypeController extends Controller
         return redirect()->route('admin.project-type.all')->with('success', 'Project type updated successfully!');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $this->projectTypeService->deleteProjectType($id);
         return redirect()->route('admin.project-type.all')->with('success', 'Project type deleted successfully.');

@@ -404,7 +404,7 @@
                                   <span class="pl-3 group-data-[sidebar-size=sm]:hidden">All Projects</span>
                               </a>
                           </li>
-                          <li>
+                          {{-- <li>
                               <a href="{{ route('admin.project-category.all') }}"
                                   class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.project-category*') ? '!text-teal-500 bg-teal-50' : '' }}">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -415,7 +415,7 @@
                                   </svg>
                                   <span class="pl-3 group-data-[sidebar-size=sm]:hidden">Project Categories</span>
                               </a>
-                          </li>
+                          </li> --}}
                           <li>
                               <a href="{{ route('admin.project-type.all') }}"
                                   class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.project-type*') ? '!text-teal-500 bg-teal-50' : '' }}">
