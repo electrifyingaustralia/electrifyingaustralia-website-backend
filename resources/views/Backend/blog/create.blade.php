@@ -787,57 +787,122 @@
                 let html = '';
 
                 if (!append) {
-                    html = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">';
+                    html =
+                        '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="media-grid">';
                 }
 
-                // Calculate starting index for new items
+                // Calculate starting index for new items - THIS IS THE KEY FIX
                 const startIndex = append ? $mediaContent.find('.media-item').length : 0;
 
                 $.each(mediaItems.slice(startIndex), function(index, media) {
                     const actualIndex = startIndex + index;
-
-                    // Your existing media item HTML generation code
                     let previewHtml = '';
-                    const fileExtension = media.original_name.split('.').pop().toLowerCase();
+                    const fileExtension = (media.original_name || media.name || '').split('.').pop()
+                        .toLowerCase();
+                    const isSelected = modalSelectedMedia.some(item => item.id === media.id);
 
                     if (media.mime_type && media.mime_type.startsWith('image/')) {
                         previewHtml =
-                            `<img src="${media.url}" alt="${media.original_name}" class="w-full h-24 object-scale-down">`;
+                            `<img src="${media.url}" alt="${media.original_name || media.name}" class="w-full h-24 object-scale-down">`;
                     } else if (media.mime_type && media.mime_type.startsWith('video/')) {
                         previewHtml = `
-                    <div class="w-full h-24 flex items-center justify-center bg-gray-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
-                            <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
-                            <rect x="2" y="6" width="14" height="12" rx="2"/>
-                        </svg>
-                    </div>
-                `;
+                <div class="w-full h-24 flex items-center justify-center bg-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
+                        <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
+                        <rect x="2" y="6" width="14" height="12" rx="2"/>
+                    </svg>
+                </div>
+            `;
+                    } else if (['pdf'].includes(fileExtension)) {
+                        previewHtml = `
+                <div class="w-full h-24 flex items-center justify-center bg-red-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-red-600">
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        <path d="M10 9H8"/>
+                        <path d="M16 13H8"/>
+                        <path d="M16 17H8"/>
+                    </svg>
+                </div>
+            `;
+                    } else if (['doc', 'docx'].includes(fileExtension)) {
+                        previewHtml = `
+                <div class="w-full h-24 flex items-center justify-center bg-blue-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-blue-600">
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        <path d="M10 9H8"/>
+                        <path d="M16 13H8"/>
+                        <path d="M16 17H8"/>
+                    </svg>
+                </div>
+            `;
+                    } else if (['xls', 'xlsx'].includes(fileExtension)) {
+                        previewHtml = `
+                <div class="w-full h-24 flex items-center justify-center bg-green-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-table text-green-600">
+                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                        <path d="M3 9h18"/>
+                        <path d="M3 15h18"/>
+                        <path d="M9 3v18"/>
+                        <path d="M15 3v18"/>
+                    </svg>
+                </div>
+            `;
                     } else {
-                        // Your existing document type handling...
+                        previewHtml = `
+                <div class="w-full h-24 flex items-center justify-center bg-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file text-gray-600">
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                    </svg>
+                </div>
+            `;
                     }
 
                     html += `
-                <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md"
-                    data-index="${actualIndex}">
-                    ${previewHtml}
-                    <div class="p-2">
-                        <p class="text-xs text-center font-medium truncate">${media.original_name}</p>
-                    </div>
+            <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md ${isSelected ? 'selected' : ''}"
+                data-media-id="${media.id}">
+                <div class="checkbox-container">
+                    <input type="checkbox" class="media-checkbox" data-media-id="${media.id}" ${isSelected ? 'checked' : ''}>
                 </div>
-                `;
+                ${previewHtml}
+                <div class="p-2">
+                    <p class="text-xs text-center font-medium truncate">${media.original_name || media.name}</p>
+                </div>
+            </div>
+        `;
                 });
 
                 if (!append) {
                     html += '</div>';
                     $mediaContent.html(html);
                 } else {
-                    $mediaContent.find('.grid').append(html);
+                    $mediaContent.find('#media-grid').append(html);
                 }
 
-                // Re-bind click events for new items
-                $mediaContent.find('.media-item').off('click').on('click', function() {
-                    const index = parseInt($(this).data('index'));
-                    selectMediaFromLibrary(index);
+                // Add click event listeners to NEW media items only when appending
+                const newItems = append ? $mediaContent.find('.media-item').slice(startIndex) : $mediaContent.find(
+                    '.media-item');
+
+                newItems.off('click').on('click', function(e) {
+                    if ($(e.target).is('input[type="checkbox"]')) {
+                        return;
+                    }
+                    const mediaId = parseInt($(this).data('media-id'));
+                    toggleMediaSelection(mediaId);
+                });
+
+                // Checkbox change event for new items
+                newItems.find('.media-checkbox').off('change').on('change', function() {
+                    const mediaId = parseInt($(this).data('media-id'));
+                    const isChecked = $(this).is(':checked');
+
+                    if (isChecked) {
+                        addMediaToModalSelection(mediaId);
+                    } else {
+                        removeMediaFromModalSelection(mediaId);
+                    }
                 });
             }
 

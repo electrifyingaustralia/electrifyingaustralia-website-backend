@@ -190,6 +190,16 @@
                         </td>
                     </tr>
                     <tr>
+                        <td class="label">Message</td>
+                        <td class="value">
+                            @if ($customer->message && trim($customer->message) !== '')
+                                {{ $customer->message }}
+                            @else
+                                <span class="empty-value">Not provided</span>
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
                         <td class="label">Submitted On</td>
                         <td class="value">{{ $customer->created_at->format('F j, Y \a\t g:i A') }}</td>
                     </tr>

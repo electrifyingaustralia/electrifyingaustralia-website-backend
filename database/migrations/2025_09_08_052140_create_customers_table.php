@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
+            $table->longText('message')->nullable();
             $table->string('type')->nullable();
             $table->string('status')->default('pending');
             $table->timestamps();
