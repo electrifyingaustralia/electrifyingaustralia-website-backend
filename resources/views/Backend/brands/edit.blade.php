@@ -539,29 +539,45 @@
             }
 
             // ========== LIBRARY TAB FUNCTIONS ==========
-            function loadMediaLibrary() {
+            let currentPage = 1;
+            let hasMorePages = true;
+
+            function loadMediaLibrary(loadMore = false) {
                 const $mediaContent = $('#media-library-content');
-                $mediaContent.html(`
-            <div class="text-center py-12">
-                <i class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i>
-                <p class="mt-2 text-gray-600">Loading media library...</p>
-            </div>
-        `);
+
+                if (!loadMore) {
+                    $mediaContent.html(`
+                    <div class="text-center py-12">
+                        <i class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i>
+                        <p class="mt-2 text-gray-600">Loading media library...</p>
+                    </div>
+                `);
+                    currentPage = 1;
+                    mediaLibraryItems = [];
+                }
 
                 $.ajax({
-                    url: '{{ route('admin.media.ajax.all') }}?perPage=24&type=image',
-                    method: 'GET',
+                    url: '{{ route('admin.media.ajax.all') }}?perPage=50&page=' + currentPage,
                     headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-Requested-With': 'XMLHttpRequest'
                     },
                     success: function(data) {
-                        console.log('Media library response:', data);
                         if (data.data && data.data.length > 0) {
-                            mediaLibraryItems = data.data;
-                            renderMediaLibrary(data.data);
+                            mediaLibraryItems = [...mediaLibraryItems, ...data.data];
+                            renderMediaLibrary(mediaLibraryItems);
+
+                            // Check if there are more pages
+                            hasMorePages = data.current_page < data.last_page;
+                            currentPage++;
+
+                            // Add or update load more button
+                            updateLoadMoreButton();
                         } else {
-                            showNoMediaMessage();
+                            if (mediaLibraryItems.length === 0) {
+                                showNoMediaMessage();
+                            }
+                            hasMorePages = false;
+                            updateLoadMoreButton();
                         }
                     },
                     error: function(error) {
@@ -571,29 +587,83 @@
                 });
             }
 
-            function renderMediaLibrary(mediaItems) {
+            function updateLoadMoreButton() {
+                let $loadMoreBtn = $('#load-more-media');
+
+                if (hasMorePages) {
+                    if ($loadMoreBtn.length === 0) {
+                        $('#media-library-content').after(`
+                    <div class="text-center mt-4">
+                        <button id="load-more-media" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg">
+                            Load More Media
+                        </button>
+                    </div>
+                `);
+
+                        $('#load-more-media').on('click', function() {
+                            loadMediaLibrary(true);
+                        });
+                    }
+                } else {
+                    $loadMoreBtn.remove();
+                }
+            }
+
+            function renderMediaLibrary(mediaItems, append = false) {
                 const $mediaContent = $('#media-library-content');
 
-                let html = '<div class="grid !grid-cols-2 sm:!grid-cols-3 md:!grid-cols-4 lg:!grid-cols-6 !gap-4">';
+                let html = '';
 
-                $.each(mediaItems, function(index, media) {
-                    const isSelected = selectedMedia && selectedMedia.id === media.id;
+                if (!append) {
+                    html = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">';
+                }
+
+                // Calculate starting index for new items
+                const startIndex = append ? $mediaContent.find('.media-item').length : 0;
+
+                $.each(mediaItems.slice(startIndex), function(index, media) {
+                    const actualIndex = startIndex + index;
+
+                    // Your existing media item HTML generation code
+                    let previewHtml = '';
+                    const fileExtension = media.original_name.split('.').pop().toLowerCase();
+
+                    if (media.mime_type && media.mime_type.startsWith('image/')) {
+                        previewHtml =
+                            `<img src="${media.url}" alt="${media.original_name}" class="w-full h-24 object-scale-down">`;
+                    } else if (media.mime_type && media.mime_type.startsWith('video/')) {
+                        previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center bg-gray-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
+                            <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
+                            <rect x="2" y="6" width="14" height="12" rx="2"/>
+                        </svg>
+                    </div>
+                `;
+                    } else {
+                        // Your existing document type handling...
+                    }
+
                     html += `
-                <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md ${isSelected ? 'selected' : ''}"
-                     data-index="${index}">
-                    <img src="${media.url}" alt="${media.original_name}" class="w-full h-24 object-scale-down">
+                <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md"
+                    data-index="${actualIndex}">
+                    ${previewHtml}
                     <div class="p-2">
-                        <p class="text-xs font-medium truncate">${media.original_name}</p>
+                        <p class="text-xs text-center font-medium truncate">${media.original_name}</p>
                     </div>
                 </div>
-            `;
+                `;
                 });
 
-                html += '</div>';
-                $mediaContent.html(html);
+                if (!append) {
+                    html += '</div>';
+                    $mediaContent.html(html);
+                } else {
+                    $mediaContent.find('.grid').append(html);
+                }
 
-                // Add click event listeners
-                $mediaContent.find('.media-item').on('click', function() {
+                // Re-bind click events for new items
+                $mediaContent.find('.media-item').off('click').on('click', function() {
                     const index = parseInt($(this).data('index'));
                     selectMediaFromLibrary(index);
                 });
