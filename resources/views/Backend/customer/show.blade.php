@@ -129,7 +129,7 @@
                     <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                            <p class="text-gray-900">{{ $customer->full_name }}</p>
+                            <p class="text-gray-900">{{ $customer->first_name ? $customer->full_name : 'N/A' }}</p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -154,6 +154,10 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
                             <p class="text-gray-900">{{ $customer->type ?? 'N/A' }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <p class="text-gray-900">{{ $customer->message ?? 'N/A' }}</p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
