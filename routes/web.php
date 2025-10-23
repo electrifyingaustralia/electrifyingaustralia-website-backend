@@ -30,7 +30,11 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/test', function () {
+    return formatFileSize('1024');
+});
 Route::redirect('/', '/admin/login');
+
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
