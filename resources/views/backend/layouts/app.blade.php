@@ -13,7 +13,9 @@
      <link rel="stylesheet" href="{{ asset('assets/css/tailwind2.css') }}">
      <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}">
      <link rel="stylesheet" href="{{ asset('assets/resource/app.css') }}">
-     @vite('resources/css/app.css')
+     @if (env('APP_ENV') == 'local')
+         @vite('resources/css/app.css')
+     @endif
      @stack('styles')
  </head>
 
