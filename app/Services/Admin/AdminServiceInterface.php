@@ -14,4 +14,5 @@ interface AdminServiceInterface
     public function createAdmin(array $data, ?UploadedFile $media = null): object;
     public function updateAdmin(int $id, array $data): object;
     public function deleteAdmin(int $id): bool;
+    public function updatePassword(array $data);
 }

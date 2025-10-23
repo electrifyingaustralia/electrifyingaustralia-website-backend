@@ -92,18 +92,20 @@
                                                     data-original="#000000" />
                                             </svg>
                                         </a>
-                                        <button class="text-red-500 hover:text-red-700" type="button"
-                                            onclick="confirmDelete({{ $admin->id }})">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                class="w-4 h-4 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
-                                                    data-original="#000000" />
-                                                <path
-                                                    d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
-                                                    data-original="#000000" />
-                                            </svg>
-                                        </button>
+                                        @if ($admin->role !== 'admin')
+                                            <button class="text-red-500 hover:text-red-700" type="button"
+                                                onclick="confirmDelete({{ $admin->id }})">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="w-4 h-4 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
+                                                        data-original="#000000" />
+                                                    <path
+                                                        d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
+                                                        data-original="#000000" />
+                                                </svg>
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
@@ -142,8 +144,8 @@
                 <form id="delete-form" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit"
-                        class="px-4 py-2 !bg-red-600 text-white rounded-lg hover:!bg-red-700">Delete</button>
+                    <button type="submit" class="px-4 py-2 !bg-red-600 text-white rounded-lg hover:!bg-red-700">Delete
+                    </button>
                 </form>
             </div>
         </div>
