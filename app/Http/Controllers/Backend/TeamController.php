@@ -18,7 +18,7 @@ class TeamController extends Controller
             'search' => $request->get('search'),
         ]);
 
-        return view('Backend.teams.index', compact('teams'));
+        return view('backend.teams.index', compact('teams'));
     }
 
     public function create()

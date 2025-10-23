@@ -14,7 +14,7 @@ class FaqTypeController extends Controller
     public function index()
     {
         $types = $this->faqTypeService->get();
-        return view('Backend.faq-type.index', compact('types'));
+        return view('backend.faq-type.index', compact('types'));
     }
 
     public function store(FaqTypeRequest $request)
@@ -27,7 +27,7 @@ class FaqTypeController extends Controller
     {
         $typeToEdit = $this->faqTypeService->findFaqType($id);
         $types = $this->faqTypeService->get();
-        return view('Backend.faq-type.index', compact('typeToEdit', 'types'));
+        return view('backend.faq-type.index', compact('typeToEdit', 'types'));
     }
 
     public function update(FaqTypeRequest $request, $id)

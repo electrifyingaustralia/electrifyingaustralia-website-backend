@@ -25,7 +25,7 @@ class CustomerController extends Controller
             })
             ->paginate(10);
 
-        return view('Backend.customer.index', compact('customers'));
+        return view('backend.customer.index', compact('customers'));
     }
 
     public function show(Customer $customer,  Request $request)
@@ -40,7 +40,7 @@ class CustomerController extends Controller
         $customer->load(['category', 'subCategory', 'answers.question']);
         $editMode = $request->has('edit') && $request->edit === 'true';
 
-        return view('Backend.customer.show', compact('customer', 'editMode'));
+        return view('backend.customer.show', compact('customer', 'editMode'));
     }
 
     public function update(Request $request, Customer $customer)

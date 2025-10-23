@@ -21,7 +21,7 @@ class BlogController extends Controller
             'status' => $request->get('status'),
             'search' => $request->get('search'),
         ]);
-        return view('Backend.blog.index', compact('blogs'));
+        return view('backend.blog.index', compact('blogs'));
     }
 
     public function create()
@@ -52,7 +52,7 @@ class BlogController extends Controller
     {
         $blog = $this->blogService->findBlog($id);
         $categories = $this->blogCategoryServiceInterface->get();
-        return view('Backend.blog.edit', compact('blog', 'categories'));
+        return view('backend.blog.edit', compact('blog', 'categories'));
     }
 
     public function update(BlogUpdateRequest $request, $id)

@@ -20,7 +20,7 @@ class FaqController extends Controller
     {
         $faqs = $this->faqService->get();
         $types = $this->faqTypeServiceInterface->get();
-        return view('Backend.faq.index', compact('faqs', 'types'));
+        return view('backend.faq.index', compact('faqs', 'types'));
     }
 
     public function store(FaqCreateRequest $request)
@@ -41,7 +41,7 @@ class FaqController extends Controller
         $faqToEdit = $this->faqService->findFaq($id);
         $faqs = $this->faqService->get();
         $types = $this->faqTypeServiceInterface->get();
-        return view('Backend.faq.index', compact('faqToEdit', 'faqs', 'types'));
+        return view('backend.faq.index', compact('faqToEdit', 'faqs', 'types'));
     }
 
     public function update(FaqUpdateRequest $request, $id)

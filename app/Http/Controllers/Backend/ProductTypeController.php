@@ -14,7 +14,7 @@ class ProductTypeController extends Controller
     public function index()
     {
         $types = $this->productTypeService->get();
-        return view('Backend.product-type.index', compact('types'));
+        return view('backend.product-type.index', compact('types'));
     }
 
     public function store(ProductTypeRequest $request)
@@ -27,7 +27,7 @@ class ProductTypeController extends Controller
     {
         $typeToEdit = $this->productTypeService->findProductType($id);
         $types = $this->productTypeService->get();
-        return view('Backend.product-type.index', compact('typeToEdit', 'types'));
+        return view('backend.product-type.index', compact('typeToEdit', 'types'));
     }
 
     public function update(ProductTypeRequest $request, $id)

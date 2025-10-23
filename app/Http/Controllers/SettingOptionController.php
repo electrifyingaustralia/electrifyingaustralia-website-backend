@@ -13,7 +13,7 @@ class SettingOptionController extends Controller
         $admin_bcc = SettingOption::getValue('admin_bcc');
         $admin_cc = SettingOption::getValue('admin_cc');
 
-        return view('Backend.setting.index', compact('admin_email', 'admin_bcc', 'admin_cc'));
+        return view('backend.setting.index', compact('admin_email', 'admin_bcc', 'admin_cc'));
     }
 
     public function update(Request $request)

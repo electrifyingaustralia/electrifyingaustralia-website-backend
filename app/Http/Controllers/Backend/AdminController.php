@@ -17,7 +17,7 @@ class AdminController extends Controller
     public function index()
     {
         $admins = $this->adminService->getAdmins();
-        return view('Backend.admin.index', compact('admins'));
+        return view('backend.admin.index', compact('admins'));
     }
 
     public function create()
@@ -47,7 +47,7 @@ class AdminController extends Controller
     public function edit($id)
     {
         $admin = $this->adminService->findAdmin($id);
-        return view('Backend.admin.edit', compact('admin'));
+        return view('backend.admin.edit', compact('admin'));
     }
 
     public function update(AdminUpdateRequest $request, $id)

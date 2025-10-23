@@ -17,7 +17,7 @@ class HeroController extends Controller
         $heroes = $this->heroService->get(['*'], 15, [
             'search' => $request->get('search'),
         ]);
-        return view('Backend.hero.index', compact('heroes'));
+        return view('backend.hero.index', compact('heroes'));
     }
 
     public function create()
