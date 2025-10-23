@@ -48,6 +48,8 @@ jobs:
 
             php artisan db:seed --class=AdminSeeder
 
+            php artisan storage:link
+
             sudo chown -R www-data:www-data storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache
 
