@@ -72,8 +72,12 @@ class AdminService implements AdminServiceInterface
         return $this->admin->update($id, $data);
     }
 
-    public function deleteAdmin(int $id): bool
+    public function deleteAdmin(int $id)
     {
+        if (Auth::guard('admin')->user()->role === 'admin') {
+            return back()->with('error', 'This user cannot be deleted.');
+        }
+
         return $this->admin->delete($id);
     }
 
