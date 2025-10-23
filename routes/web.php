@@ -66,6 +66,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/users/{id}/edit',  'edit')->name('edit');
             Route::put('/users/{id}',  'update')->name('update');
             Route::delete('/users/{id}',  'destroy')->name('delete');
+            Route::get('/change-password', 'showChangePassword')->name('change-password');
+            Route::post('/update-password', 'updatePassword')->name('update-password');
         });
 
         // ! Sticky Header

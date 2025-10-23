@@ -7,6 +7,7 @@ use App\Http\Requests\Backend\AdminCreateRequest;
 use App\Http\Requests\Backend\AdminUpdateRequest;
 use App\Services\Admin\AdminServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -38,12 +39,6 @@ class AdminController extends Controller
         ]);
     }
 
-    // public function show($id)
-    // {
-    //     $admin = $this->adminService->findAdmin($id);
-    //     return view();
-    // }
-
     public function edit($id)
     {
         $admin = $this->adminService->findAdmin($id);
@@ -53,19 +48,6 @@ class AdminController extends Controller
     public function update(AdminUpdateRequest $request, $id)
     {
         $data = $request->validated();
-        // $admin = $this->adminService->findAdmin($id);
-
-        // if (!empty($data['password'])) $data['password'] = Hash::make($data['password']);
-        // else unset($data['password']);
-
-        // if ($request->hasFile('avatar')) {
-        //     if ($admin->avatar) {
-        //         Storage::disk('public')->delete($admin->avatar);
-        //     }
-        //     $data['avatar'] = $this->uploadAvatar($request->file('avatar'));
-        // } else {
-        //     $data['avatar'] = $admin->avatar;
-        // }
 
         $this->adminService->updateAdmin($id, $data);
         return response()->json([
@@ -73,6 +55,32 @@ class AdminController extends Controller
             'message' => 'Admin user updated successfully',
             'redirect' => route('admin.users.all')
         ]);
+    }
+
+    public function showChangePassword()
+    {
+        return view('backend.admin.change-password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|confirmed',
+        ]);
+
+        try {
+            $data = $request->only(['current_password', 'new_password']);
+            $this->adminService->updatePassword($data);
+
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('admin.login')->with('success', 'Password changed successfully. Please login again with your new password.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['current_password' => $e->getMessage()]);
+        }
     }
 
     public function destroy($id)
@@ -85,10 +93,5 @@ class AdminController extends Controller
 
         $this->adminService->deleteAdmin($id);
         return redirect()->back()->with('success', 'Admin user deleted successfully!');
-    }
-
-    protected function uploadAvatar($file): string
-    {
-        return $file->store('admins', 'public');
     }
 }
