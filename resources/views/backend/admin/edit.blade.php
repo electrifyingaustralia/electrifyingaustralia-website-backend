@@ -59,7 +59,7 @@
                 @csrf
                 @method('PUT')
                 <div class="flex flex-col lg:!flex-row gap-6">
-                    <div class="w-full lg:!w-2/3">
+                    <div class="w-full">
                         <!-- Sticky Headers Table -->
                         <div class="bg-white p-6 rounded-lg shadow">
 
@@ -264,10 +264,27 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="mt-4 text-right">
+                                <button type="submit"
+                                    class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
+                                    <div class="flex items-center gap-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="lucide lucide-save-icon lucide-save">
+                                            <path
+                                                d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+                                            <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
+                                            <path d="M7 3v4a1 1 0 0 0 1 1h7" />
+                                        </svg>
+                                        <span>Update Admin User</span>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <!-- Right Column - Form -->
-                    <div class="w-full lg:!w-1/3">
+                    {{-- <div class="w-full lg:!w-1/3">
                         <div class="bg-white p-6 rounded-lg shadow">
                             <div class="grid grid-cols-1 gap-6">
                                 <div>
@@ -309,7 +326,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </form>
         </div>
