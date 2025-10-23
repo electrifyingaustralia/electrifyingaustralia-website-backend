@@ -11,7 +11,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EventController;
 use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\FaqTypeController;
-use App\Http\Controllers\backend\HeroController;
+use App\Http\Controllers\Backend\HeroController;
 use App\Http\Controllers\Backend\MediaLibraryController;
 use App\Http\Controllers\Backend\PackageController;
 use App\Http\Controllers\Backend\ProductController;
