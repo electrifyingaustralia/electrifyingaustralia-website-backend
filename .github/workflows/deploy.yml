@@ -39,7 +39,7 @@ jobs:
 
             composer install --no-interaction --prefer-dist --optimize-autoloader
 
-            php artisan migrate
+            php artisan migrate --force
 
             php artisan key:generate
             php artisan config:cache
