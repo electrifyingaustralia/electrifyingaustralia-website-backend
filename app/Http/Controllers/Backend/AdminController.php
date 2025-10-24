@@ -86,12 +86,11 @@ class AdminController extends Controller
     public function destroy($id)
     {
         $admin = $this->adminService->findAdmin($id);
-        if ($admin->id === auth()->id())
+        if ($admin->id === auth()->guard('admin')->id())
             return redirect()->back()->with('error', 'You cannot delete your own account');
 
-        if ($admin->avatar) Storage::disk('public')->delete($admin->avatar);
-
         $this->adminService->deleteAdmin($id);
+
         return redirect()->back()->with('success', 'Admin user deleted successfully!');
     }
 }

@@ -13,6 +13,6 @@ interface AdminServiceInterface
     public function findAdmin(int $id): object;
     public function createAdmin(array $data, ?UploadedFile $media = null): object;
     public function updateAdmin(int $id, array $data): object;
-    public function deleteAdmin(int $id): bool;
+    public function deleteAdmin(int $id);
     public function updatePassword(array $data);
 }
