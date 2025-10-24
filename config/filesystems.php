@@ -41,7 +41,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
@@ -58,6 +58,22 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
             'report' => false,
+        ],
+
+        'gcs' => [
+            'driver' => 'gcs',
+            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
+            'key_file' => env('GOOGLE_CLOUD_KEY_FILE'), // optional
+            'key_file_path' => base_path(env('GOOGLE_CLOUD_KEY_FILE_PATH')), // optional
+            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
+            'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
+            'visibility' => 'private',
+            'metadata' => ['cacheControl' => 'no-cache'],
+            // 'visibility' => 'public',
+            // 'default_visibility' => 'public',
+            'throw' => true,
+            'report' => true,
+            'url' => env('GOOGLE_CLOUD_STORAGE_PUBLIC_URL', 'https://storage.googleapis.com/' . env('GOOGLE_CLOUD_STORAGE_BUCKET')),
         ],
 
     ],
