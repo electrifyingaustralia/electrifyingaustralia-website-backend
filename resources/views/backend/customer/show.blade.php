@@ -196,12 +196,13 @@
                                     <div class="bg-gray-50 p-3 rounded-lg">
                                         {{-- File Type --}}
                                         @if ($answer->answer_type === 'file' && isset($answer->attrs['path']))
-                                            <a href="{{ asset('/' . $answer->attrs['path']) }}" target="_blank"
+                                            <a href="{{ getAssetFileUrl('quotation', $answer->attrs['random_name'], disk: env('FILESYSTEM_DISK', 'public')) }}"
+                                                target="_blank"
                                                 class="text-teal-600 hover:underline flex justify-start items-center gap-x-6">
                                                 <div class="size-14">
                                                     @if (in_array($answer->attrs['extension'], ['jpeg', 'jpg', 'png', 'gif', 'webp', 'svg']))
                                                         <img class="w-full object-contain rounded-lg"
-                                                            src="{{ asset('/' . $answer->attrs['path']) }}"
+                                                            src="{{ getAssetFileUrl('quotation', $answer->attrs['random_name'], disk: env('FILESYSTEM_DISK', 'public')) }}"
                                                             alt="">
                                                     @elseif ($answer->attrs['extension'] == 'pdf')
                                                         <img class="w-full object-contain rounded-lg"
