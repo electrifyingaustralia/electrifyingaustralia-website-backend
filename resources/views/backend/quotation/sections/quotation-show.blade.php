@@ -4,8 +4,8 @@
         <div class="bg-white p-6 rounded-lg shadow">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="md:col-span-2">
-                    <h2 class="text-lg font-bold text-gray-800 mb-2">Category: {{ $quotation->category }}</h2>
-                    <p class="text-gray-600 mb-4">Subcategory: {{ $quotation->subcategory }}</p>
+                    <h2 class="text-lg font-bold text-gray-800 mb-2">Category: {{ $quotation->parentCat->category }}</h2>
+                    <p class="text-gray-600 mb-4">Subcategory: {{ $quotation->category }}</p>
                     <div class="mt-6">
                         <h3 class="text-lg font-normal text-gray-800 mb-3">Assigned Questions</h3>
                         @if ($quotation->questions->count() > 0)
@@ -15,14 +15,17 @@
                                         <div class="flex justify-between items-start">
                                             <div class="flex-1">
                                                 <h4 class="text-md font-medium text-gray-900">{{ $question->question }}</h4>
-                                                <div class="mt-2 flex flex-wrap gap-2">
-                                                    @foreach ($question->options as $option)
-                                                        <span
-                                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
-                                                            {{ $option->option }} ({{ $option->type }})
-                                                        </span>
-                                                    @endforeach
-                                                </div>
+                                                @if ($question->options && $question->options->count() > 1)
+                                                    <div class="mt-2 flex flex-wrap gap-2">
+
+                                                        @foreach ($question->options as $option)
+                                                            <span
+                                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+                                                                {{ $option->option }}
+                                                            </span>
+                                                        @endforeach
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </li>
