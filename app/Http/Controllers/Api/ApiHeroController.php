@@ -14,6 +14,16 @@ class ApiHeroController extends Controller
         $hero = Hero::where('is_active', true)
             ->latest()
             ->first();
-        return response()->json($hero->only(["title", "subtitle", "media_url"]));
+
+        if (!$hero) {
+            return response()->json([
+                'title' => null,
+                'subtitle' => null,
+                'media_url' => null,
+            ], 404);
+        }
+        return response()->json(
+            $hero->only(["title", "subtitle", "media_url"])
+        );
     }
 }
