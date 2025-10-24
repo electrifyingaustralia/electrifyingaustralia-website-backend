@@ -1,4 +1,4 @@
-name: Electrifying Australia Website Frontend Deploy
+name: Electrifying Australia Full Deploy
 
 on:
   push:
@@ -9,10 +9,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: => Deploy Linux Server
+      # 2️⃣ Deploy files to the server
+      - name: Sync code to server
         uses: easingthemes/ssh-deploy@v5.0.0
         env:
           SSH_PRIVATE_KEY: ${{ secrets.LINUX_SSH_KEY }}
@@ -22,7 +24,8 @@ jobs:
           REMOTE_USER: ${{ secrets.LINUX_USER }}
           TARGET: "${{ secrets.LINUX_DIR_PATH }}/"
 
-      - name: => Install required package
+      # 3️⃣ Install dependencies & build frontend
+      - name: Install Node & Build Frontend
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.LINUX_HOST }}
@@ -31,41 +34,72 @@ jobs:
           script: |
             cd ${{ secrets.LINUX_DIR_PATH }}
 
+            echo "📦 Installing Node packages..."
             npm install
 
+            echo "🏗 Building Next.js frontend..."
             npm run build
 
+      # 4️⃣ Setup Laravel backend
+      - name: Setup Laravel
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.LINUX_HOST }}
+          username: ${{ secrets.LINUX_USER }}
+          key: ${{ secrets.LINUX_SSH_KEY }}
+          script: |
+            cd ${{ secrets.LINUX_DIR_PATH }}
+
+            echo "⚙️ Copying env file..."
             cp -f .env.example .env
 
+            echo "📦 Installing PHP dependencies..."
             composer install --no-interaction --prefer-dist --optimize-autoloader
 
+            echo "🔑 Generating app key..."
             php artisan key:generate
 
+            echo "🛠 Running migrations..."
             php artisan migrate --force
 
-            php artisan optimize:clear
-
+            echo "🚀 Running seeders..."
             php artisan db:seed --class=AdminSeeder --force
 
+            echo "🧹 Optimizing Laravel..."
+            php artisan optimize:clear
+
+            echo "🔗 Creating storage symlink..."
             php artisan storage:link
 
+            echo "🔧 Setting permissions..."
             sudo chown -R www-data:www-data storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache
 
-            cp -f supervisor-queue.conf /etc/supervisor/conf.d/laravel-electrifying-australia-queue.conf
+      # 5️⃣ Supervisor reload & queue restart
+      - name: Reload Supervisor & Restart Queue
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.LINUX_HOST }}
+          username: ${{ secrets.LINUX_USER }}
+          key: ${{ secrets.LINUX_SSH_KEY }}
+          script: |
+            cd ${{ secrets.LINUX_DIR_PATH }}
+
+            echo "📄 Copying Supervisor config..."
+            sudo cp -f supervisor-queue.conf /etc/supervisor/conf.d/laravel-electrifying-australia-queue.conf
 
             echo "🔁 Reloading Supervisor..."
             sudo supervisorctl reread
             sudo supervisorctl update
             sudo supervisorctl restart laravel-electrifying-australia-queue:*
 
-      - name: => Server Restart
+      # 6️⃣ Restart Nginx server
+      - name: Restart Nginx
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.LINUX_HOST }}
           username: ${{ secrets.LINUX_USER }}
           key: ${{ secrets.LINUX_SSH_KEY }}
           script: |
-            cd ${{ secrets.LINUX_DIR_PATH }}
-
+            echo "🔄 Restarting Nginx..."
             sudo systemctl restart nginx
