@@ -10,9 +10,9 @@
                             <div class="px-6 py-5 border-b border-gray-200">
                                 <h3 class="text-lg font-medium text-gray-900">Assigned Questions</h3>
                                 <p class="text-sm text-gray-600 mt-1"><span class="font-bold">Category:</span>
-                                    "{{ $section->category }}"</p>
+                                    "{{ $section->parentCat->category }}"</p>
                                 <p class="text-sm text-gray-600 mt-1"><span class="font-bold">Subcategory:</span>
-                                    "{{ $section->subcategory }}"</p>
+                                    "{{ $section->category }}"</p>
                             </div>
                             <div class="px-6 py-5">
                                 @if ($section->questions->count() > 0)
@@ -38,12 +38,10 @@
                                                         <h4 class="text-md font-medium text-gray-900">
                                                             {{ $question->question }}</h4>
                                                         <div class="mt-2 flex flex-wrap gap-2">
-                                                            {{-- @foreach ($question->options as $option) --}}
                                                             <span
                                                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
                                                                 {{ $question->input_type }}
                                                             </span>
-                                                            {{-- @endforeach --}}
                                                         </div>
                                                     </div>
                                                 </div>

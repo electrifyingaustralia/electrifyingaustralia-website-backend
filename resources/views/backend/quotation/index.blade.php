@@ -36,7 +36,9 @@
                         </div>
                     </a>
                 @endif
-                @if (request()->routeIs('admin.quotation.assign-questions') || request()->routeIs('admin.quotation.show'))
+                @if (request()->routeIs('admin.quotation.assign-questions') ||
+                        request()->routeIs('admin.quotation.show') ||
+                        request()->routeIs('admin.quotation.show.assign-questions'))
                     <a href="{{ route('admin.quotation.all') }}"
                         class="bg-gray-600 hover:bg-gray-700 text-white px-2 py-2 rounded-full">
                         <div>
