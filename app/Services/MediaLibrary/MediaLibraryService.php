@@ -29,10 +29,14 @@ class MediaLibraryService implements MediaLibraryServiceInterface
 
     public function upload(UploadedFile $file, string $disk = 'public'): MediaLibrary
     {
+        $disk = env("FILESYSTEM_DISK", $disk);
+
         $mime = $file->getMimeType();
+
         $type = str_starts_with($mime, 'image/') ? 'image' : (str_starts_with($mime, 'video/') ? 'video' : 'other');
 
         $storedPath = $file->store('media', $disk);
+
 
         return $this->mediaLibrary->create([
             'file_name'     => basename($storedPath),

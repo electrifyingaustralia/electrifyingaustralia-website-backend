@@ -9,20 +9,24 @@ function getAssetFolderPath(string $folder, ?string $default = null)
     return $folder_path;
 }
 
-function getAssetFileUrl(string $folder, string | null $filename = null, $default = null)
+function getAssetFileUrl(string $folder, string | null $filename = null, $default = null, $disk = "public")
 {
 
     if (is_null($filename)) return $default;
 
-    $disk = Storage::disk(env('FILESYSTEM_DISK', 'public'));
+    $disk = Storage::disk($disk);
 
-    $path = getAssetFolderPath($folder);
+    $path = "{$folder}/{$filename}";
 
-    $path .= "/{$filename}";
+    if (!$disk->exists($path)) {
+        return null;
+    }
 
-    if ($disk->exists($path)) return $disk->url($path);
+    if (env('FILESYSTEM_DISK', $disk) === 'gcs') {
+        return $disk->publicUrl($path);
+    }
 
-    return null;
+    return $disk->url($path);
 }
 
 
