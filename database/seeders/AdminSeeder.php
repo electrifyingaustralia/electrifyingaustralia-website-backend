@@ -14,8 +14,6 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::truncate();
-
         Admin::firstOrCreate([
             'email' => 'admin@gmail.com',
         ], [
