@@ -12,6 +12,7 @@ use App\Models\QuotationSection;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ApiQuotationController extends Controller
 {
@@ -87,18 +88,16 @@ class ApiQuotationController extends Controller
                     $file = $request->file($key);
                     if ($file->isValid()) {
 
-                        $randomName = uniqid() . '.' . $file->getClientOriginalExtension();
+                        $diskType = env("FILESYSTEM_DISK", "public");
 
-                        $destinationPath = public_path('quotation');
+                        $randomName = $file->store('quotation', $diskType);
 
-                        $file->move($destinationPath, $randomName);
 
                         $attrs = [
                             'original_name' => $file->getClientOriginalName(),
-                            'random_name'  => $randomName,
+                            'random_name'  => basename($randomName),
                             'extension'    => $file->getClientOriginalExtension(),
-                            // 'size'         => $file->getSize(),
-                            'path'         => 'quotation/' . $randomName,
+                            'path'         => $randomName,
                         ];
 
                         $questionId = str_replace("answer_file_", "", $key);

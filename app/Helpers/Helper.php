@@ -14,19 +14,19 @@ function getAssetFileUrl(string $folder, string | null $filename = null, $defaul
 
     if (is_null($filename)) return $default;
 
-    $disk = Storage::disk($disk);
+    $storage = Storage::disk($disk);
 
     $path = "{$folder}/{$filename}";
 
-    if (!$disk->exists($path)) {
+    if (!$storage->exists($path)) {
         return null;
     }
 
-    if (env('FILESYSTEM_DISK', $disk) === 'gcs') {
-        return $disk->publicUrl($path);
+    if ($disk === 'gcs') {
+        return $storage->publicUrl($path);
     }
 
-    return $disk->url($path);
+    return $storage->url($path);
 }
 
 
