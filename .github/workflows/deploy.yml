@@ -56,6 +56,12 @@ jobs:
             sudo chown -R www-data:www-data storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache
 
+            cp -f supervisor-queue.conf /etc/supervisor/conf.d/laravel-electrifying-australia-queue.conf
+
+            echo "🔁 Reloading Supervisor..."
+            sudo supervisorctl reread
+            sudo supervisorctl update
+            sudo supervisorctl restart laravel-electrifying-australia-queue:*
 
       - name: => Server Restart
         uses: appleboy/ssh-action@v1.0.3
