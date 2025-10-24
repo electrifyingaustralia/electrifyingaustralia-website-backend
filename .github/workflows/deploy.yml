@@ -49,7 +49,7 @@ jobs:
             php artisan route:cache
             php artisan view:cache
 
-            php artisan db:seed --class=AdminSeeder
+            php artisan db:seed --class=AdminSeeder --force
 
             php artisan storage:link
 
