@@ -100,7 +100,9 @@
                                                     <span>Upload New Media</span>
                                                 </div>
                                             </button>
-
+                                            <span class="!text-gray-400 tracking-tight text-xs">
+                                                # Ratio must be 300x300
+                                            </span>
                                             <input type="hidden" id="selected-media-id" name="media_id">
                                         </div>
                                     </div>

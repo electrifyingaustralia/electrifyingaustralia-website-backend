@@ -6,15 +6,15 @@
                 <div class=" rounded-lg overflow-hidden">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <!-- Left Column - Assigned Questions -->
-                        <div class="bg-white rounded-lg shadow overflow-hidden">
-                            <div class="px-6 py-5 border-b border-gray-200">
+                        <div class="bg-white rounded-lg shadow overflow-hidden flex flex-col max-h-screen">
+                            <div class="px-6 py-5 border-b border-gray-200 flex-shrink-0">
                                 <h3 class="text-lg font-medium text-gray-900">Assigned Questions</h3>
                                 <p class="text-sm text-gray-600 mt-1"><span class="font-bold">Category:</span>
                                     "{{ $section->parentCat->category }}"</p>
                                 <p class="text-sm text-gray-600 mt-1"><span class="font-bold">Subcategory:</span>
                                     "{{ $section->category }}"</p>
                             </div>
-                            <div class="px-6 py-5">
+                            <div class="px-6 py-5 flex-1 overflow-auto">
                                 @if ($section->questions->count() > 0)
                                     <ul id="sortable-questions" class="space-y-4">
                                         @foreach ($section->questions as $question)
@@ -82,19 +82,20 @@
                             </div>
                         </div>
 
-                        <div class="bg-white rounded-lg shadow overflow-hidden">
-                            <div class="px-6 py-5 border-b border-gray-200">
+                        <div class="bg-white rounded-lg shadow overflow-hidden flex flex-col max-h-screen">
+                            <div class="px-6 py-5 border-b border-gray-200 flex-shrink-0">
                                 <h3 class="text-lg font-medium text-gray-900">Available Questions</h3>
                                 <p class="text-sm text-gray-600 mt-1">Questions that can be assigned to this section</p>
                             </div>
-                            <div class="px-6 py-5">
+                            <div class="px-6 py-5 flex-1 flex flex-col min-h-0">
 
                                 <!-- Bulk Assign Form -->
                                 @if ($availableQuestions->count() > 0)
-                                    <form action="{{ route('admin.quotation.assign-questions', $section->id) }}"
+                                    <form class="flex-1 flex flex-col min-h-0"
+                                        action="{{ route('admin.quotation.assign-questions', $section->id) }}"
                                         method="POST">
                                         @csrf
-                                        <div class="max-h-96 overflow-y-auto mb-4">
+                                        <div class="flex-1 overflow-y-auto mb-4 min-h-0">
                                             @foreach ($availableQuestions as $question)
                                                 <div class="flex items-start mb-3 p-2 border border-gray-200 rounded-lg">
                                                     <input id="question-{{ $question->id }}" type="checkbox"
@@ -105,25 +106,17 @@
                                                         <div class="text-xs text-gray-500 mt-1">
                                                             {{ $question->options->count() }} options
                                                         </div>
-                                                        {{-- <div class="mt-1 flex flex-wrap gap-1">
-                                                            @foreach ($question->options as $option)
-                                                                <span
-                                                                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
-                                                                    {{ $option->option }}
-                                                                </span>
-                                                            @endforeach
-                                                        </div> --}}
                                                     </label>
                                                 </div>
                                             @endforeach
                                         </div>
                                         <button type="submit"
-                                            class="w-full !bg-teal-600 !hover:bg-teal-700 text-white px-4 py-2 rounded-lg">
+                                            class="w-full !bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg flex-shrink-0">
                                             Assign Selected Questions
                                         </button>
                                     </form>
                                 @else
-                                    <div class="text-center py-8">
+                                    <div class="text-center py-8 flex-1 flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400"
                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
