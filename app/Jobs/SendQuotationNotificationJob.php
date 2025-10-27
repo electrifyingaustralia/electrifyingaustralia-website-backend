@@ -34,9 +34,12 @@ class SendQuotationNotificationJob implements ShouldQueue
         $bcc = SettingOption::getValue("admin_bcc", "");
         $cc = SettingOption::getValue("admin_cc", "");
 
-        Mail::to($adminEmail)
-            ->cc(explode(",", $cc))
-            ->bcc(explode(",", $bcc))
-            ->send(new QuotationSubmittedMail($this->customer));
+        $mail = Mail::to($adminEmail);
+
+        if ($cc != "") $mail =  $mail->cc(explode(",", $cc));
+
+        if ($bcc != "")  $mail =  $mail->bcc(explode(",", $bcc));
+
+        $mail->send(new QuotationSubmittedMail($this->customer));
     }
 }
