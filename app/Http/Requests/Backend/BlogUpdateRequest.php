@@ -18,9 +18,8 @@ class BlogUpdateRequest extends BaseRequest
                 'max:255',
             ],
             'subtitle' => [
-                'required',
+                'nullable',
                 'string',
-                'max:255',
             ],
             'short_description' => [
                 'required',

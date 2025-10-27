@@ -180,7 +180,9 @@
                                                     <span>Change Media</span>
                                                 </div>
                                             </button>
-
+                                            <span class="!text-gray-400 tracking-tight text-xs">
+                                                # Ratio must be 300x300
+                                            </span>
                                             <input type="hidden" id="selected-media-id" name="media_id"
                                                 value="{{ old('media_id', $admin->media_id) }}">
                                         </div>

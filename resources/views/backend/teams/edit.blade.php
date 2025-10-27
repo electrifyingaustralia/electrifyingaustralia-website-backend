@@ -224,7 +224,9 @@
                                                     <span>Change Media</span>
                                                 </div>
                                             </button>
-
+                                            <span class="!text-gray-400 tracking-tight text-xs">
+                                                # Ratio must be 414x391
+                                            </span>
                                             <input type="hidden" id="selected-media-id" name="media_id"
                                                 value="{{ old('media_id', $team->media_id) }}">
                                         </div>

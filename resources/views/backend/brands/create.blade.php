@@ -96,7 +96,9 @@
                                             <span>Upload New Media</span>
                                         </div>
                                     </button>
-
+                                    <span class="!text-gray-400 tracking-tight text-xs">
+                                        # Ratio must be 100x80
+                                    </span>
                                     <input type="hidden" id="selected-media-id" name="logo_id" failed remove="logo_id">
                                 </div>
                                 <div failed="logo_id"></div>

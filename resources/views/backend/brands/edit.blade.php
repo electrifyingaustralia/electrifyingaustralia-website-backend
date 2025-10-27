@@ -113,7 +113,9 @@
                                             <span>Change Media</span>
                                         </div>
                                     </button>
-
+                                    <span class="!text-gray-400 tracking-tight text-xs">
+                                        # Ratio must be 100x80
+                                    </span>
                                     <input type="hidden" id="selected-media-id" name="logo_id"
                                         value="{{ old('logo_id', $brand->logo_id) }}">
                                 </div>

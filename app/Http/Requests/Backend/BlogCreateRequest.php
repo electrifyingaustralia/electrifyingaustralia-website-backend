@@ -20,7 +20,7 @@ class BlogCreateRequest extends BaseRequest
             ],
 
             'subtitle' => [
-                'required',
+                'nullable',
                 'string',
             ],
 

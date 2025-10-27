@@ -36,7 +36,7 @@ class FaqTypeController extends Controller
         return redirect()->route('admin.faq-type.all')->with('success', 'Faq type updated successfully!');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $this->faqTypeService->deleteFaqType($id);
         return redirect()->route('admin.faq-type.all')->with('success', 'Faq type deleted successfully.');

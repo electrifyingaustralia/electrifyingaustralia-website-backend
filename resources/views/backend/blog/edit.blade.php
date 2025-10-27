@@ -76,9 +76,9 @@
                                 </div>
 
                                 <div>
-                                    <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">Blog Subtitle
-                                        <span class="text-red-600 font-bold">*</span></label>
-                                    <input type="text" id="subtitle" name="subtitle" required
+                                    <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">Blog
+                                        Subtitle</label>
+                                    <input type="text" id="subtitle" name="subtitle"
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                         value="{{ old('subtitle', $blog->subtitle) }}" placeholder="Enter blog subtitle" />
                                     @error('subtitle')
@@ -218,7 +218,9 @@
                                                     <span>Change Media</span>
                                                 </div>
                                             </button>
-
+                                            <span class="!text-gray-400 tracking-tight text-xs">
+                                                # Ratio must be 417x448
+                                            </span>
                                             <input type="hidden" id="selected-media-id" name="media_id"
                                                 value="{{ old('media_id', $blog->media_id) }}">
                                         </div>

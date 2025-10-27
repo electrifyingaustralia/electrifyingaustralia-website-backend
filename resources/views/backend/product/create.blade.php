@@ -131,6 +131,10 @@
                                                 </div>
                                             </button>
 
+                                            <span class="!text-gray-400 tracking-tight text-xs">
+                                                # Ratio must be 368x335
+                                            </span>
+
                                             <input type="hidden" id="selected-media-id" name="media_id" failed
                                                 remove="media_id">
                                             <div failed="media_id"></div>

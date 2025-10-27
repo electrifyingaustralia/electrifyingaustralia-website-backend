@@ -64,9 +64,9 @@
                                 </div>
 
                                 <div>
-                                    <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">Blog Subtitle
-                                        <span class="text-red-600 font-bold">*</span></label>
-                                    <input type="text" id="subtitle" name="subtitle" required
+                                    <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-2">Blog
+                                        Subtitle</label>
+                                    <input type="text" id="subtitle" name="subtitle"
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                         placeholder="Enter blog subtitle" failed remove="subtitle" />
                                 </div>
@@ -131,7 +131,9 @@
                                                     <span>Upload New Media</span>
                                                 </div>
                                             </button>
-
+                                            <span class="!text-gray-400 tracking-tight text-xs">
+                                                # Ratio must be 417x448
+                                            </span>
                                             <input type="hidden" id="selected-media-id" name="media_id">
                                         </div>
                                     </div>
@@ -713,19 +715,21 @@
             // ========== LIBRARY TAB FUNCTIONS ==========
             let currentPage = 1;
             let hasMorePages = true;
+            let modalSelectedMedia = [];
 
             function loadMediaLibrary(loadMore = false) {
                 const $mediaContent = $('#media-library-content');
 
                 if (!loadMore) {
                     $mediaContent.html(`
-                    <div class="text-center py-12">
-                        <i class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i>
-                        <p class="mt-2 text-gray-600">Loading media library...</p>
-                    </div>
-                `);
+            <div class="text-center py-12">
+                <i class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i>
+                <p class="mt-2 text-gray-600">Loading media library...</p>
+            </div>
+        `);
                     currentPage = 1;
                     mediaLibraryItems = [];
+                    modalSelectedMedia = []; // Reset selection when loading fresh
                 }
 
                 $.ajax({
@@ -735,8 +739,12 @@
                     },
                     success: function(data) {
                         if (data.data && data.data.length > 0) {
-                            mediaLibraryItems = [...mediaLibraryItems, ...data.data];
-                            renderMediaLibrary(mediaLibraryItems);
+                            if (loadMore) {
+                                mediaLibraryItems = [...mediaLibraryItems, ...data.data];
+                            } else {
+                                mediaLibraryItems = data.data;
+                            }
+                            renderMediaLibrary(mediaLibraryItems, loadMore);
 
                             // Check if there are more pages
                             hasMorePages = data.current_page < data.last_page;
@@ -765,12 +773,12 @@
                 if (hasMorePages) {
                     if ($loadMoreBtn.length === 0) {
                         $('#media-library-content').after(`
-                    <div class="text-center mt-4">
-                        <button id="load-more-media" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg">
-                            Load More Media
-                        </button>
-                    </div>
-                `);
+                <div class="text-center mt-4">
+                    <button id="load-more-media" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg">
+                        Load More Media
+                    </button>
+                </div>
+            `);
 
                         $('#load-more-media').on('click', function() {
                             loadMediaLibrary(true);
@@ -791,11 +799,7 @@
                         '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="media-grid">';
                 }
 
-                // Calculate starting index for new items - THIS IS THE KEY FIX
-                const startIndex = append ? $mediaContent.find('.media-item').length : 0;
-
-                $.each(mediaItems.slice(startIndex), function(index, media) {
-                    const actualIndex = startIndex + index;
+                $.each(mediaItems, function(index, media) {
                     let previewHtml = '';
                     const fileExtension = (media.original_name || media.name || '').split('.').pop()
                         .toLowerCase();
@@ -863,9 +867,6 @@
                     html += `
             <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md ${isSelected ? 'selected' : ''}"
                 data-media-id="${media.id}">
-                <div class="checkbox-container">
-                    <input type="checkbox" class="media-checkbox" data-media-id="${media.id}" ${isSelected ? 'checked' : ''}>
-                </div>
                 ${previewHtml}
                 <div class="p-2">
                     <p class="text-xs text-center font-medium truncate">${media.original_name || media.name}</p>
@@ -881,70 +882,80 @@
                     $mediaContent.find('#media-grid').append(html);
                 }
 
-                // Add click event listeners to NEW media items only when appending
-                const newItems = append ? $mediaContent.find('.media-item').slice(startIndex) : $mediaContent.find(
-                    '.media-item');
-
-                newItems.off('click').on('click', function(e) {
-                    if ($(e.target).is('input[type="checkbox"]')) {
-                        return;
-                    }
+                // Add click event listeners to media items
+                $mediaContent.find('.media-item').off('click').on('click', function() {
                     const mediaId = parseInt($(this).data('media-id'));
-                    toggleMediaSelection(mediaId);
-                });
-
-                // Checkbox change event for new items
-                newItems.find('.media-checkbox').off('change').on('change', function() {
-                    const mediaId = parseInt($(this).data('media-id'));
-                    const isChecked = $(this).is(':checked');
-
-                    if (isChecked) {
-                        addMediaToModalSelection(mediaId);
-                    } else {
-                        removeMediaFromModalSelection(mediaId);
-                    }
+                    selectMediaFromLibrary(mediaId);
                 });
             }
 
-            function selectMediaFromLibrary(index) {
-                const media = mediaLibraryItems[index];
+
+            function selectMediaFromLibrary(mediaId) {
+                const media = mediaLibraryItems.find(item => item.id === mediaId);
+                if (!media) return;
 
                 // Remove previous selection
                 $('.media-item').removeClass('selected');
 
                 // Add selection to current item
-                $(`.media-item[data-index="${index}"]`).addClass('selected');
+                $(`.media-item[data-media-id="${mediaId}"]`).addClass('selected');
+
+                // Clear any previous modal selection and set single selection
+                modalSelectedMedia = [media];
 
                 selectedMedia = {
                     id: media.id,
                     url: media.url,
-                    name: media.original_name,
+                    name: media.original_name || media.name,
                     size: media.file_size,
                     file: null,
-                    type: 'library'
+                    type: 'library',
+                    mime_type: media.mime_type
                 };
 
                 updateConfirmButtonState();
             }
 
+            function addMediaToModalSelection(mediaId) {
+                const media = mediaLibraryItems.find(item => item.id === mediaId);
+                if (media && !modalSelectedMedia.some(item => item.id === mediaId)) {
+                    modalSelectedMedia.push(media);
+                }
+                updateConfirmButtonState();
+            }
+
+            function removeMediaFromModalSelection(mediaId) {
+                modalSelectedMedia = modalSelectedMedia.filter(item => item.id !== mediaId);
+                updateConfirmButtonState();
+            }
+
+            function toggleMediaSelection(mediaId) {
+                const isSelected = modalSelectedMedia.some(item => item.id === mediaId);
+                if (isSelected) {
+                    removeMediaFromModalSelection(mediaId);
+                } else {
+                    addMediaToModalSelection(mediaId);
+                }
+            }
+
             function showNoMediaMessage() {
                 $('#media-library-content').html(`
-            <div class="text-center py-12">
-                <i class="fas fa-folder-open text-gray-400 text-4xl mb-4"></i>
-                <h3 class="text-lg font-medium text-gray-700">No media files found</h3>
-                <p class="text-gray-500 mt-2">Upload images to use as media</p>
-            </div>
-        `);
+        <div class="text-center py-12">
+            <i class="fas fa-folder-open text-gray-400 text-4xl mb-4"></i>
+            <h3 class="text-lg font-medium text-gray-700">No media files found</h3>
+            <p class="text-gray-500 mt-2">Upload images to use as media</p>
+        </div>
+    `);
             }
 
             function showErrorLoadingMedia() {
                 $('#media-library-content').html(`
-            <div class="text-center py-12">
-                <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
-                <h3 class="text-lg font-medium text-gray-700">Error loading media</h3>
-                <p class="text-gray-500 mt-2">Please try again</p>
-            </div>
-        `);
+        <div class="text-center py-12">
+            <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+            <h3 class="text-lg font-medium text-gray-700">Error loading media</h3>
+            <p class="text-gray-500 mt-2">Please try again</p>
+        </div>
+    `);
             }
 
             // ========== GENERAL MODAL FUNCTIONS ==========
@@ -980,9 +991,8 @@
                     $('#library-tab-content').removeClass('hidden');
                     $('#library-tab-buttons').removeClass('hidden');
 
-                    if ($('.media-item').length === 0) {
-                        loadMediaLibrary();
-                    }
+                    // Always reload the library when switching to the library tab
+                    loadMediaLibrary();
                 }
                 updateConfirmButtonState();
                 updateUploadButtonState();
@@ -1130,11 +1140,11 @@
 
             function removeSelectedLogo() {
                 $('#logo-preview').html(`
-            <div class="text-center text-gray-400">
-                <i class="fas fa-image text-2xl mb-2"></i>
-                <p class="text-xs">No media selected</p>
-            </div>
-        `);
+                    <div class="text-center text-gray-400">
+                        <i class="fas fa-image text-2xl mb-2"></i>
+                        <p class="text-xs">No media selected</p>
+                    </div>
+                `);
 
                 $('#selected-logo-info').addClass('hidden');
                 $('#selected-media-id').val('');
