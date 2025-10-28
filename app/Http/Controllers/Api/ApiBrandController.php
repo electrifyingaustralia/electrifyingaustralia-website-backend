@@ -11,8 +11,7 @@ class ApiBrandController extends Controller
 {
     public function index()
     {
-        $brands = Brand::with('logo')
-            ->whereNotNull('logo_id')
+        $brands = Brand::whereNotNull('logo_id')
             ->orderBy('name', 'ASC')
             ->get();
 
