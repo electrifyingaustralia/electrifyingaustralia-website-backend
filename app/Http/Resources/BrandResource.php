@@ -17,12 +17,11 @@ class BrandResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            // change
             'slug' => $this->slug,
-            // change
             'link' => $this->link,
-            'logo_id' => $this->logo_id,
-            'media_url' => $this->logo_url,
+            'media_url' => $this->whenLoaded("logo", function ($logo) {
+                return $logo->url;
+            }),
             'created_at' => $this->created_at->toISOString(),
             'updated_at' => $this->updated_at->toISOString(),
         ];

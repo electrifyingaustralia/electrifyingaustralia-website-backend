@@ -26,15 +26,16 @@ class ProductResource extends JsonResource
                     'slug' => $this->type->slug,
                 ];
             }),
-            'media_id' => $this->media_id,
-            'media_url' => $this->media_url,
-            'brand' => $this->whenLoaded('brand', function () {
-                return $this->brand ? [
+            'media_url' => $this->whenLoaded("media", function ($media) {
+                return $media->url;
+            }),
+            'brand' => $this->whenLoaded('brand', function ($brand) {
+                return $brand ? [
 
-                    'id' => $this->brand->id,
-                    'name' => $this->brand->name,
-                    'link' => $this->brand->link,
-                    'media_url' => $this->brand->logo_url
+                    'id' => $brand->id,
+                    'name' => $brand->name,
+                    'link' => $brand->link,
+                    'media_url' => isset($brand['logo']) ? $brand['logo']['url'] : null,
                 ] : null;
             }),
 
