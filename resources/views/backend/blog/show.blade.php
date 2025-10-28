@@ -131,7 +131,7 @@
                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Blog Image</h3>
 
                             <div class="mb-4">
-                                <img src="{{ $blog->media_url }}" alt="Solar Panel"
+                                <img src="{{ optional($blog->media)->url }}" alt="Solar Panel"
                                     class="w-full h-48 object-fit rounded-lg">
                             </div>
 
@@ -148,7 +148,7 @@
                             </div>
 
                             <div class="mt-6 pt-4 border-t border-gray-200">
-                                <a href="{{ route('admin.product.edit', $blog->id) }}"
+                                <a href="{{ route('admin.blog.edit', $blog->id) }}"
                                     class="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-lg flex items-center justify-center mb-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -157,7 +157,7 @@
                                         <path
                                             d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
                                     </svg>
-                                    Edit Product
+                                    Edit Blog
                                 </a>
                             </div>
                         </div>

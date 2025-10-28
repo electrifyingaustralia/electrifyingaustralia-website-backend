@@ -14,13 +14,10 @@ class EventResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'subtitle' => $this->subtitle,
-            'description' => $this->description,
-            'media_id' => $this->media_id,
-            'media_url' => $this->media_url,
+            'media_url' => $this->whenLoaded("media", function ($media) {
+                return getAssetFileUrl("media", $media->file_name, disk: $media->disk);
+            }),
             'is_active' => $this->is_active,
-            'images' => $this->image_urls,
-            'created_at' => $this->created_at->toISOString(),
-            'updated_at' => $this->updated_at->toISOString(),
         ];
     }
 }
