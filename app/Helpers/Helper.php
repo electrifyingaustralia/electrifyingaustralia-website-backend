@@ -16,9 +16,7 @@ function getAssetFileUrl(string $folder, string | null $filename = null, $defaul
 
     $disk = Storage::disk(env('FILESYSTEM_DISK', 'public'));
 
-    $path = getAssetFolderPath($folder);
-
-    $path .= "/{$filename}";
+    $path = "{$folder}/{$filename}";
 
     if ($disk->exists($path)) return $disk->url($path);
 

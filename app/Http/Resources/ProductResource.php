@@ -10,29 +10,22 @@ class ProductResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'                => $this->id,
-            'name'              => $this->name,
-            'model_number'      => $this->model_number,
-            'short_description' => $this->short_description,
-            'warranty'          => $this->warranty,
-            'is_featured'       => $this->is_featured,
-            'is_active'         => $this->is_active,
-            'product_link'      => $this->product_link,
-            'type'              => $this->type->name,
-            'media_id'          => $this->media_id,
-            'media_url'         => $this->media_url,
-            'brand'             => $this->whenLoaded('brand', function () {
-                return $this->brand ? [
+            'id'                => $this->product_id,
+            'name'              => $this->product_name,
+            'model_number'      => $this->product_model_number,
+            'short_description' => $this->product_short_description,
+            'warranty'          => $this->product_warranty,
+            'is_featured'       => $this->product_is_featured,
+            'is_active'         => $this->product_is_active,
+            'product_link'      => $this->product_product_link,
+            'type'              => $this->product_type_name,
+            'media_url'         => getAssetFileUrl("media", $this->product_media_name),
+            'brand'             => $this->brand_id ? [
+                'id'       => $this->brand_id,
+                'name'     => $this->brand_name,
+                'logo_url' => getAssetFileUrl("media", $this->product_media_name)
+            ] : null,
 
-                    'id'       => $this->brand->id,
-                    'name'     => $this->brand->name,
-                    'link'     => $this->brand->link,
-                    'logo_url' => $this->brand->logo_url
-                ] : null;
-            }),
-
-            'created_at' => $this->created_at->toISOString(),
-            'updated_at' => $this->updated_at->toISOString(),
         ];
     }
 }
