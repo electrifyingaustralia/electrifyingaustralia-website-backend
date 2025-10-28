@@ -22,11 +22,15 @@ class BlogCreateRequest extends BaseRequest
             'subtitle' => [
                 'nullable',
                 'string',
-                'max:255',
             ],
 
             'description' => [
-                'nullable',
+                'required',
+                'string',
+            ],
+
+            'short_description' => [
+                'required',
                 'string',
             ],
 

@@ -14,7 +14,7 @@ class ProjectTypeController extends Controller
     public function index()
     {
         $types = $this->projectTypeService->get();
-        return view('Backend.project-type.index', compact('types'));
+        return view('backend.project-type.index', compact('types'));
     }
 
     public function store(ProjectTypeRequest $request)
@@ -27,7 +27,7 @@ class ProjectTypeController extends Controller
     {
         $typeToEdit = $this->projectTypeService->findProjectType($id);
         $types = $this->projectTypeService->get();
-        return view('Backend.project-type.index', compact('typeToEdit', 'types'));
+        return view('backend.project-type.index', compact('typeToEdit', 'types'));
     }
 
     public function update(ProjectTypeRequest $request, $id)
@@ -36,7 +36,7 @@ class ProjectTypeController extends Controller
         return redirect()->route('admin.project-type.all')->with('success', 'Project type updated successfully!');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $this->projectTypeService->deleteProjectType($id);
         return redirect()->route('admin.project-type.all')->with('success', 'Project type deleted successfully.');

@@ -10,11 +10,12 @@ class FaqResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'         => $this->id,
-            'question'   => $this->question,
-            'answer'     => $this->answer,
-            'type'       => $this->type,
-            'is_active'  => $this->is_active,
+            'id' => $this->id,
+            'question' => $this->question,
+            'slug' => $this->slug,
+            'answer' => $this->answer,
+            'type' => $this->type,
+            'is_active' => $this->is_active,
             'created_at' => $this->created_at->toISOString(),
             'updated_at' => $this->updated_at->toISOString(),
         ];

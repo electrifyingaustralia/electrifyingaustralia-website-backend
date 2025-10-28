@@ -22,9 +22,17 @@ class QuestionController extends Controller
     }
     public function store(QuestionRequest $request)
     {
-        $data = $request->validated();
-        $this->questionService->createQuestion($data);
-        return redirect()->route('admin.question.all')->with('success', 'Question created successfully!');
+        try {
+            $data = $request->validated();
+            $this->questionService->createQuestion($data);
+            return redirect()->route('admin.question.all')->with('success', 'Question created successfully!');
+        } catch (\Exception $e) {
+            if (str_contains($e->getMessage(), 'Duplicate entry') || str_contains($e->getMessage(), 'already exists')) {
+                return redirect()->back()->withInput()->with('error', 'This question already exists. Please use a different question.');
+            }
+
+            return redirect()->back()->withInput()->with('error', 'Failed to create question. Please try again.');
+        }
     }
     public function show($id)
     {
@@ -38,9 +46,17 @@ class QuestionController extends Controller
     }
     public function update(QuestionRequest $request, $id)
     {
-        $data = $request->validated();
-        $this->questionService->updateQuestion($id, $data);
-        return redirect()->route('admin.question.all')->with('success', 'Question updated successfully!');
+        try {
+            $data = $request->validated();
+            $this->questionService->updateQuestion($id, $data);
+            return redirect()->route('admin.question.all')->with('success', 'Question updated successfully!');
+        } catch (\Exception $e) {
+            if (str_contains($e->getMessage(), 'Duplicate entry') || str_contains($e->getMessage(), 'already exists')) {
+                return redirect()->back()->withInput()->with('error', 'This question already exists. Please use a different question.');
+            }
+
+            return redirect()->back()->withInput()->with('error', 'Failed to update question. Please try again.');
+        }
     }
     public function destroy($id)
     {

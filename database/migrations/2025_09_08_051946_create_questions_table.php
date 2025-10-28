@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->string('question')->unique();
+            $table->string('input_type');
             $table->string('slug');
+            $table->boolean('is_required')->default(false);
             $table->timestamps();
         });
     }

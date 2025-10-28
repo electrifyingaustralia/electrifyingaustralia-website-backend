@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     protected $guarded = [];
+    protected $hidden = ["pivot"];
+
+    protected $casts = [
+        'is_required' => 'boolean',
+    ];
 
     public function quotationSections()
     {

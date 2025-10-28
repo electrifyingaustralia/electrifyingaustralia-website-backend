@@ -18,7 +18,7 @@ class BrandController extends Controller
         $brands = $this->brandService->paginateListBrands(['*'], 15, [
             'search' => $request->get('search'),
         ]);
-        return view('Backend.brands.index', compact('brands'));
+        return view('backend.brands.index', compact('brands'));
     }
 
     public function create()

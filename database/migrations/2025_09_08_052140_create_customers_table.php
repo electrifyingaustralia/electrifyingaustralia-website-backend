@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('email');
+            $table->foreignId('category_id')->nullable()->constrained('quotation_sections', 'id')->nullOnDelete();
+            $table->foreignId('sub_category_id')->nullable()->constrained('quotation_sections', 'id')->nullOnDelete();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
+            $table->longText('message')->nullable();
+            $table->string('type')->nullable();
             $table->string('status')->default('pending');
             $table->timestamps();
         });

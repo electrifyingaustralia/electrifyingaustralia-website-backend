@@ -25,7 +25,8 @@ class QuotationController extends Controller
     public function store(QuotationRequest $request)
     {
         $data = $request->validated();
-        $this->quotationService->createQuotation($data);
+        $media = $request->file('media');
+        $this->quotationService->createQuotation($data, $media);
         return redirect()->route('admin.quotation.all')->with('success', 'Quotation created successfully!');
     }
 
@@ -45,8 +46,9 @@ class QuotationController extends Controller
     public function update(QuotationRequest $request, $id)
     {
         $data = $request->validated();
+        $media = $request->file('media');
 
-        $this->quotationService->updateQuotation($id, $data);
+        $this->quotationService->updateQuotation($id, $data, $media);
         return redirect()->route('admin.quotation.all')->with('success', 'Quotation updated successfully!');
     }
 

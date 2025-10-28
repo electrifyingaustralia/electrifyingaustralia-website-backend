@@ -20,10 +20,13 @@ class BlogUpdateRequest extends BaseRequest
             'subtitle' => [
                 'nullable',
                 'string',
-                'max:255',
+            ],
+            'short_description' => [
+                'required',
+                'string',
             ],
             'description' => [
-                'nullable',
+                'required',
                 'string',
             ],
             'media_id' => [

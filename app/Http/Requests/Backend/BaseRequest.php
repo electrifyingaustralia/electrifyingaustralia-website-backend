@@ -15,11 +15,15 @@ class BaseRequest extends FormRequest
 
     public function failedValidation(Validator $validator): void
     {
+        if (request()->is('api/*') || request()->ajax()) {
+            throw new HttpResponseException(
+                response()->json([
+                    'errors' => $validator->errors(),
+                ], 422)
+            );
+        }
         throw new HttpResponseException(
-            redirect()
-                ->back()
-                ->withErrors($validator)
-                ->withInput()
+            redirect()->back()->withErrors($validator->errors())
         );
     }
 }

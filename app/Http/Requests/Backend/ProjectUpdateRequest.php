@@ -29,14 +29,23 @@ class ProjectUpdateRequest extends BaseRequest
                 'string',
             ],
 
-            'project_category_id' => [
+            // 'project_category_id' => [
+            //     'required',
+            //     'exists:project_categories,id',
+            // ],
+            'category' => [
                 'required',
-                'exists:project_categories,id',
+                'in:residential,commercial',
             ],
 
             'project_type_id' => [
                 'required',
                 'exists:project_types,id',
+            ],
+
+            "is_solution" => [
+                'required',
+                'boolean'
             ],
 
             'location' => [

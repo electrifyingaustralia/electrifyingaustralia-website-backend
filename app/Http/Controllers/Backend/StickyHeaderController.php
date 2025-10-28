@@ -13,7 +13,7 @@ class StickyHeaderController extends Controller
     public function index()
     {
         $headers = $this->stickyHeaderService->get();
-        return view('Backend.sticky-header.index', compact('headers'));
+        return view('backend.sticky-header.index', compact('headers'));
     }
 
     public function store(Request $request)
@@ -30,7 +30,7 @@ class StickyHeaderController extends Controller
     {
         $headerToEdit = $this->stickyHeaderService->findStickyHeader($id);
         $headers = $this->stickyHeaderService->get();
-        return view('Backend.sticky-header.index', compact('headerToEdit', 'headers'));
+        return view('backend.sticky-header.index', compact('headerToEdit', 'headers'));
     }
 
     public function update(Request $request, $id)

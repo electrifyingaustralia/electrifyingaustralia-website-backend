@@ -29,7 +29,7 @@ class BrandCreateRequest extends BaseRequest
             ],
 
             'link' => [
-                'nullable',
+                'required',
                 'url',
                 'max:500',
             ],

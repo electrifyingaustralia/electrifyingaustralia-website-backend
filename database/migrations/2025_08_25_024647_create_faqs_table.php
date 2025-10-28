@@ -20,7 +20,7 @@ return new class extends Migration
 
             $table->longText('answer');
 
-            $table->string('type', 50);
+            $table->foreignId('faq_type_id')->constrained('faq_types')->cascadeOnDelete();
 
             $table->boolean('is_active')->default(true);
 

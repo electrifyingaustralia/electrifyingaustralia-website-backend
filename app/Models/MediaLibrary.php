@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class MediaLibrary extends Model
 {
@@ -11,15 +10,9 @@ class MediaLibrary extends Model
 
     protected $appends = ['url', 'is_image', 'is_video'];
 
-    public function getUrlAttribute(): string
+    public function getUrlAttribute(): string|null
     {
-        $disk = $this->disk ?? 'public';
-
-        if ($disk === 'local') {
-            return asset('storage/' . $this->file_path);
-        }
-
-        return Storage::disk($disk)->url($this->file_path);
+        return getAssetFileUrl("media", $this->file_name, disk: $this->disk);
     }
 
     public function getIsImageAttribute(): bool

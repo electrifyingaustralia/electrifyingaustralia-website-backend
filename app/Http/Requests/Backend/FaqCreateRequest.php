@@ -2,10 +2,15 @@
 
 namespace App\Http\Requests\Backend;
 
-use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
-class FaqCreateRequest extends BaseRequest
+class FaqCreateRequest extends FormRequest
 {
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     public function rules(): array
     {
         return [
@@ -21,16 +26,9 @@ class FaqCreateRequest extends BaseRequest
                 'string',
             ],
 
-            'type' => [
+            'faq_type_id' => [
                 'required',
-                'string',
-                Rule::in([
-                    'General',
-                    'Solar & Battery',
-                    'EV Charger',
-                    'VPP & Energy Solutions',
-                    'Installation & Support',
-                ]),
+                'exists:faq_types,id'
             ],
 
             'is_active' => [

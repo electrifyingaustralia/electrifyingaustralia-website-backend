@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Faq extends Model
 {
     protected $guarded = [];
+
+    public function type()
+    {
+        return $this->belongsTo(FaqType::class, 'faq_type_id');
+    }
 }

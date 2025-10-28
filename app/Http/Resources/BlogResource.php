@@ -10,20 +10,28 @@ class BlogResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'                => $this->id,
-            'title'             => $this->title,
-            'subtitle'          => $this->subtitle,
-            'description'       => $this->description,
+            'id' => $this->id,
+            'title' => $this->title,
+            'slug' => $this->slug,
+            'category' => $this->whenLoaded('category', function () {
+                return [
+                    'id' => $this->category->id,
+                    'name' => $this->category->name,
+                    'slug' => $this->category->slug,
+                ];
+            }),
+            'subtitle' => $this->subtitle,
+            'description' => $this->description,
             'short_description' => $this->short_description,
-            'media_id'          => $this->media_id,
-            'media_url'         => $this->media_url,
-            'facebook_link'     => $this->facebook_link,
-            'twitter_link'      => $this->twitter_link,
-            'linkedin_link'     => $this->linkedin_link,
-            'youtube_link'      => $this->youtube_link,
-            'is_active'         => $this->is_active,
-            'created_at'        => $this->created_at->toISOString(),
-            'updated_at'        => $this->updated_at->toISOString(),
+            'media_id' => $this->media_id,
+            'media_url' => $this->media_url,
+            'facebook_link' => $this->facebook_link,
+            'twitter_link' => $this->twitter_link,
+            'linkedin_link' => $this->linkedin_link,
+            'youtube_link' => $this->youtube_link,
+            'is_active' => $this->is_active,
+            'created_at' => $this->created_at->toISOString(),
+            'updated_at' => $this->updated_at->toISOString(),
         ];
     }
 }

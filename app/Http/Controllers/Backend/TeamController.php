@@ -18,7 +18,7 @@ class TeamController extends Controller
             'search' => $request->get('search'),
         ]);
 
-        return view('Backend.teams.index', compact('teams'));
+        return view('backend.teams.index', compact('teams'));
     }
 
     public function create()
@@ -58,6 +58,22 @@ class TeamController extends Controller
             'success' => true,
             'message' => 'Team member updated successfully!',
             'redirect' => route('admin.teams.all')
+        ]);
+    }
+
+    public function updateOrder(Request $request)
+    {
+        $request->validate([
+            'order' => 'required|array',
+            'order.*.id' => 'required|exists:teams,id',
+            'order.*.order' => 'required|integer',
+        ]);
+
+        $this->teamService->updateTeamMemberOrder($request->order);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Team member order updated successfully!'
         ]);
     }
 

@@ -6,10 +6,12 @@ use App\Http\Controllers\Backend\BenefitController;
 use App\Http\Controllers\Backend\BlogCategoryController;
 use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\BrandController;
+use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EventController;
 use App\Http\Controllers\Backend\FaqController;
-use App\Http\Controllers\backend\HeroController;
+use App\Http\Controllers\Backend\FaqTypeController;
+use App\Http\Controllers\Backend\HeroController;
 use App\Http\Controllers\Backend\MediaLibraryController;
 use App\Http\Controllers\Backend\PackageController;
 use App\Http\Controllers\Backend\ProductController;
@@ -19,15 +21,17 @@ use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\ProjectTypeController;
 use App\Http\Controllers\Backend\QuestionController;
 use App\Http\Controllers\Backend\QuotationController;
-use App\Http\Controllers\Backend\SettingController;
+// use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\SolutionCardController;
 use App\Http\Controllers\Backend\StickyHeaderController;
 use App\Http\Controllers\Backend\TeamController;
+use App\Http\Controllers\SettingOptionController;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
-
 Route::redirect('/', '/admin/login');
+
 
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -62,6 +66,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/users/{id}/edit',  'edit')->name('edit');
             Route::put('/users/{id}',  'update')->name('update');
             Route::delete('/users/{id}',  'destroy')->name('delete');
+            Route::get('/change-password', 'showChangePassword')->name('change-password');
+            Route::post('/update-password', 'updatePassword')->name('update-password');
         });
 
         // ! Sticky Header
@@ -110,7 +116,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/teams', 'store')->name('store');
             Route::get('/teams/{id}/edit',  'edit')->name('edit');
             Route::put('/teams/{id}',  'update')->name('update');
+            Route::post('/teams/update-order', 'updateOrder')->name('update-order');
             Route::delete('/teams/{id}',  'destroy')->name('delete');
+        });
+
+        // ! FAQ-Type
+        Route::controller(FaqTypeController::class)->name('faq-type.')->group(function () {
+            Route::get('/faq-type', 'index')->name('all');
+            Route::post('/faq-type', 'store')->name('store');
+            Route::get('/faq-type/{id}/edit',  'edit')->name('edit');
+            Route::put('/faq-type/{id}',  'update')->name('update');
+            Route::delete('/faq-type/{id}',  'destroy')->name('delete');
         });
 
         // ! FAQ
@@ -223,16 +239,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/product/{id}',  'destroy')->name('delete');
         });
 
-        // ! Settings
-        Route::controller(SettingController::class)->name('setting.')->group(function () {
-            Route::get('/setting', 'index')->name('all');
-            Route::get('/setting/create', 'create')->name('create');
-            Route::post('/setting', 'store')->name('store');
-            Route::get('/setting/{id}/edit',  'edit')->name('edit');
-            Route::get('/setting/{id}',  'show')->name('show');
-            Route::put('/setting/{id}',  'update')->name('update');
-            Route::delete('/setting/{id}',  'destroy')->name('delete');
-        });
+        // // ! Settings
+        // Route::controller(SettingController::class)->name('setting.')->group(function () {
+        //     Route::get('/setting', 'index')->name('all');
+        //     Route::get('/setting/create', 'create')->name('create');
+        //     Route::post('/setting', 'store')->name('store');
+        //     Route::get('/setting/{id}/edit',  'edit')->name('edit');
+        //     Route::get('/setting/{id}',  'show')->name('show');
+        //     Route::put('/setting/{id}',  'update')->name('update');
+        //     Route::delete('/setting/{id}',  'destroy')->name('delete');
+        // });
 
         // ! Quotation
         Route::controller(QuotationController::class)->name('quotation.')->group(function () {
@@ -243,7 +259,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/quotation/{id}',  'show')->name('show');
             Route::put('/quotation/{id}',  'update')->name('update');
             Route::delete('/quotation/{id}',  'destroy')->name('delete');
-            Route::get('quotation/{id}/assign-questions', 'showAssignQuestions')->name('assign-questions');
+            Route::get('quotation/{id}/assign-questions', 'showAssignQuestions')->name('show.assign-questions');
             Route::post('quotation/{id}/assign-questions', 'assignQuestions')->name('assign-questions');
             Route::delete('quotation/{sectionId}/remove-question/{questionId}', 'removeQuestion')->name('remove-question');
             Route::post('quotation/{id}/update-question-order', 'updateQuestionOrder')->name('update-question-order');
@@ -269,6 +285,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/hero/{id}',  'show')->name('show');
             Route::put('/hero/{id}',  'update')->name('update');
             Route::delete('/hero/{id}',  'destroy')->name('delete');
+        });
+
+        // ! Customer
+        Route::controller(CustomerController::class)->name('customer.')->group(function () {
+            Route::get('/customers', 'index')->name('all');
+            Route::get('/customers/{customer}', 'show')->name('show');
+            Route::put('/customers/{customer}', 'update')->name('update');
+            Route::delete('/customers/{customer}', 'destroy')->name('delete');
+        });
+
+        // ! Settings
+        Route::controller(SettingOptionController::class)->name('settings.')->group(function () {
+            Route::get('/settings', 'index')->name('all');
+            Route::post('/settings/update', 'update')->name('update');
         });
     });
 });

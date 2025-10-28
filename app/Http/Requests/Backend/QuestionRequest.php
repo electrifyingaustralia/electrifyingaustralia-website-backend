@@ -2,31 +2,34 @@
 
 namespace App\Http\Requests\Backend;
 
+use Illuminate\Validation\Rule;
+
 class QuestionRequest extends BaseRequest
 {
     public function rules(): array
     {
+        // $questionId = $this->route('question') ?? $this->route('id');
+
         return [
             'question' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
+                // Rule::unique('questions')->ignore($questionId),
+            ],
+
+            'input_type' => [
+                'required',
+                'string',
             ],
 
             'options' => [
-                'required',
+                'nullable',
                 'array',
-                'min:1'
             ],
 
-            'options.*.option' => [
-                'required',
-                'string'
-            ],
-
-            'options.*.type' => [
-                'required',
-                'in:input,radio,checkbox,file,number'
+            'is_required' => [
+                'boolean',
             ],
         ];
     }

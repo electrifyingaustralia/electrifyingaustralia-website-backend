@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\backend;
+namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\HeroCreateRequest;
@@ -17,7 +17,7 @@ class HeroController extends Controller
         $heroes = $this->heroService->get(['*'], 15, [
             'search' => $request->get('search'),
         ]);
-        return view('Backend.hero.index', compact('heroes'));
+        return view('backend.hero.index', compact('heroes'));
     }
 
     public function create()

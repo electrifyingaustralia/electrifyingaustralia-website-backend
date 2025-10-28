@@ -15,10 +15,13 @@ class QuotationRequest extends BaseRequest
 
             'subcategory' => [
                 'nullable',
-                'unique:quotation_sections,subcategory',
-                'string',
-                'max:500'
-            ]
+                'array',
+            ],
+
+            'media_id' => [
+                'nullable',
+                'exists:media_libraries,id',
+            ],
         ];
     }
 }

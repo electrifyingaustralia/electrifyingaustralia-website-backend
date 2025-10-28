@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -22,11 +21,14 @@ return new class extends Migration
 
             $table->longText('description')->nullable();
 
-            $table->foreignId('project_category_id')->constrained('project_categories')->cascadeOnDelete();
+            // $table->foreignId('project_category_id')->constrained('project_categories')->cascadeOnDelete();
+            $table->enum('category', ['residential', 'commercial'])->default('residential');
 
             $table->foreignId('project_type_id')->constrained('project_types')->cascadeOnDelete();
 
             $table->string('location', 255)->nullable();
+
+            $table->boolean('is_solution')->default(false);
 
             $table->string('extra_info_1', 255)->nullable();
 

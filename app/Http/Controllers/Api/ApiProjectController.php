@@ -9,10 +9,17 @@ use Illuminate\Http\Request;
 
 class ApiProjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $projects = Project::with('media')
-            ->orderBy('created_at', 'DESC')
+            ->when($request->filled('category'), function ($q) use ($request) {
+                $q->where('category', $request->category);
+            })
+            ->when($request->filled('home'), function ($q) use ($request) {
+                $isSolution = filter_var($request->home, FILTER_VALIDATE_BOOLEAN);
+                $q->where('is_solution', $isSolution);
+            })
+            ->latest()
             ->get();
 
         return ProjectResource::collection($projects);

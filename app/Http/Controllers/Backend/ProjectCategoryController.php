@@ -14,7 +14,7 @@ class ProjectCategoryController extends Controller
     public function index()
     {
         $categories = $this->projectCategoryService->get();
-        return view('Backend.project-category.index', compact('categories'));
+        return view('backend.project-category.index', compact('categories'));
     }
 
     public function store(ProjectCategoryRequest $request)
@@ -27,7 +27,7 @@ class ProjectCategoryController extends Controller
     {
         $categoryToEdit = $this->projectCategoryService->findProjectCategory($id);
         $categories = $this->projectCategoryService->get();
-        return view('Backend.project-category.index', compact('categoryToEdit', 'categories'));
+        return view('backend.project-category.index', compact('categoryToEdit', 'categories'));
     }
 
     public function update(ProjectCategoryRequest $request, $id)

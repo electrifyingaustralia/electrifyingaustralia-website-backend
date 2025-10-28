@@ -10,16 +10,10 @@ class Product extends Model
     use HasFactory;
     protected $guarded = [];
 
-    protected $appends = ['media_url'];
 
     public function media()
     {
         return $this->belongsTo(MediaLibrary::class, 'media_id');
-    }
-
-    public function getMediaUrlAttribute(): ?string
-    {
-        return $this->media?->url;
     }
 
     public function brand()

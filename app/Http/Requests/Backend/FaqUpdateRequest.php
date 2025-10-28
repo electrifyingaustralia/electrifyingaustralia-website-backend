@@ -3,9 +3,15 @@
 namespace App\Http\Requests\Backend;
 
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
-class FaqUpdateRequest extends BaseRequest
+class FaqUpdateRequest extends FormRequest
 {
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     public function rules(): array
     {
         $faqId = $this->route('faq') ?? $this->route('id');
@@ -15,24 +21,16 @@ class FaqUpdateRequest extends BaseRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('events', 'title')->ignore($faqId),
+                Rule::unique('faqs', 'question')->ignore($faqId),
             ],
             'answer' => [
                 'sometimes',
                 'required',
                 'string',
             ],
-            'type' => [
-                'sometimes',
+            'faq_type_id' => [
                 'required',
-                'string',
-                Rule::in([
-                    'General',
-                    'Solar & Battery',
-                    'EV Charger',
-                    'VPP & Energy Solutions',
-                    'Installation & Support',
-                ]),
+                'exists:faq_types,id'
             ],
             'is_active' => [
                 'sometimes',

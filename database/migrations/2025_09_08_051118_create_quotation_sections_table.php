@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('quotation_sections', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('parent_id')->nullable()->constrained('quotation_sections', 'id')->cascadeOnDelete();
             $table->string('category');
-            $table->string('subcategory')->nullable();
             $table->string('slug');
+            $table->foreignId('media_id')->nullable()->constrained('media_libraries')->nullOnDelete();
             $table->timestamps();
         });
     }

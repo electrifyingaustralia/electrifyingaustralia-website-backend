@@ -73,6 +73,11 @@ class TeamService implements TeamServiceInterface
         return $this->teamRepository->update($id, $data);
     }
 
+    public function updateTeamMemberOrder(array $orderData): bool
+    {
+        return $this->teamRepository->updateOrder($orderData);
+    }
+
     public function deleteTeamMember(int $id): bool
     {
         return $this->teamRepository->delete($id);

@@ -21,7 +21,9 @@ class QuestionService implements QuestionServiceInterface
             // Create the question
             $question = $this->questionRepository->create([
                 'question' => $data['question'],
+                'input_type' => $data['input_type'],
                 'slug' => Str::slug($data['question']),
+                'is_required' => $data['is_required'],
             ]);
 
             // Add options
@@ -29,7 +31,6 @@ class QuestionService implements QuestionServiceInterface
                 foreach ($data['options'] as $optionData) {
                     $question->options()->create([
                         'option' => $optionData['option'],
-                        'type' => $optionData['type'],
                     ]);
                 }
             }
@@ -47,7 +48,9 @@ class QuestionService implements QuestionServiceInterface
             // Update the question
             $question = $this->questionRepository->update($id, [
                 'question' => $data['question'],
+                'input_type' => $data['input_type'],
                 'slug' => Str::slug($data['question']),
+                'is_required' => $data['is_required'],
             ]);
 
             // Remove existing options
@@ -59,7 +62,6 @@ class QuestionService implements QuestionServiceInterface
                     if (!empty(trim($optionData['option']))) {
                         $question->options()->create([
                             'option' => $optionData['option'],
-                            'type' => $optionData['type'],
                         ]);
                     }
                 }

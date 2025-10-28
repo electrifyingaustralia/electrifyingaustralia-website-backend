@@ -15,13 +15,13 @@ class SolutionCardController extends Controller
     public function index()
     {
         $cards = $this->solutionCardService->get();
-        return view('Backend.solution-card.index', compact('cards'));
+        return view('backend.solution-card.index', compact('cards'));
     }
 
     public function create()
     {
         $cards = $this->solutionCardService->get();
-        return view('Backend.solution-card.create', compact('cards'));
+        return view('backend.solution-card.create', compact('cards'));
     }
 
     public function store(SolutionCardCreateRequest $request)
@@ -34,14 +34,14 @@ class SolutionCardController extends Controller
     public function show(int $id)
     {
         $card = $this->solutionCardService->findSolutionCard($id);
-        return view('Backend.solution-card.show', compact('card'));
+        return view('backend.solution-card.show', compact('card'));
     }
 
     public function edit($id)
     {
         $cardToEdit = $this->solutionCardService->findSolutionCard($id);
         $cards = $this->solutionCardService->get();
-        return view('Backend.solution-card.index', compact('cardToEdit', 'cards'));
+        return view('backend.solution-card.index', compact('cardToEdit', 'cards'));
     }
 
     public function update(SolutionCardUpdateRequest $request, $id)

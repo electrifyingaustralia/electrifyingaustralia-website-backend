@@ -6,6 +6,7 @@ use App\Repositories\AdminAuth\AdminAuthRepositoryInterface;
 use App\Services\Admin\AdminServiceInterface;
 use App\Services\MediaLibrary\MediaLibraryServiceInterface;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminService implements AdminServiceInterface
@@ -50,6 +51,7 @@ class AdminService implements AdminServiceInterface
         }
 
         $data['password'] = Hash::make($data['password']);
+        $data['role'] = 'user';
 
         return $this->admin->create($data);
     }
@@ -67,14 +69,30 @@ class AdminService implements AdminServiceInterface
                 }
             }
         }
-
-        $data['password'] = Hash::make($data['password']);
-
         return $this->admin->update($id, $data);
     }
 
-    public function deleteAdmin(int $id): bool
+    public function deleteAdmin(int $id)
     {
+        if (Auth::guard('admin')->user()->role === 'admin') {
+            return back()->with('error', 'This user cannot be deleted.');
+        }
+
         return $this->admin->delete($id);
+    }
+
+    public function updatePassword(array $data)
+    {
+        $admin = Auth::guard('admin')->user();
+
+        if (!Hash::check($data['current_password'], $admin->password)) {
+            throw new \Exception('Current password is incorrect');
+        }
+
+        $updateData = [
+            'password' => Hash::make($data['new_password'])
+        ];
+
+        return $this->admin->update($admin->id, $updateData);
     }
 }

@@ -14,7 +14,7 @@ class BlogCategoryController extends Controller
     public function index()
     {
         $categories = $this->blogCategoryService->get();
-        return view('Backend.blog-category.index', compact('categories'));
+        return view('backend.blog-category.index', compact('categories'));
     }
 
     public function store(BlogCategoryRequest $request)
@@ -27,7 +27,7 @@ class BlogCategoryController extends Controller
     {
         $categoryToEdit = $this->blogCategoryService->findBlogCategory($id);
         $categories = $this->blogCategoryService->get();
-        return view('Backend.blog-category.index', compact('categoryToEdit', 'categories'));
+        return view('backend.blog-category.index', compact('categoryToEdit', 'categories'));
     }
 
     public function update(BlogCategoryRequest $request, $id)
