@@ -16,7 +16,7 @@ class ApiBrandController extends Controller
             ->orderBy('name', 'ASC')
             ->get();
 
-        return response()->json(["data" => $brands]);
+        return response()->json(["data" => $brands, "custom" => true]);
 
         return BrandResource::collection($brands);
     }
