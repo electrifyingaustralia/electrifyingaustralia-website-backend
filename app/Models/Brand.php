@@ -8,8 +8,6 @@ class Brand extends Model
 {
     protected $guarded = [];
 
-    protected $appends = ['logo_url'];
-
     public function logo()
     {
         return $this->belongsTo(MediaLibrary::class, 'logo_id');
@@ -18,10 +16,5 @@ class Brand extends Model
     public function products()
     {
         return $this->hasMany(Product::class, 'brand_id');
-    }
-
-    public function getLogoUrlAttribute(): ?string
-    {
-        return $this->logo?->url;
     }
 }

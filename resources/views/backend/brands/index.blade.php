@@ -80,8 +80,8 @@
                                 <tr>
                                     <td class="px-6 py-4 font-medium text-gray-900">
                                         <div class="flex items-center">
-                                            @if ($brand->logo_url)
-                                                <img src="{{ $brand->logo_url }}" alt="{{ $brand->name }}"
+                                            @if (optional($brand->logo)->url)
+                                                <img src="{{ optional($brand->logo)->url }}" alt="{{ $brand->name }}"
                                                     class="w-20 h-10 object-scale-down rounded">
                                             @else
                                                 <div class="w-20 h-10 bg-gray-200 rounded flex items-center justify-center">

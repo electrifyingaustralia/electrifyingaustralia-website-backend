@@ -13,7 +13,7 @@ class ApiProductController extends Controller
 {
     public function index(Request $request)
     {
-        $products = Product::with(['type', 'brand'])
+        $products = Product::with(['type', 'brand', 'brand.logo', 'media'])
             ->where('is_active', true)
             ->when($request->filled('search') || $request->filled('type'), function ($q) use ($request) {
                 $q->where(function ($query) use ($request) {
