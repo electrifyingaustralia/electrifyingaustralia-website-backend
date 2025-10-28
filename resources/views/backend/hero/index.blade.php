@@ -81,10 +81,10 @@
                                 <tr>
                                     <td class=" px-5 py-4 font-medium text-gray-900">
                                         <div class="flex items-center">
-                                            @if ($hero->media_url)
+                                            @if (optional($hero->media)->url)
                                                 <div class="flex items-center space-x-2">
                                                     <div class="relative group !cursor-pointer"
-                                                        onclick="openVideoModal('{{ $hero->media_url }}')">
+                                                        onclick="openVideoModal('{{ $hero->media->url }}')">
                                                         <div
                                                             class="w-20 h-12 bg-gray-200 rounded flex items-center justify-center">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"

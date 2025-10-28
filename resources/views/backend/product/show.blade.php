@@ -112,7 +112,7 @@
                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Product Details</h3>
 
                             <div class="mb-4">
-                                <img src="{{ $product->media_url }}" alt="Solar Panel"
+                                <img src="{{ optional($product->media)->url }}" alt="Solar Panel"
                                     class="w-full h-48 object-scale-down rounded-lg">
                             </div>
 
