@@ -92,8 +92,8 @@
                                 <tr>
                                     <td class="px-6 py-4 font-medium text-gray-900 max-w-[2rem]">
                                         <div class="flex items-center">
-                                            @if ($product->media_url)
-                                                <img src="{{ $product->media_url }}"
+                                            @if (optional($product->media)->url)
+                                                <img src="{{ optional($product->media)->url }}"
                                                     class="w-20 h-10 object-scale-down rounded">
                                             @else
                                                 <div class="w-20 h-10 bg-gray-200 rounded flex items-center justify-center">
@@ -126,7 +126,7 @@
                                                 class="w-5 h-5 fill-green-500 hover:fill-green-700" viewBox="0 0 24 24">
                                                 <path
                                                     d="M12 5c-7.633 0-11 7-11 7s3.367 7 11 7 11-7 11-7-3.367-7-11-7zm0 12c-4.411 0-7.757-3.134-9.223-5
-                                                    1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z" />
+                                                                    1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z" />
                                                 <circle cx="12" cy="12" r="3" />
                                             </svg>
                                         </a>

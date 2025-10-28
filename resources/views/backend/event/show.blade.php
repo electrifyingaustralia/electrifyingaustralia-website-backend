@@ -70,13 +70,13 @@
                         </div>
 
                         <!-- Event Images Gallery -->
-                        @if (count($event->image_urls) > 0)
+                        @if ($event->images && $event->images->count() > 0)
                             <div class="mt-6">
                                 <h3 class="text-lg font-semibold text-gray-800 mb-3">Associate Image Gallery</h3>
                                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    @foreach ($event->image_urls as $imageUrl)
+                                    @foreach ($event->images as $image)
                                         <div class="bg-gray-100 rounded-lg overflow-hidden">
-                                            <img src="{{ $imageUrl }}" alt="Event Image"
+                                            <img src="{{ $image->url }}" alt="Event Image"
                                                 class="w-full h-32 object-scale-down">
                                         </div>
                                     @endforeach
@@ -90,9 +90,9 @@
                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Featured Image</h3>
 
                             <!-- Main Event Image -->
-                            @if ($event->media_url)
+                            @if (optional($event->media)->url)
                                 <div class="mb-4">
-                                    <img src="{{ $event->media_url }}" alt="{{ $event->title }}"
+                                    <img src="{{ optional($event->media)->url }}" alt="{{ $event->title }}"
                                         class="w-full h-48 object-fit rounded-lg">
                                 </div>
                             @endif
@@ -121,7 +121,7 @@
 
                                 <div>
                                     <p class="text-sm text-gray-600">Total Images</p>
-                                    <p class="text-gray-800">{{ count($event->image_urls) }} images</p>
+                                    <p class="text-gray-800">{{ count($event->images) }} images</p>
                                 </div>
                             </div>
 
