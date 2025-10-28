@@ -15,15 +15,12 @@ class ApiHeroController extends Controller
             ->latest()
             ->first();
 
-        if (!$hero) {
-            return response()->json([
-                'title' => null,
-                'subtitle' => null,
-                'media_url' => null,
-            ], 404);
-        }
-        return response()->json(
-            $hero->only(["title", "subtitle", "media_url"])
-        );
+        if ($hero) return response()->json($hero->only(["title", "subtitle"])+["media_url" => $hero->media?->url]);
+
+        return response()->json([
+            'title' => null,
+            'subtitle' => null,
+            'media_url' => null,
+        ]);
     }
 }

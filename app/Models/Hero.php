@@ -14,9 +14,4 @@ class Hero extends Model
     {
         return $this->belongsTo(MediaLibrary::class);
     }
-
-    public function getMediaUrlAttribute(): ?string
-    {
-        return $this->media?->url;
-    }
 }
