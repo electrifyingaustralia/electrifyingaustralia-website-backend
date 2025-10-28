@@ -11,11 +11,10 @@ class ApiBrandController extends Controller
 {
     public function index()
     {
-        $brands = Brand::whereNotNull('logo_id')
+        $brands = Brand::with('logo')
+            ->whereNotNull('logo_id')
             ->orderBy('name', 'ASC')
             ->get();
-
-        return response()->json(["data" => $brands, "custom" => true]);
 
         return BrandResource::collection($brands);
     }
