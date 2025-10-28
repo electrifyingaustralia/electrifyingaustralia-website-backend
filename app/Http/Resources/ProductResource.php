@@ -19,11 +19,11 @@ class ProductResource extends JsonResource
             'is_active'         => $this->product_is_active,
             'product_link'      => $this->product_product_link,
             'type'              => $this->product_type_name,
-            'media_url'         => getAssetFileUrl("media", $this->product_media_name),
+            'media_url'         => getAssetFileUrl("media", $this->product_media_name, disk: $this->product_media_disk),
             'brand'             => $this->brand_id ? [
                 'id'       => $this->brand_id,
                 'name'     => $this->brand_name,
-                'logo_url' => getAssetFileUrl("media", $this->product_media_name)
+                'logo_url' => getAssetFileUrl("media", $this->brand_media_name, disk: $this->brand_media_disk)
             ] : null,
 
         ];

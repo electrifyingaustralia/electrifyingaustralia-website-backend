@@ -35,7 +35,9 @@ class ApiProductController extends Controller
             "product_types.name as product_type_name",
             //Brand & Product Media Library Table
             "product_media.file_name as product_media_name",
+            "product_media.disk as product_media_disk",
             "brand_media.file_name as brand_media_name",
+            "brand_media.disk as brand_media_disk",
 
         ])
             ->join("brands", "products.brand_id", "=", "brands.id")
