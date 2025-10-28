@@ -11,36 +11,19 @@ class ApiEventController extends Controller
 {
     public function index()
     {
-        $groupStart = Event::inRandomOrder()->first();
-
-        $groupEnd = Event::inRandomOrder()
-            ->when($groupStart, fn($query) => $query->whereNotIn("id", [$groupStart->id]))
-            ->first();
-
-        $ids = [];
-
-        if ($groupStart) {
-            $groupStart->makeHidden('media');
-            $ids[] = $groupStart->id;
-        }
-        if ($groupEnd) {
-            $groupEnd->makeHidden('media');
-            $ids[] = $groupEnd->id;
-        }
-
-        $events = Event::with('media')
-            ->whereNotIn("id", $ids)
+        $allEvents = Event::with('media')
             ->where('is_active', true)
             ->inRandomOrder()
-            ->get()
-            ->each(function ($event) {
-                $event->makeHidden('media');
-            });;
+            ->get();
+
+        $groupStart = $allEvents->shift();
+        $groupEnd   = $allEvents->shift();
+        $events     = $allEvents;
 
         return response()->json([
-            "group_start" => $groupStart,
-            "group_center" => $events,
-            "group_end" => $groupEnd,
+            "group_start" => $groupStart ? new EventResource($groupStart) : null,
+            "group_center" => EventResource::collection($events),
+            "group_end" => $groupEnd ? new EventResource($groupEnd) : null,
         ]);
     }
 }

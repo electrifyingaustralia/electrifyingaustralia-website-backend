@@ -8,8 +8,6 @@ class Event extends Model
 {
     protected $guarded = [];
 
-    protected $appends = ['media_url'];
-
     public function media()
     {
         return $this->belongsTo(MediaLibrary::class, 'media_id');
@@ -21,15 +19,10 @@ class Event extends Model
             ->withTimestamps();
     }
 
-    public function getMediaUrlAttribute(): ?string
-    {
-        return $this->media?->url;
-    }
-
-    public function getImageUrlsAttribute(): array
-    {
-        return $this->images->map(function ($image) {
-            return $image->url;
-        })->toArray();
-    }
+    // public function getImageUrlsAttribute(): array
+    // {
+    //     return $this->images->map(function ($image) {
+    //         return $image->url;
+    //     })->toArray();
+    // }
 }
