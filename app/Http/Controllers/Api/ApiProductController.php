@@ -8,6 +8,7 @@ use App\Http\Resources\ProductTypeResource;
 use App\Models\Product;
 use App\Models\ProductType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ApiProductController extends Controller
 {
@@ -41,6 +42,21 @@ class ApiProductController extends Controller
             ->join("product_types", "products.product_type_id", "=", "product_types.id")
             ->join("media_libraries as product_media", "products.media_id", "=", "product_media.id")
             ->join("media_libraries as brand_media", "brands.logo_id", "=", "brand_media.id")
+            ->where('is_active', true)
+            ->when($request->filled('search') || $request->filled('type'), function ($q) use ($request) {
+                $q->where(function ($query) use ($request) {
+                    if ($request->filled('search')) {
+                        $query->where('name', 'LIKE', "%{$request->get('search')}%");
+                    }
+                    if ($request->filled('type')) {
+                        $query->orWhereHas('type', function ($typeQuery) use ($request) {
+                            $typeQuery->where('slug', $request->query('type'));
+                        });
+                    }
+                });
+            })
+            ->inRandomOrder()
+            ->limit(20)
             ->get();
 
         return ProductResource::collection($products);
