@@ -5,9 +5,13 @@ namespace App\Repositories\Hero;
 use App\Repositories\Hero\HeroRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Hero;
+use Illuminate\Support\Facades\Cache;
 
 class HeroRepository implements HeroRepositoryInterface
 {
+
+    public const HERO_CACHE_KEY = "active_hero";
+
     public function __construct()
     {
         //
@@ -45,16 +49,19 @@ class HeroRepository implements HeroRepositoryInterface
         return $instance;
     }
 
-    public function create(array $data): object
+    public function create(array $data)
     {
-        return Hero::create($data);
+        $hero = Hero::create($data);
+        Cache::forget(self::HERO_CACHE_KEY);
+        return $hero;
     }
 
-    public function update(int $id, array $data): object
+    public function update(int $id, array $data)
     {
         $instance = $this->find($id);
-        $instance->update($data);
-        return $instance;
+        $hero = $instance->update($data);
+        Cache::forget(self::HERO_CACHE_KEY);
+        return $hero;
     }
 
     public function exists(int | array $id): bool
@@ -69,7 +76,9 @@ class HeroRepository implements HeroRepositoryInterface
     public function delete(int $id): bool
     {
         $instance = $this->find($id);
-        return $instance->delete();
+        $deleted = $instance->delete();
+        Cache::forget(self::HERO_CACHE_KEY);
+        return $deleted;
     }
 
     private function applyFilters(Builder $q, array $filters): Builder

@@ -8,8 +8,6 @@ class Project extends Model
 {
     protected $guarded = [];
 
-    protected $appends = ['media_url'];
-
     protected $casts = [
         'is_solution' => 'boolean',
         'category' => 'string',
@@ -24,18 +22,6 @@ class Project extends Model
     {
         return $this->belongsToMany(MediaLibrary::class, 'project_images', 'project_id', 'media_id')
             ->withTimestamps();
-    }
-
-    public function getMediaUrlAttribute(): ?string
-    {
-        return $this->media?->url;
-    }
-
-    public function getImageUrlsAttribute(): array
-    {
-        return $this->images->map(function ($image) {
-            return $image->url;
-        })->toArray();
     }
 
     public function type()

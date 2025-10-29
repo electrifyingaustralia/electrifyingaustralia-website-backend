@@ -113,9 +113,9 @@
                                     </td>
                                     <td class="px-6 py-4 font-medium text-gray-900">
                                         <div class="flex items-center">
-                                            @if ($team->media_url)
+                                            @if (optional($team->media)->url)
                                                 <img class="h-10 w-10 rounded-full object-fit mr-3"
-                                                    src="{{ $team->media_url }}" alt="{{ $team->name }}">
+                                                    src="{{ optional($team->media)->url }}" alt="{{ $team->name }}">
                                             @else
                                                 <div
                                                     class="h-10 w-10 flex items-center justify-center mr-3 bg-gray-100 rounded-full">

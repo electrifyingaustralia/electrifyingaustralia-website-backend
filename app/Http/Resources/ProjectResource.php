@@ -10,24 +10,15 @@ class ProjectResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'slug' => $this->slug,
-            'subtitle' => $this->subtitle,
-            'description' => $this->description,
-            'media_url' => $this->media_url,
-            'category' => $this->category,
-            'type' => $this->type->name,
-            'location' => $this->location,
-            'is_in_homepage_solution' => $this->is_solution,
-            'extra_info_1' => $this->extra_info_1,
-            'extra_info_2' => $this->extra_info_2,
-            'extra_info_3' => $this->extra_info_3,
-            'extra_info_4' => $this->extra_info_4,
-            'extra_info_5' => $this->extra_info_5,
-            'images' => $this->image_urls,
-            'created_at' => $this->created_at->toISOString(),
-            'updated_at' => $this->updated_at->toISOString(),
+            'id' => $this->project_id,
+            'title' => $this->project_title,
+            'slug' => $this->project_slug,
+            'subtitle' => $this->project_subtitle,
+            'location' => $this->project_location,
+            'category' => $this->project_category,
+            'media_url' => getAssetFileUrl("media", $this->project_media_name, disk: $this->project_media_disk),
+            'type' => $this->project_type_name,
+            'is_in_homepage_solution' => (bool) $this->project_is_solution,
         ];
     }
 }

@@ -70,13 +70,13 @@
                         </div>
 
                         <!-- Project Images Gallery -->
-                        @if (count($project->image_urls) > 0)
+                        @if (count($project->images) > 0)
                             <div class="mt-6">
                                 <h3 class="text-lg font-semibold text-gray-800 mb-3">Associate Image Gallery</h3>
                                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    @foreach ($project->image_urls as $imageUrl)
+                                    @foreach ($project->images as $image)
                                         <div class="bg-gray-100 rounded-lg overflow-hidden">
-                                            <img src="{{ $imageUrl }}" alt="Project Image"
+                                            <img src="{{ $image->url }}" alt="Project Image"
                                                 class="w-full h-32 object-scale-down">
                                         </div>
                                     @endforeach
@@ -90,9 +90,9 @@
                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Featured Image</h3>
 
                             <!-- Main Project Image -->
-                            @if ($project->media_url)
+                            @if (optional($project->media)->url)
                                 <div class="mb-4">
-                                    <img src="{{ $project->media_url }}" alt="{{ $project->title }}"
+                                    <img src="{{ optional($project->media)->url }}" alt="{{ $project->title }}"
                                         class="w-full h-48 object-fit rounded-lg">
                                 </div>
                             @endif
@@ -127,7 +127,7 @@
 
                                 <div>
                                     <p class="text-sm text-gray-600">Total Images</p>
-                                    <p class="text-gray-800">{{ count($project->image_urls) }} images</p>
+                                    <p class="text-gray-800">{{ count($project->images) }} images</p>
                                 </div>
                             </div>
 
