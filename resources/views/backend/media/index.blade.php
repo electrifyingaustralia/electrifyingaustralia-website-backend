@@ -219,7 +219,7 @@
 
                     if (media.is_image) {
                         mediaContent = `
-                        <img src="${media.url}" alt="${media.original_name}" class="w-full h-40 object-scale-down">
+                        <img src="${media.url}" alt="${media.original_name}" class="w-full h-40 object-cover">
                     `;
                     } else if (media.is_video) {
                         mediaContent = `
@@ -251,7 +251,7 @@
                             </svg>
                         `;
                         } else if (media.mime_type.includes('word') || media.mime_type.includes(
-                            'document')) {
+                                'document')) {
                             fileIcon = `
                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
                                 <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
@@ -329,22 +329,22 @@
                         <div class="flex space-x-2">
                             ${data.current_page > 1 ?
                                 `<button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm transition-colors pagination-link" data-page="${data.current_page - 1}">
-                                        Previous
-                                    </button>` :
+                                                                Previous
+                                                            </button>` :
                                 `<span class="px-3 py-1 border border-gray-300 rounded-lg text-gray-400 cursor-not-allowed text-sm">
-                                        Previous
-                                    </span>`
+                                                                Previous
+                                                            </span>`
                             }
 
                             ${generatePageNumbers(data)}
 
                             ${data.current_page < data.last_page ?
                                 `<button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm transition-colors pagination-link" data-page="${data.current_page + 1}">
-                                        Next
-                                    </button>` :
+                                                                Next
+                                                            </button>` :
                                 `<span class="px-3 py-1 border border-gray-300 rounded-lg text-gray-400 cursor-not-allowed text-sm">
-                                        Next
-                                    </span>`
+                                                                Next
+                                                            </span>`
                             }
                         </div>
                     </div>
