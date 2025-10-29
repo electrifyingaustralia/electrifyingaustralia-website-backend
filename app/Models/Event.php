@@ -18,11 +18,4 @@ class Event extends Model
         return $this->belongsToMany(MediaLibrary::class, 'event_images', 'event_id', 'media_id')
             ->withTimestamps();
     }
-
-    // public function getImageUrlsAttribute(): array
-    // {
-    //     return $this->images->map(function ($image) {
-    //         return $image->url;
-    //     })->toArray();
-    // }
 }

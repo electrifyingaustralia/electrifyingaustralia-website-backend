@@ -31,7 +31,7 @@ class HeroService implements HeroServiceInterface
         return $this->heroRepository->find($id);
     }
 
-    public function createHero(array $data, ?UploadedFile $media = null): object
+    public function createHero(array $data, ?UploadedFile $media = null)
     {
         if ($media) {
 
@@ -50,7 +50,7 @@ class HeroService implements HeroServiceInterface
         return $this->heroRepository->create($data);
     }
 
-    public function updateHero(int $id, array $data): object
+    public function updateHero(int $id, array $data)
     {
 
         if (isset($data['media_id'])) {

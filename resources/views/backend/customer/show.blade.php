@@ -156,10 +156,6 @@
                             <p class="text-gray-900">{{ $customer->type ?? 'N/A' }}</p>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                            <p class="text-gray-900">{{ $customer->message ?? 'N/A' }}</p>
-                        </div>
-                        <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
                             @php
                                 $statusColors = [
@@ -176,6 +172,10 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Submitted On</label>
                             <p class="text-gray-900">{{ $customer->created_at->format('M d, Y \a\t h:i A') }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <p class="text-gray-900">{{ $customer->message ?? 'N/A' }}</p>
                         </div>
                     </div>
                 @endif

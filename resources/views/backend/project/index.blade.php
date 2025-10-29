@@ -81,8 +81,8 @@
                                 <tr class="">
                                     <td class="px-6 py-4">
                                         <div class="flex items-center">
-                                            @if ($project->media_url)
-                                                <img src="{{ $project->media_url }}" alt="{{ $project->title }}"
+                                            @if (optional($project->media)->url)
+                                                <img src="{{ optional($project->media)->url }}" alt="{{ $project->title }}"
                                                     class="w-16 h-12 object-scale-down rounded-lg border border-gray-200">
                                             @else
                                                 <div

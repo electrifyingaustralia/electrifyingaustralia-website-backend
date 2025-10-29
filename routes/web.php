@@ -26,8 +26,6 @@ use App\Http\Controllers\Backend\SolutionCardController;
 use App\Http\Controllers\Backend\StickyHeaderController;
 use App\Http\Controllers\Backend\TeamController;
 use App\Http\Controllers\SettingOptionController;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/admin/login');

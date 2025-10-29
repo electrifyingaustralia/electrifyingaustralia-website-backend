@@ -288,7 +288,8 @@
             @endif
 
             <div style="text-align: center; margin-top: 30px;">
-                <a href="{{ route('admin.customer.show', $customer) }}" class="button">
+                <a href="{{ route('admin.customer.show', $customer) }}" class="button"
+                    style="color: white !important;">
                     View Full Quotation Details
                 </a>
             </div>
