@@ -110,6 +110,29 @@
         </div>
     </div>
 
+    <!-- Edit Alt Name Modal -->
+    <div id="edit-alt-name-modal"
+        class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg w-full max-w-md">
+            <h3 class="text-lg font-medium mb-4">Edit Alt Name</h3>
+            <div class="mb-4">
+                <label for="edit-alt-name-input" class="block text-sm font-medium text-gray-700 mb-2">
+                    Alt Name (Optional)
+                </label>
+                <input type="text" id="edit-alt-name-input"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                    placeholder="Enter descriptive alt name...">
+                <p class="text-xs text-gray-500 mt-1">This helps with SEO and accessibility</p>
+            </div>
+            <div class="flex justify-end !space-x-3">
+                <button id="cancel-edit-alt-name"
+                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
+                <button id="save-alt-name" class="px-4 py-2 !bg-teal-600 text-white rounded-lg hover:!bg-teal-700">Save
+                    Changes</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Delete Confirmation Modal -->
     <div id="delete-modal" class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded-lg w-full max-w-md">
@@ -134,6 +157,7 @@
                 search: ''
             };
             let mediaToDelete = null;
+            let mediaToEdit = null;
             let pendingFiles = [];
 
             // Elements
@@ -155,6 +179,11 @@
             const cancelUploadBtn = document.getElementById('cancel-upload');
             const confirmUploadBtn = document.getElementById('confirm-upload');
 
+            // Edit alt name modal elements
+            const editAltNameModal = document.getElementById('edit-alt-name-modal');
+            const editAltNameInput = document.getElementById('edit-alt-name-input');
+            const cancelEditAltNameBtn = document.getElementById('cancel-edit-alt-name');
+            const saveAltNameBtn = document.getElementById('save-alt-name');
 
             // Load initial media
             loadMedia();
@@ -204,6 +233,15 @@
 
             confirmUploadBtn.addEventListener('click', function() {
                 uploadFilesWithAltNames();
+            });
+
+            cancelEditAltNameBtn.addEventListener('click', function() {
+                editAltNameModal.classList.add('hidden');
+                mediaToEdit = null;
+            });
+
+            saveAltNameBtn.addEventListener('click', function() {
+                saveAltName();
             });
 
             // Functions
@@ -324,7 +362,7 @@
                         <div class="space-y-2">
                             <label class="text-sm font-medium text-teal-600">Alt Name (Optional)</label>
                             <input type="text"
-                                   class="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                                   class="w-full p-2 border border-gray-300 rounded-lg text-sm alt-name-input"
                                    placeholder="Enter descriptive alt name..."
                                    data-index="${index}"
                                    value="${baseName}">
@@ -496,16 +534,24 @@
 
                     mediaCard.innerHTML = `
                     ${mediaContent}
-                    <!-- View button at top left corner -->
-                    <button class="view-media absolute top-2 left-2 p-2 bg-white rounded-full text-gray-800 hover:bg-gray-100 shadow-md transition-colors" data-url="${media.url}" title="View file">
+                    <!-- Edit button at top left corner -->
+                    <button class="edit-alt-name absolute top-2 left-2 p-2 bg-white rounded-full text-gray-800 hover:bg-gray-100 shadow-md transition-colors" data-id="${media.id}" data-alt-name="${media.alt_name || ''}" title="Edit alt name">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 20h9"/>
+                            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                        </svg>
+                    </button>
+
+                    <!-- View button at top right corner -->
+                    <button class="view-media absolute top-2 right-2 p-2 bg-white rounded-full text-gray-800 hover:bg-gray-100 shadow-md transition-colors" data-url="${media.url}" title="View file">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
                             <circle cx="12" cy="12" r="3"/>
                         </svg>
                     </button>
 
-                    <!-- Delete button at top right corner -->
-                    <button class="delete-media absolute top-2 right-2 p-2 !bg-red-600 rounded-full text-white hover:bg-red-700 shadow-md transition-colors" data-id="${media.id}" title="Delete file">
+                    <!-- Delete button at bottom right corner -->
+                    <button class="delete-media absolute bottom-2 right-2 p-2 !bg-red-600 rounded-full text-white hover:bg-red-700 shadow-md transition-colors" data-id="${media.id}" title="Delete file">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
                             <path d="M3 6h18"/>
@@ -516,7 +562,7 @@
                     <div class="p-2">
                         <p class="text-sm font-medium truncate">${media.original_name}</p>
                         <p class="text-xs text-gray-500">${formatFileSize(media.file_size)}</p>
-                        ${media.alt_name ? `<p class="text-xs text-teal-600 truncate" title="Alt: ${media.alt_name}">${media.alt_name}</p>` : ''}
+                        ${media.alt_name ? `<p class="text-xs text-teal-600 truncate" title="Alt: ${media.alt_name}">${media.alt_name}</p>` : '<p class="text-xs text-gray-400 italic">No alt name</p>'}
                     </div>
                 `;
 
@@ -538,6 +584,50 @@
                         window.open(url, '_blank');
                     });
                 });
+
+                // Add event listeners to edit alt name buttons
+                document.querySelectorAll('.edit-alt-name').forEach(button => {
+                    button.addEventListener('click', function() {
+                        mediaToEdit = this.getAttribute('data-id');
+                        const currentAltName = this.getAttribute('data-alt-name');
+                        editAltNameInput.value = currentAltName;
+                        editAltNameModal.classList.remove('hidden');
+                    });
+                });
+            }
+
+            function saveAltName() {
+                if (!mediaToEdit) return;
+
+                const newAltName = editAltNameInput.value.trim();
+
+                fetch(`/admin/media/${mediaToEdit}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({
+                            alt_name: newAltName
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        editAltNameModal.classList.add('hidden');
+                        mediaToEdit = null;
+
+                        if (data.success) {
+                            loadMedia(); // Reload the media list to show updated alt name
+                        } else {
+                            alert('Error updating alt name');
+                        }
+                    })
+                    .catch(error => {
+                        editAltNameModal.classList.add('hidden');
+                        console.error('Error updating alt name:', error);
+                        alert('Error updating alt name');
+                    });
             }
 
             function renderPagination(data) {
@@ -555,22 +645,22 @@
                         <div class="flex space-x-2">
                             ${data.current_page > 1 ?
                                 `<button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm transition-colors pagination-link" data-page="${data.current_page - 1}">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Previous
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </button>` :
+                                                Previous
+                                            </button>` :
                                 `<span class="px-3 py-1 border border-gray-300 rounded-lg text-gray-400 cursor-not-allowed text-sm">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Previous
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </span>`
+                                                Previous
+                                            </span>`
                             }
 
                             ${generatePageNumbers(data)}
 
                             ${data.current_page < data.last_page ?
                                 `<button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm transition-colors pagination-link" data-page="${data.current_page + 1}">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Next
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </button>` :
+                                                Next
+                                            </button>` :
                                 `<span class="px-3 py-1 border border-gray-300 rounded-lg text-gray-400 cursor-not-allowed text-sm">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Next
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </span>`
+                                                Next
+                                            </span>`
                             }
                         </div>
                     </div>

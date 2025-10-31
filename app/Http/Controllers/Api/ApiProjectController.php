@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ApiProjectController extends Controller
 {
     public function index(Request $request)
     {
+        DB::enableQueryLog();
         $projects = Project::select([
             "projects.id as project_id",
             "projects.title as project_title",
@@ -36,7 +38,9 @@ class ApiProjectController extends Controller
                 $q->where('is_solution', $isSolution);
             })
             ->latest("projects.created_at")
+            ->limit(20)
             ->get();
+        dd(DB::getQueryLog());
 
         return ProjectResource::collection($projects);
     }
