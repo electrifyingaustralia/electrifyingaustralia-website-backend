@@ -27,7 +27,7 @@ class MediaLibraryService implements MediaLibraryServiceInterface
         return $this->mediaLibrary->find($id);
     }
 
-    public function upload(UploadedFile $file, string $disk = 'public'): MediaLibrary
+    public function upload(UploadedFile $file, string $disk = 'public', ?string $altName = null): MediaLibrary
     {
         $diskType = env("FILESYSTEM_DISK", $disk);
 
@@ -40,6 +40,7 @@ class MediaLibraryService implements MediaLibraryServiceInterface
 
         return $this->mediaLibrary->create([
             'file_name'     => basename($storedPath),
+            'alt_name'      => $altName,
             'original_name' => $file->getClientOriginalName(),
             'file_path'     => $storedPath,
             'disk'          => $diskType,
@@ -47,6 +48,11 @@ class MediaLibraryService implements MediaLibraryServiceInterface
             'mime_type'     => $mime,
             'file_size'     => $file->getSize(),
         ]);
+    }
+
+    public function updateMedia(int $id, array $data)
+    {
+        return $this->mediaLibrary->update($id, $data);
     }
 
     public function delete(int $id): bool

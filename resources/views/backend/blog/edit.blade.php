@@ -126,8 +126,7 @@
 
                                 <!-- Media Selection -->
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Blog Media <span
-                                            class="text-red-600">*</span></label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Blog Media</label>
 
                                     <div class="flex flex-col sm:flex-row gap-4">
                                         <!-- Media Preview -->
@@ -135,7 +134,8 @@
                                             id="logo-preview">
                                             @if ($blog->media)
                                                 @if ($blog->media->mime_type && str_starts_with($blog->media->mime_type, 'image/'))
-                                                    <img src="{{ $blog->media->url }}" alt="{{ $blog->title }}"
+                                                    <img src="{{ $blog->media->url }}"
+                                                        alt="{{ $blog->media->alt_name ?? $blog->title }}"
                                                         class="w-full h-full object-cover rounded-lg">
                                                 @elseif($blog->media->mime_type && str_starts_with($blog->media->mime_type, 'video/'))
                                                     <div
@@ -284,6 +284,11 @@
                                                             {{ $blog->media->original_name }}</p>
                                                         <p id="selected-logo-size" class="text-xs text-gray-500">
                                                             {{ formatFileSize($blog->media->file_size) }}</p>
+                                                        @if ($blog->media->alt_name)
+                                                            <p id="selected-logo-alt" class="text-xs text-teal-600">
+                                                                Alt: {{ $blog->media->alt_name }}
+                                                            </p>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <button type="button" id="remove-selected-logo"
@@ -318,7 +323,7 @@
                                         class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}"
-                                                {{ $category->blog_category_id == $category->id ? 'selected' : '' }}>
+                                                {{ $blog->blog_category_id == $category->id ? 'selected' : '' }}>
                                                 {{ $category->name }}
                                             </option>
                                         @endforeach
@@ -427,6 +432,18 @@
             <div class="flex-1 overflow-auto min-h-[35rem]">
                 <!-- Upload Tab -->
                 <div id="upload-tab-content" class="p-6">
+                    <!-- Alt Name Input for Upload -->
+                    <div id="upload-alt-name-container" class="mb-4 p-4 bg-gray-50 rounded-lg hidden">
+                        <label for="upload-alt-name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Alt Name for this Media (Optional)
+                        </label>
+                        <input type="text" id="upload-alt-name"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                            placeholder="Enter descriptive alt name for SEO and accessibility">
+                        <p class="text-xs text-gray-500 mt-1">This helps with SEO and accessibility for visually impaired
+                            users</p>
+                    </div>
+
                     <div id="upload-area"
                         class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center relative">
                         <div id="upload-default" class="upload-content">
@@ -447,7 +464,6 @@
                                 class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg cursor-pointer">
                                 <i class="fas fa-upload mr-2"></i> Browse Files
                             </label>
-                            {{-- <p class="text-xs text-gray-500 mt-3">Supported formats: JPG, PNG, GIF, SVG • Max size: 10MB</p> --}}
                         </div>
 
                         <div id="upload-preview" class="upload-content hidden">
@@ -495,6 +511,18 @@
 
                 <!-- Library Tab -->
                 <div id="library-tab-content" class="p-6 hidden">
+                    <!-- Alt Name Input for Existing Media -->
+                    <div id="library-alt-name-container" class="mb-4 p-4 bg-gray-50 rounded-lg hidden">
+                        <label for="library-alt-name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Alt Name for Selected Media (Optional)
+                        </label>
+                        <input type="text" id="library-alt-name"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                            placeholder="Enter descriptive alt name for SEO and accessibility">
+                        <p class="text-xs text-gray-500 mt-1">This helps with SEO and accessibility for visually impaired
+                            users</p>
+                    </div>
+
                     <div id="media-library-content" class="min-h-64">
                         <div class="text-center py-12">
                             <i class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i>
@@ -569,6 +597,10 @@
             let currentTab = 'upload';
             let mediaLibraryItems = [];
             let isUploading = false;
+            let selectedMediaAltName = '';
+            let currentPage = 1;
+            let hasMorePages = true;
+            let modalSelectedMedia = [];
 
             // Initialize with existing media data if available
             @if ($blog->media)
@@ -578,8 +610,10 @@
                     name: '{{ $blog->media->original_name }}',
                     size: {{ $blog->media->file_size }},
                     file: null,
-                    type: 'library'
+                    type: 'library',
+                    alt_name: '{{ $blog->media->alt_name ?? '' }}'
                 };
+                selectedMediaAltName = '{{ $blog->media->alt_name ?? '' }}';
             @endif
 
             // ========== UPLOAD TAB FUNCTIONS ==========
@@ -609,7 +643,6 @@
                     unhighlight();
                 };
 
-                // Remove existing listeners and add new ones
                 $uploadArea
                     .off('dragenter dragover dragleave drop')
                     .on('dragenter', preventDefaults)
@@ -644,6 +677,12 @@
                         file: file,
                         type: 'upload'
                     };
+
+                    // Set default alt name as filename without extension and show the alt name container
+                    const fileNameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
+                    selectedMediaAltName = fileNameWithoutExt;
+                    $('#upload-alt-name').val(fileNameWithoutExt);
+                    $('#upload-alt-name-container').removeClass('hidden');
 
                     updateUploadButtonState();
                 };
@@ -688,41 +727,41 @@
                     switch (fileExtension) {
                         case 'pdf':
                             iconSvg = `
-                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                        <path d="M10 9H8"/>
-                        <path d="M16 13H8"/>
-                        <path d="M16 17H8"/>
-                    `;
+                                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                <path d="M10 9H8"/>
+                                <path d="M16 13H8"/>
+                                <path d="M16 17H8"/>
+                            `;
                             bgColor = 'bg-red-100';
                             break;
                         case 'doc':
                         case 'docx':
                             iconSvg = `
-                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                        <path d="M10 9H8"/>
-                        <path d="M16 13H8"/>
-                        <path d="M16 17H8"/>
-                    `;
+                                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                <path d="M10 9H8"/>
+                                <path d="M16 13H8"/>
+                                <path d="M16 17H8"/>
+                            `;
                             bgColor = 'bg-blue-100';
                             break;
                         case 'xls':
                         case 'xlsx':
                             iconSvg = `
-                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
-                        <path d="M3 9h18"/>
-                        <path d="M3 15h18"/>
-                        <path d="M9 3v18"/>
-                        <path d="M15 3v18"/>
-                    `;
+                                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                                <path d="M3 9h18"/>
+                                <path d="M3 15h18"/>
+                                <path d="M9 3v18"/>
+                                <path d="M15 3v18"/>
+                            `;
                             bgColor = 'bg-green-100';
                             break;
                         default:
                             iconSvg = `
-                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                    `;
+                                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                            `;
                     }
 
                     $('#preview-icon').html(iconSvg);
@@ -738,7 +777,9 @@
             function clearUploadPreview() {
                 $('#upload-preview').addClass('hidden');
                 $('#upload-default').removeClass('hidden');
+                $('#upload-alt-name-container').addClass('hidden');
                 $('#modal-logo-upload').val('');
+                $('#upload-alt-name').val('');
 
                 // Reset all preview elements
                 $('#preview-image').addClass('hidden').attr('src', '');
@@ -754,6 +795,7 @@
 
                 if (selectedMedia && selectedMedia.type === 'upload') {
                     selectedMedia = null;
+                    selectedMediaAltName = '';
                     updateUploadButtonState();
                 }
             }
@@ -787,6 +829,7 @@
 
                 const formData = new FormData();
                 formData.append('files[]', selectedMedia.file);
+                formData.append('alt_name[]', $('#upload-alt-name').val() || '');
 
                 $.ajax({
                     url: '{{ route('admin.media.store') }}',
@@ -823,7 +866,7 @@
 
                             // Select the newly uploaded item
                             setTimeout(function() {
-                                selectMediaFromLibrary(0);
+                                selectMediaFromLibrary(newMedia.id);
                             }, 300);
                         } else {
                             $('#upload-status').text('Upload failed!');
@@ -843,21 +886,19 @@
             }
 
             // ========== LIBRARY TAB FUNCTIONS ==========
-            let currentPage = 1;
-            let hasMorePages = true;
-
             function loadMediaLibrary(loadMore = false) {
                 const $mediaContent = $('#media-library-content');
 
                 if (!loadMore) {
                     $mediaContent.html(`
-                    <div class="text-center py-12">
-                        <i class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i>
-                        <p class="mt-2 text-gray-600">Loading media library...</p>
-                    </div>
-                `);
+                        <div class="text-center py-12">
+                            <i class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i>
+                            <p class="mt-2 text-gray-600">Loading media library...</p>
+                        </div>
+                    `);
                     currentPage = 1;
                     mediaLibraryItems = [];
+                    modalSelectedMedia = [];
                 }
 
                 $.ajax({
@@ -867,14 +908,16 @@
                     },
                     success: function(data) {
                         if (data.data && data.data.length > 0) {
-                            mediaLibraryItems = [...mediaLibraryItems, ...data.data];
-                            renderMediaLibrary(mediaLibraryItems);
+                            if (loadMore) {
+                                mediaLibraryItems = [...mediaLibraryItems, ...data.data];
+                            } else {
+                                mediaLibraryItems = data.data;
+                            }
+                            renderMediaLibrary(mediaLibraryItems, loadMore);
 
-                            // Check if there are more pages
                             hasMorePages = data.current_page < data.last_page;
                             currentPage++;
 
-                            // Add or update load more button
                             updateLoadMoreButton();
                         } else {
                             if (mediaLibraryItems.length === 0) {
@@ -897,12 +940,12 @@
                 if (hasMorePages) {
                     if ($loadMoreBtn.length === 0) {
                         $('#media-library-content').after(`
-                    <div class="text-center mt-4">
-                        <button id="load-more-media" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg">
-                            Load More Media
-                        </button>
-                    </div>
-                `);
+                            <div class="text-center mt-4">
+                                <button id="load-more-media" class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg">
+                                    Load More Media
+                                </button>
+                            </div>
+                        `);
 
                         $('#load-more-media').on('click', function() {
                             loadMediaLibrary(true);
@@ -919,99 +962,206 @@
                 let html = '';
 
                 if (!append) {
-                    html = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">';
+                    html =
+                        '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="media-grid">';
                 }
 
-                // Calculate starting index for new items
-                const startIndex = append ? $mediaContent.find('.media-item').length : 0;
-
-                $.each(mediaItems.slice(startIndex), function(index, media) {
-                    const actualIndex = startIndex + index;
-
-                    // Your existing media item HTML generation code
+                $.each(mediaItems, function(index, media) {
                     let previewHtml = '';
-                    const fileExtension = media.original_name.split('.').pop().toLowerCase();
+                    const fileExtension = (media.original_name || media.name || '').split('.').pop()
+                        .toLowerCase();
+                    const isSelected = modalSelectedMedia.some(item => item.id === media.id);
 
                     if (media.mime_type && media.mime_type.startsWith('image/')) {
                         previewHtml =
-                            `<img src="${media.url}" alt="${media.original_name}" class="w-full h-24 object-scale-down">`;
+                            `<img src="${media.url}" alt="${media.alt_name || media.original_name || media.name}" class="w-full h-24 object-scale-down">`;
                     } else if (media.mime_type && media.mime_type.startsWith('video/')) {
                         previewHtml = `
-                    <div class="w-full h-24 flex items-center justify-center bg-gray-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
-                            <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
-                            <rect x="2" y="6" width="14" height="12" rx="2"/>
-                        </svg>
-                    </div>
-                `;
+                            <div class="w-full h-24 flex items-center justify-center bg-gray-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
+                                    <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
+                                    <rect x="2" y="6" width="14" height="12" rx="2"/>
+                                </svg>
+                            </div>
+                        `;
+                    } else if (['pdf'].includes(fileExtension)) {
+                        previewHtml = `
+                            <div class="w-full h-24 flex items-center justify-center bg-red-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-red-600">
+                                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                    <path d="M10 9H8"/>
+                                    <path d="M16 13H8"/>
+                                    <path d="M16 17H8"/>
+                                </svg>
+                            </div>
+                        `;
+                    } else if (['doc', 'docx'].includes(fileExtension)) {
+                        previewHtml = `
+                            <div class="w-full h-24 flex items-center justify-center bg-blue-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-blue-600">
+                                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                    <path d="M10 9H8"/>
+                                    <path d="M16 13H8"/>
+                                    <path d="M16 17H8"/>
+                                </svg>
+                            </div>
+                        `;
                     } else {
-                        // Your existing document type handling...
+                        previewHtml = `
+                            <div class="w-full h-24 flex items-center justify-center bg-gray-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file text-gray-600">
+                                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                </svg>
+                            </div>
+                        `;
                     }
 
                     html += `
-                <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md"
-                    data-index="${actualIndex}">
-                    ${previewHtml}
-                    <div class="p-2">
-                        <p class="text-xs text-center font-medium truncate">${media.original_name}</p>
-                    </div>
-                </div>
-                `;
+                        <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md ${isSelected ? 'selected' : ''}"
+                            data-media-id="${media.id}">
+                            ${previewHtml}
+                            <div class="p-2 relative">
+                                <p class="text-xs text-center font-medium truncate">${media.original_name || media.name}</p>
+                                ${media.alt_name ? `
+                                                <p class="text-xs text-center text-teal-600 truncate" title="${media.alt_name}">${media.alt_name}</p>
+                                            ` : `
+                                                <p class="text-xs text-center text-gray-400 italic">No alt name</p>
+                                            `}
+                                <!-- Edit icon for alt name -->
+                                <button class="absolute top-1 right-1 p-1 bg-white rounded-full shadow-sm hover:bg-gray-50 edit-alt-name" data-media-id="${media.id}" title="Edit alt name">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-edit-3 text-gray-600">
+                                        <path d="M12 20h9"/>
+                                        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
                 });
 
                 if (!append) {
                     html += '</div>';
                     $mediaContent.html(html);
                 } else {
-                    $mediaContent.find('.grid').append(html);
+                    $mediaContent.find('#media-grid').append(html);
                 }
 
-                // Re-bind click events for new items
-                $mediaContent.find('.media-item').off('click').on('click', function() {
-                    const index = parseInt($(this).data('index'));
-                    selectMediaFromLibrary(index);
+                // Add click event listeners to media items
+                $mediaContent.find('.media-item').off('click').on('click', function(e) {
+                    // Don't trigger selection when clicking the edit button
+                    if (!$(e.target).closest('.edit-alt-name').length) {
+                        const mediaId = parseInt($(this).data('media-id'));
+                        selectMediaFromLibrary(mediaId);
+                    }
+                });
+
+                // Add click event listeners to edit buttons
+                $mediaContent.find('.edit-alt-name').off('click').on('click', function(e) {
+                    e.stopPropagation();
+                    const mediaId = parseInt($(this).data('media-id'));
+                    selectMediaFromLibrary(mediaId);
+
+                    // Focus on the alt name input
+                    setTimeout(() => {
+                        $('#library-alt-name').focus();
+                    }, 100);
                 });
             }
 
-            function selectMediaFromLibrary(index) {
-                const media = mediaLibraryItems[index];
+            function selectMediaFromLibrary(mediaId) {
+                const media = mediaLibraryItems.find(item => item.id === mediaId);
+                if (!media) return;
 
                 // Remove previous selection
                 $('.media-item').removeClass('selected');
 
                 // Add selection to current item
-                $(`.media-item[data-index="${index}"]`).addClass('selected');
+                $(`.media-item[data-media-id="${mediaId}"]`).addClass('selected');
+
+                // Clear any previous modal selection and set single selection
+                modalSelectedMedia = [media];
 
                 selectedMedia = {
                     id: media.id,
                     url: media.url,
-                    name: media.original_name,
+                    name: media.original_name || media.name,
                     size: media.file_size,
                     file: null,
-                    type: 'library'
+                    type: 'library',
+                    mime_type: media.mime_type,
+                    alt_name: media.alt_name
                 };
+
+                selectedMediaAltName = media.alt_name || '';
+
+                // Show alt name container for library selection
+                $('#library-alt-name-container').removeClass('hidden');
+                $('#library-alt-name').val(selectedMediaAltName);
 
                 updateConfirmButtonState();
             }
 
+            // Add this function to update alt name for existing media
+            function updateMediaAltName() {
+                if (!selectedMedia || selectedMedia.type !== 'library') {
+                    return;
+                }
+
+                const newAltName = $('#library-alt-name').val().trim();
+
+                $.ajax({
+                    url: `/admin/media/${selectedMedia.id}`,
+                    method: 'PUT',
+                    data: {
+                        alt_name: newAltName,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Update the local data
+                            selectedMedia.alt_name = newAltName;
+                            selectedMediaAltName = newAltName;
+
+                            // Update the media library item
+                            const mediaIndex = mediaLibraryItems.findIndex(item => item.id ===
+                                selectedMedia.id);
+                            if (mediaIndex !== -1) {
+                                mediaLibraryItems[mediaIndex].alt_name = newAltName;
+                            }
+
+                            toastr.success('Alt name updated successfully!');
+                        } else {
+                            toastr.error('Failed to update alt name');
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error updating alt name:', error);
+                        toastr.error('Error updating alt name');
+                    }
+                });
+            }
+
             function showNoMediaMessage() {
                 $('#media-library-content').html(`
-            <div class="text-center py-12">
-                <i class="fas fa-folder-open text-gray-400 text-4xl mb-4"></i>
-                <h3 class="text-lg font-medium text-gray-700">No media files found</h3>
-                <p class="text-gray-500 mt-2">Upload images to use as media</p>
-            </div>
-        `);
+                    <div class="text-center py-12">
+                        <i class="fas fa-folder-open text-gray-400 text-4xl mb-4"></i>
+                        <h3 class="text-lg font-medium text-gray-700">No media files found</h3>
+                        <p class="text-gray-500 mt-2">Upload images to use as media</p>
+                    </div>
+                `);
             }
 
             function showErrorLoadingMedia() {
                 $('#media-library-content').html(`
-            <div class="text-center py-12">
-                <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
-                <h3 class="text-lg font-medium text-gray-700">Error loading media</h3>
-                <p class="text-gray-500 mt-2">Please try again</p>
-            </div>
-        `);
+                    <div class="text-center py-12">
+                        <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+                        <h3 class="text-lg font-medium text-gray-700">Error loading media</h3>
+                        <p class="text-gray-500 mt-2">Please try again</p>
+                    </div>
+                `);
             }
 
             // ========== GENERAL MODAL FUNCTIONS ==========
@@ -1037,19 +1187,29 @@
                 $('#upload-tab, #library-tab').removeClass('tab-active');
                 $('#upload-tab-content, #library-tab-content').addClass('hidden');
                 $('#upload-tab-buttons, #library-tab-buttons').addClass('hidden');
+                $('#upload-alt-name-container, #library-alt-name-container').addClass('hidden');
 
                 if (tab === 'upload') {
                     $('#upload-tab').addClass('tab-active');
                     $('#upload-tab-content').removeClass('hidden');
                     $('#upload-tab-buttons').removeClass('hidden');
+
+                    // Show alt name container if there's a file selected
+                    if (selectedMedia && selectedMedia.type === 'upload') {
+                        $('#upload-alt-name-container').removeClass('hidden');
+                    }
                 } else {
                     $('#library-tab').addClass('tab-active');
                     $('#library-tab-content').removeClass('hidden');
                     $('#library-tab-buttons').removeClass('hidden');
 
-                    if ($('.media-item').length === 0) {
-                        loadMediaLibrary();
+                    // Show alt name container if there's a media selected
+                    if (selectedMedia && selectedMedia.type === 'library') {
+                        $('#library-alt-name-container').removeClass('hidden');
                     }
+
+                    // Always reload the library when switching to the library tab
+                    loadMediaLibrary();
                 }
                 updateConfirmButtonState();
                 updateUploadButtonState();
@@ -1060,12 +1220,24 @@
                 switchTab('upload');
                 setupDragAndDrop();
 
+                selectedMedia = null;
+                selectedMediaAltName = '';
+                $('#upload-alt-name').val('');
+                $('#library-alt-name').val('');
+                $('#upload-alt-name-container').addClass('hidden');
+                $('#library-alt-name-container').addClass('hidden');
                 updateConfirmButtonState();
                 updateUploadButtonState();
             }
 
             function closeMediaLibrary() {
                 $('#media-library-modal').addClass('hidden');
+                selectedMedia = null;
+                selectedMediaAltName = '';
+                $('#upload-alt-name').val('');
+                $('#library-alt-name').val('');
+                $('#upload-alt-name-container').addClass('hidden');
+                $('#library-alt-name-container').addClass('hidden');
                 updateConfirmButtonState();
                 updateUploadButtonState();
                 clearUploadPreview();
@@ -1078,6 +1250,11 @@
                 }
 
                 if (selectedMedia.type === 'library') {
+                    // If alt name was modified, update it first
+                    const newAltName = $('#library-alt-name').val().trim();
+                    if (newAltName !== selectedMedia.alt_name) {
+                        updateMediaAltName();
+                    }
                     applySelectedMedia();
                 }
             }
@@ -1092,19 +1269,19 @@
                     (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('image/'))) {
                     // Image files
                     $('#logo-preview').html(
-                        `<img src="${selectedMedia.url}" alt="${selectedMedia.name}" class="w-full h-full object-cover rounded-lg">`
+                        `<img src="${selectedMedia.url}" alt="${selectedMediaAltName || selectedMedia.alt_name || selectedMedia.name}" class="w-full h-full object-cover rounded-lg">`
                     );
-                } else if (selectedMedia.url.match(/\.(mp4|web极|ogg|mov|avi|wmv)$/i) ||
+                } else if (selectedMedia.url.match(/\.(mp4|webm|ogg|mov|avi|wmv)$/i) ||
                     (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('video/'))) {
                     // Video files
                     $('#logo-preview').html(`
-                <div class="w-full h-full flex items-center justify-center bg-gray-200 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin极 round" class="lucide lucide-video text-gray-600">
-                        <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
-                        <rect x="2" y="6" width="14" height="12" rx="2"/>
-                    </svg>
-                </div>
-            `);
+                        <div class="w-full h-full flex items-center justify-center bg-gray-200 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
+                                <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"></path>
+                                <rect x="2" y="6" width="14" height="12" rx="2"></rect>
+                            </svg>
+                        </div>
+                    `);
                 } else {
                     // Document files - show appropriate icon
                     let bgColor = 'bg-gray-200';
@@ -1114,64 +1291,7 @@
                         case 'pdf':
                             bgColor = 'bg-red-100';
                             iconSvg =
-                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2极 4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
-                            break;
-                        case 'doc':
-                        case 'docx':
-                            bgColor = 'bg-blue-100';
-                            iconSvg =
-                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v极 4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
-                            break;
-                        case 'xls':
-                        case 'xlsx':
-                            bgColor = 'bg-green-100';
-                            iconSvg =
-                                '<rect width="18" height="18" x极 3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
-                            break;
-                        default:
-                            bgColor = 'bg-gray-200';
-                            iconSvg =
-                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
-                    }
-
-                    $('#logo-preview').html(`
-                <div class="w-full h-full flex items-center justify-center ${bgColor} rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide">
-                        ${iconSvg}
-                    </svg>
-                </div>
-            `);
-                }
-
-                // Update selected logo info
-                if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) ||
-                    (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('image/'))) {
-                    // Show image preview
-                    $('#selected-logo-info').html(`
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <img id="selected-logo-preview" src="${selectedMedia.url}" alt="Selected media" class="w-12 h-12 object-cover rounded">
-                        <div>
-                            <p id="selected-logo-name" class="text-sm font-medium">${selectedMedia.name}</p>
-                            <p id="selected-logo-size" class="text-xs text-gray-500">${formatFileSize(selectedMedia.size)}</p>
-                        </div>
-                    </div>
-                    <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                    </button>
-                </div>
-            `);
-                } else {
-                    // Show icon preview
-                    const fileExtension = selectedMedia.name.split('.').pop().toLowerCase();
-                    let bgColor = 'bg-gray-200';
-                    let iconSvg = '';
-
-                    switch (fileExtension) {
-                        case 'pdf':
-                            bgColor = 'bg-red-100';
-                            iconSvg =
-                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 极 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
                             break;
                         case 'doc':
                         case 'docx':
@@ -1188,47 +1308,83 @@
                         default:
                             bgColor = 'bg-gray-200';
                             iconSvg =
-                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><极 d="M14 2v4a2 2 极 0 0 2 2h4"/>';
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
                     }
 
-                    $('#selected-logo-info').html(`
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-12 h-12 flex items-center justify-center ${bgColor} rounded">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide">
+                    $('#logo-preview').html(`
+                        <div class="w-full h-full flex items-center justify-center ${bgColor} rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide">
                                 ${iconSvg}
                             </svg>
                         </div>
-                        <div>
-                            <p id="selected-logo-name" class="text-sm font-medium">${selectedMedia.name}</p>
-                            <p id="selected-logo-size" class="text-xs text-gray-500">${formatFileSize(selectedMedia.size)}</p>
-                        </div>
-                    </div>
-                    <button type="button" id="remove-selected-logo" class="text-red-600 hover:text-red-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                    </button>
-                </div>
-            `);
+                    `);
                 }
 
-                // Re-bind the remove event listener
-                $('#remove-selected-logo').on('click', removeSelectedLogo);
+                // Update selected logo info
+                if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) ||
+                    (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('image/'))) {
+                    // Show image preview
+                    $('#selected-logo-preview').attr('src', selectedMedia.url).removeClass('hidden');
+                    $('#selected-logo-icon').addClass('hidden');
+                } else {
+                    // Show icon preview
+                    $('#selected-logo-preview').addClass('hidden');
+                    $('#selected-logo-icon').removeClass('hidden');
+
+                    let bgColor = 'bg-gray-200';
+                    let iconSvg = '';
+
+                    switch (fileExtension) {
+                        case 'pdf':
+                            bgColor = 'bg-red-100';
+                            iconSvg =
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                            break;
+                        case 'doc':
+                        case 'docx':
+                            bgColor = 'bg-blue-100';
+                            iconSvg =
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                            break;
+                        default:
+                            bgColor = 'bg-gray-200';
+                            iconSvg =
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
+                    }
+
+                    $('#selected-logo-icon').removeClass().addClass(
+                        `w-12 h-12 flex items-center justify-center ${bgColor} rounded`);
+                    $('#selected-logo-svg').html(iconSvg);
+                }
+
+                $('#selected-logo-name').text(selectedMedia.name);
+                $('#selected-logo-size').text(formatFileSize(selectedMedia.size));
+
+                // Show alt name if available
+                if (selectedMedia.alt_name || selectedMediaAltName) {
+                    $('#selected-logo-alt').text(`Alt: ${selectedMedia.alt_name || selectedMediaAltName}`)
+                        .removeClass('hidden');
+                } else {
+                    $('#selected-logo-alt').addClass('hidden');
+                }
 
                 $('#selected-logo-info').removeClass('hidden');
+
                 closeMediaLibrary();
             }
 
             function removeSelectedLogo() {
                 $('#logo-preview').html(`
-            <div class="text-center text-gray-400">
-                <i class="fas fa-image text-2xl mb-2"></i>
-                <p class="text-xs">No media selected</p>
-            </div>
-        `);
+                    <div class="text-center text-gray-400">
+                        <i class="fas fa-image text-2xl mb-2"></i>
+                        <p class="text-xs">No media selected</p>
+                    </div>
+                `);
 
-                $('#selected-logo-info').addClass('hidden').html('');
+                $('#selected-logo-info').addClass('hidden');
                 $('#selected-media-id').val('');
                 selectedMedia = null;
+                selectedMediaAltName = '';
                 updateConfirmButtonState();
             }
 
@@ -1259,6 +1415,28 @@
             $('#confirm-selection').on('click', confirmMediaSelection);
             $('#remove-selected-logo').on('click', removeSelectedLogo);
 
+            // Alt name input tracking
+            $('#upload-alt-name').on('input', function() {
+                selectedMediaAltName = $(this).val();
+            });
+
+            $('#library-alt-name').on('input', function() {
+                selectedMediaAltName = $(this).val();
+            });
+
+            // Add event listener for Enter key in alt name fields
+            $('#upload-alt-name, #library-alt-name').on('keypress', function(e) {
+                if (e.which === 13) { // Enter key
+                    e.preventDefault();
+                    if (currentTab === 'upload') {
+                        uploadToLibrary();
+                    } else {
+                        confirmMediaSelection();
+                    }
+                }
+            });
+
+            // Form Submission
             $('#blog-form').on('submit', function(e) {
                 e.preventDefault();
 
@@ -1267,11 +1445,6 @@
 
                 var form = $(this);
                 var formData = new FormData(this);
-
-                console.log('FormData contents:');
-                for (var pair of formData.entries()) {
-                    console.log(pair[0] + ': ' + pair[1]);
-                }
 
                 $.ajax({
                     url: form.attr('action'),

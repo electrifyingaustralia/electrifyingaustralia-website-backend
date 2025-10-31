@@ -13,7 +13,7 @@ interface MediaLibraryServiceInterface
 
     public function findMedia(int $id);
 
-    public function upload(UploadedFile $file, string $disk = 'public'): MediaLibrary;
+    public function upload(UploadedFile $file, string $disk = 'public', ?string $altName = null): MediaLibrary;
 
     public function delete(int $id): bool;
 }

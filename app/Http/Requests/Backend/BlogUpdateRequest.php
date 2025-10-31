@@ -26,7 +26,7 @@ class BlogUpdateRequest extends BaseRequest
                 'string',
             ],
             'description' => [
-                'required',
+                'nullable',
                 'string',
             ],
             'media_id' => [

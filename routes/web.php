@@ -53,6 +53,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/media', 'index')->name('all');
             Route::get('/media/ajax', 'ajaxIndex')->name('ajax.all');
             Route::post('/media', 'store')->name('store');
+            Route::put('/media/{id}',  'update')->name('update');
             Route::delete('/media/{id}', 'destroy')->name('destroy');
         });
 

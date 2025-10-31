@@ -21,6 +21,18 @@ class MediaCreateRequest extends BaseRequest
             'metadata' => [
                 'nullable',
                 'array'
+            ],
+
+            'alt_name' => [
+                'nullable',
+                'array',
+                'max:255'
+            ],
+
+            'alt_name.*' => [
+                'nullable',
+                'string',
+                'max:255'
             ]
         ];
     }

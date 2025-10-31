@@ -25,7 +25,7 @@ class BlogCreateRequest extends BaseRequest
             ],
 
             'description' => [
-                'required',
+                'nullable',
                 'string',
             ],
 
