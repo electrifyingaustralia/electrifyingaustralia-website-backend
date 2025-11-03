@@ -645,22 +645,22 @@
                         <div class="flex space-x-2">
                             ${data.current_page > 1 ?
                                 `<button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm transition-colors pagination-link" data-page="${data.current_page - 1}">
-                                                Previous
-                                            </button>` :
+                                                                Previous
+                                                            </button>` :
                                 `<span class="px-3 py-1 border border-gray-300 rounded-lg text-gray-400 cursor-not-allowed text-sm">
-                                                Previous
-                                            </span>`
+                                                                Previous
+                                                            </span>`
                             }
 
                             ${generatePageNumbers(data)}
 
                             ${data.current_page < data.last_page ?
                                 `<button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm transition-colors pagination-link" data-page="${data.current_page + 1}">
-                                                Next
-                                            </button>` :
+                                                                Next
+                                                            </button>` :
                                 `<span class="px-3 py-1 border border-gray-300 rounded-lg text-gray-400 cursor-not-allowed text-sm">
-                                                Next
-                                            </span>`
+                                                                Next
+                                                            </span>`
                             }
                         </div>
                     </div>

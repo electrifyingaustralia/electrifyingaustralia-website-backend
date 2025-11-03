@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BrandResource;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ApiBrandController extends Controller
 {
     public function index()
     {
+        // DB::enableQueryLog();
         $brands = Brand::whereNotNull('logo_id')
             ->join("media_libraries", "brands.logo_id", "=", "media_libraries.id")
             ->select([
@@ -25,6 +27,14 @@ class ApiBrandController extends Controller
             ->orderBy('name', 'ASC')
             ->limit(10)
             ->get();
+
+        // $brandss = Brand::whereNotNull('logo_id')->with('logo')
+        //     ->inRandomOrder()
+        //     ->orderBy('name', 'ASC')
+        //     ->limit(10)
+        //     ->get();
+
+        // dd(DB::getQueryLog());
 
         return BrandResource::collection($brands);
     }
