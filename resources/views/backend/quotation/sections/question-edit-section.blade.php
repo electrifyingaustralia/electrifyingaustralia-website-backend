@@ -29,6 +29,27 @@
     </style>
 @endpush
 
+@php
+    // Handle options data properly at the top level
+    $oldOptions = old('options');
+    $questionOptions = $question->options ?? [];
+    $optionsToUse = [['option' => '']]; // Default fallback
+
+    // If we have old input (from validation errors), use that
+    if ($oldOptions) {
+        $optionsToUse = $oldOptions;
+    }
+    // Otherwise, use the question's options
+elseif (!empty($questionOptions)) {
+    $optionsToUse = [];
+    foreach ($questionOptions as $index => $option) {
+        $optionsToUse[$index] = [
+            'option' => is_object($option) ? $option->option : $option,
+            ];
+        }
+    }
+@endphp
+
 @section('quotation-section')
     <div id="quotation-tab" class="tab-content active">
         <div class="flex flex-col lg:!flex-row gap-6">
@@ -96,6 +117,37 @@
                                             <p class="!text-red-600 text-sm">{{ $message }}</p>
                                         @enderror
                                     </div>
+                                    <div>
+                                        <label for="question_tag" class="block text-sm font-medium text-gray-700 my-3">
+                                            Tag
+                                        </label>
+                                        @php($tags = ['First Name', 'Last Name', 'Phone Number', 'Email', 'Address'])
+                                        <select id="question_tag" name="question_tag"
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                                            <option value="">Select tag</option>
+                                            @foreach ($tags as $tag)
+                                                <option value="{{ $tag }}"
+                                                    {{ old('question_tag', $question->question_tag ?? '') == $tag ? 'selected' : '' }}>
+                                                    {{ $tag }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('question_tag')
+                                            <p class="!text-red-600 text-sm">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div>
+                                        <label for="question_group" class="block text-sm font-medium text-gray-700 my-3">
+                                            Question Group Title
+                                        </label>
+                                        <input type="text" id="question_group" name="question_group" required
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                            placeholder="Enter question group title"
+                                            value="{{ old('question_group', $question->question_group) }}" />
+                                        @error('question_group')
+                                            <p class="!text-red-600 text-sm">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                     <div class="mt-4 flex justify-end space-x-3">
                                         <button type="submit"
                                             class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
@@ -125,37 +177,13 @@
                                         <div class="border-t border-gray-100"></div>
 
                                         <div id="options-container">
-                                            @php
-                                                // Handle options data properly
-                                                $oldOptions = old('options');
-                                                $questionOptions = $question->options ?? [];
-
-                                                // If we have old input (from validation errors), use that
-                                                if ($oldOptions) {
-                                                    $optionsToUse = $oldOptions;
-                                                }
-                                                // Otherwise, use the question's options
-elseif (!empty($questionOptions)) {
-    $optionsToUse = [];
-    foreach ($questionOptions as $index => $option) {
-        $optionsToUse[$index] = [
-            'option' => is_object($option) ? $option->option : $option,
-        ];
-    }
-}
-// Fallback
-else {
-    $optionsToUse = [['option' => '']];
-                                                }
-                                            @endphp
-
                                             @foreach ($optionsToUse as $index => $option)
                                                 <div class="option-input mb-3 p-3 border border-gray-200 rounded-lg">
                                                     <div class="mb-2">
                                                         <label class="block text-sm font-medium text-gray-700 mb-1">Option
                                                             Text</label>
                                                         <input type="text" name="options[{{ $index }}][option]"
-                                                            value="{{ $option['option'] }}"
+                                                            value="{{ $option['option'] ?? '' }}"
                                                             class="w-full p-2 border border-gray-300 rounded-lg"
                                                             placeholder="Enter option text">
                                                     </div>
@@ -186,8 +214,9 @@ else {
 
                                         <button type="button" id="add-option" class="text-teal-600 flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="mr-1">
                                                 <path d="M5 12h14" />
                                                 <path d="M12 5v14" />
                                             </svg>
@@ -212,27 +241,27 @@ else {
             // Add option field
             $('#add-option').on('click', function() {
                 const newInput = $(`
-            <div class="option-input mb-3 p-3 border border-gray-200 rounded-lg">
-                <div class="mb-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Option Text</label>
-                    <input
-                        type="text"
-                        name="options[${optionCount}][option]"
-                        class="w-full p-2 border border-gray-300 rounded-lg"
-                        placeholder="Enter option text"
-                    >
+                <div class="option-input mb-3 p-3 border border-gray-200 rounded-lg">
+                    <div class="mb-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Option Text</label>
+                        <input
+                            type="text"
+                            name="options[${optionCount}][option]"
+                            class="w-full p-2 border border-gray-300 rounded-lg"
+                            placeholder="Enter option text"
+                        >
+                    </div>
+                    <button type="button" class="remove-option mt-2 text-red-600 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                        <span class="ml-1">Remove Option</span>
+                    </button>
                 </div>
-                <button type="button" class="remove-option mt-2 text-red-600 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 6 6 18"></path>
-                        <path d="m6 6 12 12"></path>
-                    </svg>
-                    <span class="ml-1">Remove Option</span>
-                </button>
-            </div>
-        `);
+            `);
 
                 $('#options-container').append(newInput);
                 optionCount++;
@@ -242,8 +271,20 @@ else {
             $(document).on('click', '.remove-option', function() {
                 if ($('.option-input').length > 1) {
                     $(this).closest('.option-input').remove();
+                    // Re-index the remaining options
+                    reindexOptions();
                 }
             });
+
+            // Re-index options after removal
+            function reindexOptions() {
+                let newIndex = 0;
+                $('.option-input').each(function() {
+                    $(this).find('input').attr('name', `options[${newIndex}][option]`);
+                    newIndex++;
+                });
+                optionCount = newIndex;
+            }
 
             $("#input_type_select").change(function() {
                 const value = $(this).val();

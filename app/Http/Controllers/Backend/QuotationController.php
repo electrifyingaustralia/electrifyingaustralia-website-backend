@@ -89,11 +89,12 @@ class QuotationController extends Controller
     public function updateQuestionOrder(Request $request, $sectionId)
     {
         $request->validate([
-            'question_order' => 'required|array',
-            'question_order.*' => 'exists:questions,id'
+            'question_groups' => 'required|array',
+            'question_groups.*' => 'array',
+            'question_groups.*.*' => 'exists:questions,id'
         ]);
 
-        $this->quotationService->updateQuestionOrder($sectionId, $request->question_order);
+        $this->quotationService->updateQuestionOrder($sectionId, $request->question_groups);
 
         return response()->json(['success' => true, 'message' => 'Question order updated successfully']);
     }

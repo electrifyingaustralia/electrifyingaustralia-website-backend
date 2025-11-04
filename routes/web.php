@@ -238,17 +238,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/product/{id}',  'destroy')->name('delete');
         });
 
-        // // ! Settings
-        // Route::controller(SettingController::class)->name('setting.')->group(function () {
-        //     Route::get('/setting', 'index')->name('all');
-        //     Route::get('/setting/create', 'create')->name('create');
-        //     Route::post('/setting', 'store')->name('store');
-        //     Route::get('/setting/{id}/edit',  'edit')->name('edit');
-        //     Route::get('/setting/{id}',  'show')->name('show');
-        //     Route::put('/setting/{id}',  'update')->name('update');
-        //     Route::delete('/setting/{id}',  'destroy')->name('delete');
-        // });
-
         // ! Quotation
         Route::controller(QuotationController::class)->name('quotation.')->group(function () {
             Route::get('/quotation', 'index')->name('all');

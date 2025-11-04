@@ -27,6 +27,16 @@ class QuotationSection extends Model
             ->orderBy('quotation_section_question.order');
     }
 
+    public function getQuestionsGrouped()
+    {
+        return $this->questions()
+            ->get()
+            ->groupBy('question_group')
+            ->map(function ($group) {
+                return $group->sortBy('pivot.order');
+            });
+    }
+
     public function media()
     {
         return $this->belongsTo(MediaLibrary::class, 'media_id');
