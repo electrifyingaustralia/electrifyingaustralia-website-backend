@@ -64,6 +64,23 @@ class ProductUpdateRequest extends BaseRequest
                 'nullable',
                 'exists:media_libraries,id'
             ],
+
+            'attributes' => [
+                'nullable',
+                'array'
+            ],
+
+            'attributes.*.key' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+
+            'attributes.*.value' => [
+                'nullable',
+                'string',
+                'max:255'
+            ],
         ];
     }
 }

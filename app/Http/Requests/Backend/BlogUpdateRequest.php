@@ -12,51 +12,67 @@ class BlogUpdateRequest extends BaseRequest
                 'string',
                 'max:255',
             ],
+
             'slug' => [
                 'nullable',
                 'string',
                 'max:255',
             ],
+
             'subtitle' => [
                 'nullable',
                 'string',
             ],
+
             'short_description' => [
                 'required',
                 'string',
             ],
+
             'description' => [
                 'nullable',
                 'string',
             ],
+
             'media_id' => [
                 'nullable',
                 'exists:media_libraries,id',
             ],
+
             'blog_category_id' => [
                 'required',
                 'exists:blog_categories,id',
             ],
+
+            'reading_time' => [
+                'nullable',
+                'string'
+            ],
+
             'facebook_link' => [
                 'nullable',
                 'url',
                 'max:255',
             ],
+
             'twitter_link' => [
                 'nullable',
                 'url',
                 'max:255',
             ],
+
             'linkedin_link' => [
                 'nullable',
                 'url',
                 'max:255',
             ],
+
             'youtube_link' => [
                 'nullable',
                 'url',
                 'max:255',
             ],
+
             'is_active' => [
                 'required',
                 'boolean',

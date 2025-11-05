@@ -17,6 +17,7 @@ class ApiTeamController extends Controller
             "teams.designation as team_designation",
             "team_media.file_name as team_media_name",
             "team_media.disk as team_media_disk",
+            "team_media.alt_name as team_media_alt_name",
         ])
             ->join("media_libraries as team_media", "teams.media_id", "=", "team_media.id")
             ->where('status', true)

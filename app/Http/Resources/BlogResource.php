@@ -9,23 +9,19 @@ class BlogResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $category = $this->whenLoaded('category');
-        $media = $this->whenLoaded('media');
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'slug' => $this->slug,
-            'category' => $category ? [
-                'id' => $category->id,
-                'name' => $category->name,
-                'slug' => $category->slug,
-            ] : null,
-            'subtitle' => $this->subtitle,
-            'short_description' => $this->short_description,
-            'media_url' => $media
-                ? getAssetFileUrl('media', $media->file_name, disk: $media->disk)
-                : null,
-            'media_alt_name' => $media?->alt_name,
+            'id'        => $this->blog_id,
+            'title'     => $this->blog_title,
+            'slug'      => $this->blog_slug,
+            'category'  =>  [
+                'name'  => $this->blog_category_name,
+                'slug'  => $this->blog_category_slug,
+            ],
+            'subtitle'          => $this->blog_subtitle,
+            'short_description' => $this->blog_short_description,
+            'reading_time'      => $this->blog_reading_time,
+            'media_url'         =>  getAssetFileUrl('media', $this->blog_media_name, disk: $this->blog_media_disk),
+            'media_alt_name'    => $this->blog_media_alt_name,
         ];
     }
 }

@@ -44,6 +44,11 @@ class BlogCreateRequest extends BaseRequest
                 'exists:blog_categories,id',
             ],
 
+            'reading_time' => [
+                'nullable',
+                'string'
+            ],
+
             'facebook_link' => [
                 'nullable',
                 'url',

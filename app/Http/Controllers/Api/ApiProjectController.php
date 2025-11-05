@@ -12,7 +12,7 @@ class ApiProjectController extends Controller
 {
     public function index(Request $request)
     {
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
         $projects = Project::select([
             "projects.id as project_id",
             "projects.title as project_title",
@@ -26,6 +26,7 @@ class ApiProjectController extends Controller
             //Media Libraries Table
             "project_media.file_name as project_media_name",
             "project_media.disk as project_media_disk",
+            "project_media.alt_name as project_media_alt_name",
         ])
             ->join("project_types", "projects.project_type_id", "=", "project_types.id")
             ->join("media_libraries as project_media", "projects.media_id", "=", "project_media.id")
@@ -40,7 +41,7 @@ class ApiProjectController extends Controller
             ->latest("projects.created_at")
             ->limit(20)
             ->get();
-        dd(DB::getQueryLog());
+        // dd(DB::getQueryLog());
 
         return ProjectResource::collection($projects);
     }

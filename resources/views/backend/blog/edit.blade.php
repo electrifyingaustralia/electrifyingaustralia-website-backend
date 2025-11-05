@@ -329,6 +329,17 @@
                                     </select>
                                 </div>
                                 <div>
+                                    <label for="reading_time"
+                                        class="block text-sm font-medium text-gray-700 mb-2">Estimated reading time</label>
+                                    <input type="text" id="reading_time" name="reading_time"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                        value="{{ old('reading_time', $blog->reading_time) }}"
+                                        placeholder="Enter blog reading time" />
+                                    @error('reading_time')
+                                        <p class="!text-red-600 text-sm">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
                                     <label for="facebook_link"
                                         class="block text-sm font-medium text-gray-700 mb-2">Facebook Link</label>
                                     <input type="text" id="facebook_link" name="facebook_link"

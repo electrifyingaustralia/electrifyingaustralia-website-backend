@@ -21,6 +21,7 @@ class ApiBrandController extends Controller
                 "brands.slug as brand_slug",
                 "brands.link as brand_link",
                 "media_libraries.file_name as brand_media_name",
+                "media_libraries.alt_name as brand_alt_name",
                 "media_libraries.disk as brand_media_disk",
             ])
             ->inRandomOrder()

@@ -96,6 +96,32 @@
                                     @enderror
                                 </div>
 
+                                <!-- Product Attributes Section -->
+                                <div class="bg-white p-6 rounded-lg shadow border border-gray-200">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h3 class="text-lg font-medium text-gray-700">Product Attributes</h3>
+                                        <button type="button" id="add-attribute"
+                                            class="!bg-teal-600 hover:!bg-teal-700 text-white px-4 py-2 rounded-lg text-sm">
+                                            <div class="flex items-center gap-x-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M12 5v14" />
+                                                    <path d="M5 12h14" />
+                                                </svg>
+                                                <span>Add Attribute</span>
+                                            </div>
+                                        </button>
+                                    </div>
+
+                                    <div id="attributes-container" class="space-y-4">
+                                        <!-- Attributes will be added here dynamically -->
+                                        <div class="text-center py-4 text-gray-500" id="no-attributes-message">
+                                            No attributes added yet. Click "Add Attribute" to get started.
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Media Selection -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Media <span
@@ -435,6 +461,18 @@
         #alt-name-container {
             transition: all 0.3s ease;
         }
+
+        .attribute-item {
+            transition: all 0.3s ease;
+        }
+
+        .attribute-item:hover {
+            border-color: #0d9488;
+        }
+
+        .remove-attribute {
+            transition: color 0.3s ease;
+        }
     </style>
 @endpush
 
@@ -459,6 +497,86 @@
             let currentTab = 'upload';
             let mediaLibraryItems = [];
             let isUploading = false;
+            let attributeCount = 0;
+
+            // ========== ATTRIBUTES FUNCTIONALITY ==========
+            // Add attribute field
+            $('#add-attribute').on('click', function() {
+                attributeCount++;
+
+                // Remove the "no attributes" message if it's the first attribute
+                if (attributeCount === 1) {
+                    $('#no-attributes-message').remove();
+                }
+
+                const attributeHtml = `
+                    <div class="attribute-item border border-gray-200 rounded-lg p-4 bg-gray-50" data-index="${attributeCount}">
+                        <div class="flex justify-between items-center mb-3">
+                            <h4 class="text-sm font-medium text-gray-700">Attribute ${attributeCount}</h4>
+                            <button type="button" class="remove-attribute text-red-600 hover:text-red-800" data-index="${attributeCount}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 6 6 18"/>
+                                    <path d="m6 6 12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Key <span class="text-red-600 font-bold">*</span></label>
+                                <input type="text" name="attributes[${attributeCount}][key]"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent attribute-key"
+                                    placeholder="e.g., Color, Size, Weight" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Value</label>
+                                <input type="text" name="attributes[${attributeCount}][value]"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent attribute-value"
+                                    placeholder="e.g., Red, Large, 1.5kg">
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                $('#attributes-container').append(attributeHtml);
+            });
+
+            // Remove attribute field
+            $(document).on('click', '.remove-attribute', function() {
+                const index = $(this).data('index');
+                $(`.attribute-item[data-index="${index}"]`).remove();
+                attributeCount--;
+
+                // Show "no attributes" message if all attributes are removed
+                if (attributeCount === 0) {
+                    $('#attributes-container').html(
+                        '<div class="text-center py-4 text-gray-500" id="no-attributes-message">No attributes added yet. Click "Add Attribute" to get started.</div>'
+                    );
+                } else {
+                    // Re-index remaining attributes
+                    reindexAttributes();
+                }
+            });
+
+            // Re-index attributes for proper ordering
+            function reindexAttributes() {
+                let newIndex = 1;
+                $('.attribute-item').each(function() {
+                    const $item = $(this);
+                    const currentIndex = $item.data('index');
+
+                    if (currentIndex !== newIndex) {
+                        $item.attr('data-index', newIndex);
+                        $item.find('h4').text(`Attribute ${newIndex}`);
+                        $item.find('.remove-attribute').data('index', newIndex);
+
+                        // Update input names
+                        $item.find('.attribute-key').attr('name', `attributes[${newIndex}][key]`);
+                        $item.find('.attribute-value').attr('name', `attributes[${newIndex}][value]`);
+                    }
+                    newIndex++;
+                });
+                attributeCount = newIndex - 1;
+            }
 
             // ========== UPLOAD TAB FUNCTIONS ==========
             function setupDragAndDrop() {
@@ -1121,17 +1239,33 @@
 
                     var errors = xhr.responseJSON.errors;
 
+                    // Clear previous error messages
+                    $('.validation-error-message').remove();
+
                     for (var field in errors) {
 
                         var message =
                             `<p class="!text-red-600 text-sm mt-1 validation-error-message " target="error-${field}">${errors[field][0]}</p>`;
-                        var target = $('input[name="' + field + '"]');
-                        var targetElement = $('[failed="' + field + '"]');
 
-                        if (target && target.attr("failed") != undefined) {
-                            target.after(message);
-                        } else if (targetElement) {
-                            targetElement.html(message);
+                        if (field.startsWith('attributes.')) {
+                            // Handle attribute-specific errors
+                            const parts = field.split('.');
+                            const attrIndex = parts[1];
+                            const attrField = parts[3]; // [attributes][1][key] -> key is at index 3
+
+                            const $input = $(`input[name="attributes[${attrIndex}][${attrField}]"]`);
+                            if ($input.length) {
+                                $input.after(message);
+                            }
+                        } else {
+                            var target = $('input[name="' + field + '"]');
+                            var targetElement = $('[failed="' + field + '"]');
+
+                            if (target && target.attr("failed") != undefined) {
+                                target.after(message);
+                            } else if (targetElement) {
+                                targetElement.html(message);
+                            }
                         }
                     }
 
@@ -1139,7 +1273,7 @@
                     toastr.error('An error occurred. Please try again.');
                 }
 
-                $('button[type="submit"]').prop('disabled', false).text('Create Blog');
+                $('button[type="submit"]').prop('disabled', false).text('Create Product');
             }
 
             // Event bindings
