@@ -23,7 +23,7 @@ function getAssetFileUrl(string $folder, string | null $filename = null, $defaul
     }
 
     if ($disk === 'gcs') {
-        return "https://storage.googleapis.com/electrifyingaustralia/$path";
+        return $storage->publicUrl($path);
     }
 
     return $storage->url($path);
