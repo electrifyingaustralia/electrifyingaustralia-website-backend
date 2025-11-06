@@ -18,9 +18,9 @@ function getAssetFileUrl(string $folder, string | null $filename = null, $defaul
 
     $path = "{$folder}/{$filename}";
 
-    if (!$storage->exists($path)) {
-        return null;
-    }
+    // if (!$storage->exists($path)) {
+    //     return null;
+    // }
 
     if ($disk === 'gcs') {
         return $storage->publicUrl($path);
