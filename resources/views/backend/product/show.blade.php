@@ -124,10 +124,6 @@
                             <div class="bg-teal-50 p-4 rounded-lg">
                                 <ul class="space-y-2 text-sm">
                                     <li class="flex justify-between">
-                                        <span class="text-teal-600">Warranty</span>
-                                        <span class="text-teal-800 font-medium">{{ $product->warranty }}</span>
-                                    </li>
-                                    <li class="flex justify-between">
                                         <span class="text-teal-600">Type</span>
                                         <span class="text-teal-800 font-medium">{{ $product->type->name }}</span>
                                     </li>

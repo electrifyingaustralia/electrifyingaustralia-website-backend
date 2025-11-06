@@ -21,7 +21,6 @@ class ApiProductController extends Controller
             "products.slug as product_slug",
             "products.model_number as product_model_number",
             "products.short_description as product_short_description",
-            "products.warranty as product_warranty",
             "products.is_featured as product_is_featured",
             "products.is_active as product_is_active",
             "products.product_link as product_product_link",

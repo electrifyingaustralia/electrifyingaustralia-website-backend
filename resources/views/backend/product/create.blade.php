@@ -65,14 +65,6 @@
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                         placeholder="Enter product model_number" failed remove="model_number" />
                                 </div>
-                                <div>
-                                    <label for="warranty"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Warranty</label>
-                                    <input type="text" id="warranty" name="warranty"
-                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        placeholder="Enter product warranty" />
-
-                                </div>
 
                                 <div>
                                     <label for="short_description" class="block text-sm font-medium text-gray-700 mb-2">

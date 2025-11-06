@@ -45,12 +45,6 @@ class ProductUpdateRequest extends BaseRequest
                 'exists:product_types,id',
             ],
 
-            'warranty' => [
-                'nullable',
-                'string',
-                'max:255'
-            ],
-
             'is_featured' => ['boolean'],
 
             'is_active' => ['boolean'],
