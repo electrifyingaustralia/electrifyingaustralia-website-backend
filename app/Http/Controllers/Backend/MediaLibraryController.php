@@ -26,15 +26,32 @@ class MediaLibraryController extends Controller
     public function store(MediaCreateRequest $request): JsonResponse
     {
         $saved = [];
+        $files = $request->file('files');
+        $altNames = $request->input('alt_name', []);
 
-        // This is correct - it expects 'files' which matches your JS
-        foreach ($request->file('files') as $file) {
-            $saved[] = $this->mediaLibrary->upload($file);
+        foreach ($files as $index => $file) {
+            $altName = $altNames[$index] ?? null;
+            $saved[] = $this->mediaLibrary->upload($file, 'public', $altName);
         }
 
         return response()->json([
             'success' => true,
             'items'   => $saved,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'alt_name' => 'nullable|string|max:255'
+        ]);
+
+        $media = $this->mediaLibrary->updateMedia($id, $validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Media updated successfully!',
+            'media' => $media
         ]);
     }
 

@@ -21,7 +21,6 @@ class ApiProductController extends Controller
             "products.slug as product_slug",
             "products.model_number as product_model_number",
             "products.short_description as product_short_description",
-            "products.warranty as product_warranty",
             "products.is_featured as product_is_featured",
             "products.is_active as product_is_active",
             "products.product_link as product_product_link",
@@ -36,8 +35,10 @@ class ApiProductController extends Controller
             //Brand & Product Media Library Table
             "product_media.file_name as product_media_name",
             "product_media.disk as product_media_disk",
+            "product_media.alt_name as product_media_alt_name",
             "brand_media.file_name as brand_media_name",
             "brand_media.disk as brand_media_disk",
+            "brand_media.alt_name as brand_media_alt_name",
 
         ])
             ->join("brands", "products.brand_id", "=", "brands.id")

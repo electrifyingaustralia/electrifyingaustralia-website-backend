@@ -92,7 +92,8 @@
                             <!-- Main Event Image -->
                             @if (optional($event->media)->url)
                                 <div class="mb-4">
-                                    <img src="{{ optional($event->media)->url }}" alt="{{ $event->title }}"
+                                    <img src="{{ optional($event->media)->url }}"
+                                        alt="{{ $event->media->alt_name ? $event->media->alt_name : $event->title }}"
                                         class="w-full h-48 object-fit rounded-lg">
                                 </div>
                             @endif

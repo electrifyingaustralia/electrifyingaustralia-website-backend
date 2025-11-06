@@ -31,6 +31,16 @@ class QuestionRequest extends BaseRequest
             'is_required' => [
                 'boolean',
             ],
+
+            'question_tag' => [
+                'nullable',
+                'string',
+            ],
+
+            'question_group' => [
+                'nullable',
+                'string',
+            ],
         ];
     }
 }

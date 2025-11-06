@@ -345,9 +345,8 @@
                             <input type="file" id="modal-logo-upload" class="hidden">
                             <label for="modal-logo-upload"
                                 class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg cursor-pointer">
-                                <i class="fas fa-upload mr-2"></i> Browse Files
+                                Browse Files
                             </label>
-                            {{-- <p class="text-xs text-gray-500 mt-3">Supported formats: JPG, PNG, GIF, SVG • Max size: 10MB</p> --}}
                         </div>
 
                         <div id="upload-preview" class="upload-content hidden">
@@ -390,6 +389,17 @@
                                 </button>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Add Alt Name Input Field -->
+                    <div id="alt-name-container" class="mt-4 hidden">
+                        <label for="upload-alt-name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Alt Text (Optional)
+                        </label>
+                        <input type="text" id="upload-alt-name"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                            placeholder="Enter alt text for this media">
+                        <p class="text-xs text-gray-500 mt-1">This helps with accessibility and SEO</p>
                     </div>
                 </div>
 
@@ -458,6 +468,10 @@
         #upload-area.dragover {
             background-color: #f0f9ff;
             border-color: #0ea5e9;
+        }
+
+        #alt-name-container {
+            transition: all 0.3s ease;
         }
     </style>
 @endpush
@@ -538,13 +552,17 @@
                 reader.onload = function(e) {
                     showUploadPreview(file, e.target.result);
 
+                    // Show alt name input when file is selected
+                    $('#alt-name-container').removeClass('hidden');
+
                     selectedMedia = {
                         id: null,
                         url: e.target.result,
                         name: file.name,
                         size: file.size,
                         file: file,
-                        type: 'upload'
+                        type: 'upload',
+                        alt_name: '' // Initialize alt_name
                     };
 
                     updateUploadButtonState();
@@ -642,6 +660,10 @@
                 $('#upload-default').removeClass('hidden');
                 $('#modal-logo-upload').val('');
 
+                // Hide and reset alt name field
+                $('#alt-name-container').addClass('hidden');
+                $('#upload-alt-name').val('');
+
                 // Reset all preview elements
                 $('#preview-image').addClass('hidden').attr('src', '');
                 $('#preview-video').addClass('hidden').attr('src', '');
@@ -680,6 +702,10 @@
                     return;
                 }
 
+                // Get the alt name from input
+                const altName = $('#upload-alt-name').val().trim();
+                selectedMedia.alt_name = altName;
+
                 isUploading = true;
                 updateUploadButtonState();
 
@@ -689,6 +715,7 @@
 
                 const formData = new FormData();
                 formData.append('files[]', selectedMedia.file);
+                formData.append('alt_name[]', altName); // Add alt_name to form data
 
                 $.ajax({
                     url: '{{ route('admin.media.store') }}',
@@ -727,6 +754,10 @@
                             setTimeout(function() {
                                 selectMediaFromLibrary(0);
                             }, 300);
+
+                            // Reset alt name field
+                            $('#upload-alt-name').val('');
+                            $('#alt-name-container').addClass('hidden');
                         } else {
                             $('#upload-status').text('Upload failed!');
                             alert('Error uploading media');
@@ -836,7 +867,7 @@
 
                     if (media.mime_type && media.mime_type.startsWith('image/')) {
                         previewHtml =
-                            `<img src="${media.url}" alt="${media.original_name}" class="w-full h-24 object-scale-down">`;
+                            `<img src="${media.url}" alt="${media.alt_name || media.original_name}" class="w-full h-24 object-scale-down">`;
                     } else if (media.mime_type && media.mime_type.startsWith('video/')) {
                         previewHtml = `
                     <div class="w-full h-24 flex items-center justify-center bg-gray-200">
@@ -851,11 +882,12 @@
                     }
 
                     html += `
-                <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md"
+                <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md relative"
                     data-index="${actualIndex}">
                     ${previewHtml}
                     <div class="p-2">
                         <p class="text-xs text-center font-medium truncate">${media.original_name}</p>
+                        <p class="text-xs text-center font-medium text-teal-600 truncate">${media.alt_name}</p>
                     </div>
                 </div>
                 `;
@@ -973,6 +1005,8 @@
                 updateConfirmButtonState();
                 updateUploadButtonState();
                 clearUploadPreview();
+                $('#upload-alt-name').val('');
+                $('#alt-name-container').addClass('hidden');
             }
 
             function confirmMediaSelection() {
@@ -1018,7 +1052,7 @@
                         case 'pdf':
                             bgColor = 'bg-red-100';
                             iconSvg =
-                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 极 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
                             break;
                         case 'doc':
                         case 'docx':
@@ -1040,7 +1074,7 @@
 
                     $('#logo-preview').html(`
                 <div class="w-full h-full flex items-center justify-center ${bgColor} rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="极 0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide">
                         ${iconSvg}
                     </svg>
                 </div>
@@ -1065,7 +1099,7 @@
                         case 'pdf':
                             bgColor = 'bg-red-100';
                             iconSvg =
-                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2极 4"/><path d="M极 10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
                             break;
                         case 'doc':
                         case 'docx':
@@ -1165,6 +1199,13 @@
             $('#upload-to-library').on('click', uploadToLibrary);
             $('#confirm-selection').on('click', confirmMediaSelection);
             $('#remove-selected-logo').on('click', removeSelectedLogo);
+
+            // Add alt name input change handler
+            $('#upload-alt-name').on('input', function() {
+                if (selectedMedia && selectedMedia.type === 'upload') {
+                    selectedMedia.alt_name = $(this).val().trim();
+                }
+            });
 
             // Form Submission
             $('#project-form').on('submit', function(e) {

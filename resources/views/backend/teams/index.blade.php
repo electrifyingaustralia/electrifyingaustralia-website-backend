@@ -115,7 +115,8 @@
                                         <div class="flex items-center">
                                             @if (optional($team->media)->url)
                                                 <img class="h-10 w-10 rounded-full object-fit mr-3"
-                                                    src="{{ optional($team->media)->url }}" alt="{{ $team->name }}">
+                                                    src="{{ optional($team->media)->url }}"
+                                                    alt="{{ $team->media->alt_name ?? $team->name }}">
                                             @else
                                                 <div
                                                     class="h-10 w-10 flex items-center justify-center mr-3 bg-gray-100 rounded-full">

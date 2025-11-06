@@ -171,10 +171,10 @@ class QuotationService implements QuotationServiceInterface
         });
     }
 
-    public function updateQuestionOrder($sectionId, $questionIds)
+    public function updateQuestionOrder($sectionId, $questionGroups)
     {
-        return DB::transaction(function () use ($sectionId, $questionIds) {
-            return $this->quotationRepository->updateQuestionOrder($sectionId, $questionIds);
+        return DB::transaction(function () use ($sectionId, $questionGroups) {
+            return $this->quotationRepository->updateQuestionOrder($sectionId, $questionGroups);
         });
     }
 }

@@ -45,12 +45,6 @@ class ProductUpdateRequest extends BaseRequest
                 'exists:product_types,id',
             ],
 
-            'warranty' => [
-                'nullable',
-                'string',
-                'max:255'
-            ],
-
             'is_featured' => ['boolean'],
 
             'is_active' => ['boolean'],
@@ -63,6 +57,23 @@ class ProductUpdateRequest extends BaseRequest
             'media_id' => [
                 'nullable',
                 'exists:media_libraries,id'
+            ],
+
+            'attributes' => [
+                'nullable',
+                'array'
+            ],
+
+            'attributes.*.key' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+
+            'attributes.*.value' => [
+                'nullable',
+                'string',
+                'max:255'
             ],
         ];
     }

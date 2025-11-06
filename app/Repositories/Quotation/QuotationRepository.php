@@ -81,7 +81,7 @@ class QuotationRepository implements QuotationRepositoryInterface
 
         return Question::with('options')
             ->whereNotIn('id', $assignedQuestionIds)
-            ->get();
+            ->get()->groupBy("question_group");
     }
 
     public function attachQuestions($sectionId, $questionIds)
@@ -102,15 +102,17 @@ class QuotationRepository implements QuotationRepositoryInterface
         return $section->questions()->sync($questionIds);
     }
 
-    public function updateQuestionOrder($sectionId, $questionIds)
+    public function updateQuestionOrder($sectionId, $questionGroups)
     {
-        $section = QuotationSection::findOrFail($sectionId);
+        $order = 0;
 
-        foreach ($questionIds as $order => $questionId) {
-            DB::table('quotation_section_question')
-                ->where('quotation_section_id', $sectionId)
-                ->where('question_id', $questionId)
-                ->update(['order' => $order + 1]);
+        foreach ($questionGroups as $groupId => $questions) {
+            foreach ($questions as $questionId) {
+                DB::table('quotation_section_question')
+                    ->where('quotation_section_id', $sectionId)
+                    ->where('question_id', $questionId)
+                    ->update(['order' => $order++]);
+            }
         }
 
         return true;

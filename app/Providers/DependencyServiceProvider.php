@@ -37,6 +37,7 @@ class DependencyServiceProvider extends ServiceProvider
             \App\Repositories\ProjectType\ProjectTypeRepositoryInterface::class => \App\Repositories\ProjectType\ProjectTypeRepository::class,
             \App\Repositories\ProjectCategory\ProjectCategoryRepositoryInterface::class => \App\Repositories\ProjectCategory\ProjectCategoryRepository::class,
             \App\Repositories\FaqType\FaqTypeRepositoryInterface::class => \App\Repositories\FaqType\FaqTypeRepository::class,
+            \App\Repositories\ProductAttribute\ProductAttributeRepositoryInterface::class => \App\Repositories\ProductAttribute\ProductAttributeRepository::class,
         ];
 
         $services = [

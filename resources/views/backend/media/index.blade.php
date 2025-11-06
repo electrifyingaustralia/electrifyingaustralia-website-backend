@@ -19,7 +19,8 @@
                         <span>Upload Files</span>
                     </div>
                 </label>
-                <input type="file" id="media-upload" multiple class="hidden" accept="image/*,video/*,.pdf,.doc,.docx">
+                <input type="file" id="media-upload" multiple class="hidden"
+                    accept="image/*,video/*,.pdf,.doc,.docx,.txt,.zip">
             </div>
 
             <!-- Filters and Search -->
@@ -89,6 +90,49 @@
         </div>
     </div>
 
+    <!-- Alt Name Modal -->
+    <div id="alt-name-modal" class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+            <h3 class="text-lg font-medium mb-4">Add Alt Names</h3>
+            <p class="text-gray-600 mb-4">Please provide alt names for your files (optional):</p>
+
+            <div id="alt-name-fields" class="flex-1 overflow-y-auto !mb-4 !space-y-4 ">
+                <!-- Alt name fields will be dynamically added here -->
+            </div>
+
+            <div class="flex justify-end !space-x-3 pt-4 border-t">
+                <button id="cancel-upload"
+                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel
+                    Upload</button>
+                <button id="confirm-upload" class="px-4 py-2 !bg-teal-600 text-white rounded-lg hover:!bg-teal-700">Upload
+                    Files</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Alt Name Modal -->
+    <div id="edit-alt-name-modal"
+        class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg w-full max-w-md">
+            <h3 class="text-lg font-medium mb-4">Edit Alt Name</h3>
+            <div class="mb-4">
+                <label for="edit-alt-name-input" class="block text-sm font-medium text-gray-700 mb-2">
+                    Alt Name (Optional)
+                </label>
+                <input type="text" id="edit-alt-name-input"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                    placeholder="Enter descriptive alt name...">
+                <p class="text-xs text-gray-500 mt-1">This helps with SEO and accessibility</p>
+            </div>
+            <div class="flex justify-end !space-x-3">
+                <button id="cancel-edit-alt-name"
+                    class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
+                <button id="save-alt-name" class="px-4 py-2 !bg-teal-600 text-white rounded-lg hover:!bg-teal-700">Save
+                    Changes</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Delete Confirmation Modal -->
     <div id="delete-modal" class="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded-lg w-full max-w-md">
@@ -113,6 +157,8 @@
                 search: ''
             };
             let mediaToDelete = null;
+            let mediaToEdit = null;
+            let pendingFiles = [];
 
             // Elements
             const mediaGrid = document.getElementById('media-grid');
@@ -126,6 +172,18 @@
             const deleteModal = document.getElementById('delete-modal');
             const cancelDeleteBtn = document.getElementById('cancel-delete');
             const confirmDeleteBtn = document.getElementById('confirm-delete');
+
+            // Alt name modal elements
+            const altNameModal = document.getElementById('alt-name-modal');
+            const altNameFields = document.getElementById('alt-name-fields');
+            const cancelUploadBtn = document.getElementById('cancel-upload');
+            const confirmUploadBtn = document.getElementById('confirm-upload');
+
+            // Edit alt name modal elements
+            const editAltNameModal = document.getElementById('edit-alt-name-modal');
+            const editAltNameInput = document.getElementById('edit-alt-name-input');
+            const cancelEditAltNameBtn = document.getElementById('cancel-edit-alt-name');
+            const saveAltNameBtn = document.getElementById('save-alt-name');
 
             // Load initial media
             loadMedia();
@@ -153,7 +211,7 @@
 
             uploadInput.addEventListener('change', function() {
                 if (this.files.length > 0) {
-                    uploadFiles(this.files);
+                    showAltNameModal(this.files);
                 }
             });
 
@@ -167,7 +225,212 @@
                 }
             });
 
+            cancelUploadBtn.addEventListener('click', function() {
+                altNameModal.classList.add('hidden');
+                uploadInput.value = '';
+                pendingFiles = [];
+            });
+
+            confirmUploadBtn.addEventListener('click', function() {
+                uploadFilesWithAltNames();
+            });
+
+            cancelEditAltNameBtn.addEventListener('click', function() {
+                editAltNameModal.classList.add('hidden');
+                mediaToEdit = null;
+            });
+
+            saveAltNameBtn.addEventListener('click', function() {
+                saveAltName();
+            });
+
             // Functions
+
+            function showAltNameModal(files) {
+                pendingFiles = Array.from(files);
+                altNameFields.innerHTML = '';
+
+                // Create alt name fields for each file
+                pendingFiles.forEach((file, index) => {
+                    const fileName = file.name;
+                    const fileExtension = fileName.split('.').pop()?.toLowerCase();
+                    const baseName = fileName.replace('.' + fileExtension, '');
+
+                    const fieldDiv = document.createElement('div');
+                    fieldDiv.className =
+                        'flex flex-col md:flex-row gap-4 p-4 border border-gray-200 rounded-lg bg-gray-50';
+
+                    // Preview section
+                    const previewSection = document.createElement('div');
+                    previewSection.className = 'flex-shrink-0 w-[20rem] md:w-32';
+
+                    // Generate preview based on file type
+                    let previewHTML = '';
+                    const fileURL = URL.createObjectURL(file);
+
+                    if (file.type.startsWith('image/')) {
+                        previewHTML = `
+                            <div class="w-full h-24 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+                                <img src="${fileURL}" alt="Preview" class="w-full h-full object-cover">
+                            </div>
+                        `;
+                    } else if (file.type.startsWith('video/')) {
+                        previewHTML = `
+                            <div class="w-full h-24 bg-gray-800 rounded-lg overflow-hidden flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                                    <path d="m10 7 5 3-5 3Z"/>
+                                    <rect width="16" height="14" x="4" y="3" rx="2"/>
+                                </svg>
+                            </div>
+                        `;
+                    } else {
+                        // File icon based on extension
+                        let fileIcon = '';
+                        switch (fileExtension) {
+                            case 'pdf':
+                                fileIcon = `
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-500">
+                                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                        <path d="M8 13h1"/>
+                                        <path d="M8 17h1"/>
+                                        <path d="M12 13h3"/>
+                                        <path d="M12 17h1"/>
+                                    </svg>
+                                `;
+                                break;
+                            case 'doc':
+                            case 'docx':
+                                fileIcon = `
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500">
+                                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                        <path d="M8 13h4"/>
+                                        <path d="M8 17h6"/>
+                                    </svg>
+                                `;
+                                break;
+                            case 'zip':
+                            case 'rar':
+                                fileIcon = `
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-500">
+                                        <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7.5a2 2 0 0 0-2 2v2"/>
+                                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                        <path d="M2 12h4"/>
+                                        <path d="m9 9-3 3 3 3"/>
+                                    </svg>
+                                `;
+                                break;
+                            case 'txt':
+                                fileIcon = `
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500">
+                                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                        <path d="M8 9h8"/>
+                                        <path d="M8 13h8"/>
+                                        <path d="M8 17h6"/>
+                                    </svg>
+                                `;
+                                break;
+                            default:
+                                fileIcon = `
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500">
+                                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                    </svg>
+                                `;
+                        }
+
+                        previewHTML = `
+                            <div class="w-full h-24 bg-gray-200 rounded-lg flex flex-col items-center justify-center p-2">
+                                ${fileIcon}
+                                <span class="text-xs text-gray-600 mt-1 text-center">${fileExtension}</span>
+                            </div>
+                        `;
+                    }
+
+                    previewSection.innerHTML = previewHTML;
+
+                    // Info and input section
+                    const infoSection = document.createElement('div');
+                    infoSection.className = 'flex-1';
+                    infoSection.innerHTML = `
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700 truncate" title="${fileName}">${fileName}</span>
+                            <span class="text-xs text-gray-500 bg-gray-200 px-2 py-1 rounded">${formatFileSize(file.size)}</span>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-teal-600">Alt Name (Optional)</label>
+                            <input type="text"
+                                   class="w-full p-2 border border-gray-300 rounded-lg text-sm alt-name-input"
+                                   placeholder="Enter descriptive alt name..."
+                                   data-index="${index}"
+                                   value="${baseName}">
+                        </div>
+                    `;
+
+                    fieldDiv.appendChild(previewSection);
+                    fieldDiv.appendChild(infoSection);
+                    altNameFields.appendChild(fieldDiv);
+
+                    // Clean up object URL when modal closes
+                    fieldDiv._objectURL = fileURL;
+                });
+
+                altNameModal.classList.remove('hidden');
+            }
+
+            function uploadFilesWithAltNames() {
+                const altNames = [];
+                const inputs = document.querySelectorAll('.alt-name-input');
+
+                inputs.forEach(input => {
+                    altNames.push(input.value.trim());
+                });
+
+                const formData = new FormData();
+
+                pendingFiles.forEach((file, index) => {
+                    formData.append('files[]', file);
+                    formData.append('alt_name[]', altNames[index] || '');
+                });
+
+                loading.classList.remove('hidden');
+                altNameModal.classList.add('hidden');
+
+                // Clean up object URLs
+                document.querySelectorAll('[data-index]').forEach(element => {
+                    if (element._objectURL) {
+                        URL.revokeObjectURL(element._objectURL);
+                    }
+                });
+
+                fetch('{{ route('admin.media.store') }}', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        loading.classList.add('hidden');
+                        uploadInput.value = '';
+                        pendingFiles = [];
+
+                        if (data.success) {
+                            loadMedia(); // Reload the media list
+                        } else {
+                            alert('Error uploading files');
+                        }
+                    })
+                    .catch(error => {
+                        loading.classList.add('hidden');
+                        console.error('Error uploading files:', error);
+                        alert('Error uploading files');
+                    });
+            }
+
             function loadMedia() {
                 loading.classList.remove('hidden');
                 mediaGrid.innerHTML = '';
@@ -219,7 +482,7 @@
 
                     if (media.is_image) {
                         mediaContent = `
-                        <img src="${media.url}" alt="${media.original_name}" class="w-full h-40 object-scale-down">
+                        <img src="${media.url}" alt="${media.alt_name || media.original_name}" class="w-full h-40 object-cover">
                     `;
                     } else if (media.is_video) {
                         mediaContent = `
@@ -251,7 +514,7 @@
                             </svg>
                         `;
                         } else if (media.mime_type.includes('word') || media.mime_type.includes(
-                            'document')) {
+                                'document')) {
                             fileIcon = `
                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
                                 <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
@@ -271,16 +534,24 @@
 
                     mediaCard.innerHTML = `
                     ${mediaContent}
-                    <!-- View button at top left corner -->
-                    <button class="view-media absolute top-2 left-2 p-2 bg-white rounded-full text-gray-800 hover:bg-gray-100 shadow-md transition-colors" data-url="${media.url}" title="View file">
+                    <!-- Edit button at top left corner -->
+                    <button class="edit-alt-name absolute top-2 left-2 p-2 bg-white rounded-full text-gray-800 hover:bg-gray-100 shadow-md transition-colors" data-id="${media.id}" data-alt-name="${media.alt_name || ''}" title="Edit alt name">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 20h9"/>
+                            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                        </svg>
+                    </button>
+
+                    <!-- View button at top right corner -->
+                    <button class="view-media absolute top-2 right-2 p-2 bg-white rounded-full text-gray-800 hover:bg-gray-100 shadow-md transition-colors" data-url="${media.url}" title="View file">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
                             <circle cx="12" cy="12" r="3"/>
                         </svg>
                     </button>
 
-                    <!-- Delete button at top right corner -->
-                    <button class="delete-media absolute top-2 right-2 p-2 !bg-red-600 rounded-full text-white hover:bg-red-700 shadow-md transition-colors" data-id="${media.id}" title="Delete file">
+                    <!-- Delete button at bottom right corner -->
+                    <button class="delete-media absolute bottom-2 right-2 p-2 !bg-red-600 rounded-full text-white hover:bg-red-700 shadow-md transition-colors" data-id="${media.id}" title="Delete file">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
                             <path d="M3 6h18"/>
@@ -291,6 +562,7 @@
                     <div class="p-2">
                         <p class="text-sm font-medium truncate">${media.original_name}</p>
                         <p class="text-xs text-gray-500">${formatFileSize(media.file_size)}</p>
+                        ${media.alt_name ? `<p class="text-xs text-teal-600 truncate" title="Alt: ${media.alt_name}">${media.alt_name}</p>` : '<p class="text-xs text-gray-400 italic">No alt name</p>'}
                     </div>
                 `;
 
@@ -312,6 +584,50 @@
                         window.open(url, '_blank');
                     });
                 });
+
+                // Add event listeners to edit alt name buttons
+                document.querySelectorAll('.edit-alt-name').forEach(button => {
+                    button.addEventListener('click', function() {
+                        mediaToEdit = this.getAttribute('data-id');
+                        const currentAltName = this.getAttribute('data-alt-name');
+                        editAltNameInput.value = currentAltName;
+                        editAltNameModal.classList.remove('hidden');
+                    });
+                });
+            }
+
+            function saveAltName() {
+                if (!mediaToEdit) return;
+
+                const newAltName = editAltNameInput.value.trim();
+
+                fetch(`/admin/media/${mediaToEdit}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({
+                            alt_name: newAltName
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        editAltNameModal.classList.add('hidden');
+                        mediaToEdit = null;
+
+                        if (data.success) {
+                            loadMedia(); // Reload the media list to show updated alt name
+                        } else {
+                            alert('Error updating alt name');
+                        }
+                    })
+                    .catch(error => {
+                        editAltNameModal.classList.add('hidden');
+                        console.error('Error updating alt name:', error);
+                        alert('Error updating alt name');
+                    });
             }
 
             function renderPagination(data) {
@@ -329,22 +645,22 @@
                         <div class="flex space-x-2">
                             ${data.current_page > 1 ?
                                 `<button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm transition-colors pagination-link" data-page="${data.current_page - 1}">
-                                        Previous
-                                    </button>` :
+                                                                Previous
+                                                            </button>` :
                                 `<span class="px-3 py-1 border border-gray-300 rounded-lg text-gray-400 cursor-not-allowed text-sm">
-                                        Previous
-                                    </span>`
+                                                                Previous
+                                                            </span>`
                             }
 
                             ${generatePageNumbers(data)}
 
                             ${data.current_page < data.last_page ?
                                 `<button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm transition-colors pagination-link" data-page="${data.current_page + 1}">
-                                        Next
-                                    </button>` :
+                                                                Next
+                                                            </button>` :
                                 `<span class="px-3 py-1 border border-gray-300 rounded-lg text-gray-400 cursor-not-allowed text-sm">
-                                        Next
-                                    </span>`
+                                                                Next
+                                                            </span>`
                             }
                         </div>
                     </div>
@@ -421,40 +737,6 @@
                 }
 
                 return html;
-            }
-
-            function uploadFiles(files) {
-                const formData = new FormData();
-
-                for (let i = 0; i < files.length; i++) {
-                    formData.append('files[]', files[i]);
-                }
-
-                loading.classList.remove('hidden');
-
-                fetch('{{ route('admin.media.store') }}', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        loading.classList.add('hidden');
-                        uploadInput.value = '';
-
-                        if (data.success) {
-                            loadMedia(); // Reload the media list
-                        } else {
-                            alert('Error uploading files');
-                        }
-                    })
-                    .catch(error => {
-                        loading.classList.add('hidden');
-                        console.error('Error uploading files:', error);
-                        alert('Error uploading files');
-                    });
             }
 
             function deleteMedia(id) {

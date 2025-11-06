@@ -87,6 +87,35 @@
                                             <p class="!text-red-600 text-sm">{{ $message }}</p>
                                         @enderror
                                     </div>
+                                    <div>
+                                        <label for="question_tag" class="block text-sm font-medium text-gray-700 my-3">
+                                            Tag
+                                        </label>
+                                        @php($tags = ['First Name', 'Last Name', 'Phone Number', 'Email', 'Address'])
+                                        <select id="question_tag" name="question_tag" required
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                                            <option value="">Select tag</option>
+                                            @foreach ($tags as $tag)
+                                                <option value="{{ $tag }}">
+                                                    {{ $tag }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('question_tag')
+                                            <p class="!text-red-600 text-sm">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div>
+                                        <label for="question_group" class="block text-sm font-medium text-gray-700 my-3">
+                                            Question Group Title
+                                        </label>
+                                        <input type="text" id="question_group" name="question_group" required
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                            placeholder="Enter question group title" value="{{ old('question_group') }}" />
+                                        @error('question_group')
+                                            <p class="!text-red-600 text-sm">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                     <div class="mt-4 flex justify-end space-x-3">
                                         <button type="submit"
                                             class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
@@ -168,8 +197,9 @@
 
                                         <button type="button" id="add-option" class="text-teal-600 flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="mr-1">
                                                 <path d="M5 12h14" />
                                                 <path d="M12 5v14" />
                                             </svg>

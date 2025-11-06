@@ -92,7 +92,8 @@
                             <!-- Main Project Image -->
                             @if (optional($project->media)->url)
                                 <div class="mb-4">
-                                    <img src="{{ optional($project->media)->url }}" alt="{{ $project->title }}"
+                                    <img src="{{ optional($project->media)->url }}"
+                                        alt="{{ $project->media->alt_name ? $project->media->alt_name : $project->title }}"
                                         class="w-full h-48 object-fit rounded-lg">
                                 </div>
                             @endif

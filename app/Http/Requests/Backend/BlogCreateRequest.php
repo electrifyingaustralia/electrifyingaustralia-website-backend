@@ -25,7 +25,7 @@ class BlogCreateRequest extends BaseRequest
             ],
 
             'description' => [
-                'required',
+                'nullable',
                 'string',
             ],
 
@@ -42,6 +42,11 @@ class BlogCreateRequest extends BaseRequest
             'blog_category_id' => [
                 'required',
                 'exists:blog_categories,id',
+            ],
+
+            'reading_time' => [
+                'nullable',
+                'string'
             ],
 
             'facebook_link' => [
