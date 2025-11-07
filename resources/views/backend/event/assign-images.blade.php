@@ -78,13 +78,13 @@
                                     d="m1 9 4-4-4-4" />
                             </svg>
                             <a href="{{ route('admin.event.all') }}"
-                                class="ml-1 text-lg font-medium text-gray-极0 hover:!text-teal-600 md:ml-2">Events</a>
+                                class="ml-1 text-lg font-medium text-gray-500 hover:!text-teal-600 md:ml-2">Events</a>
                         </div>
                     </li>
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg class="w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 极 6 10">
+                                fill="none" viewBox="0 0 6 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="m1 9 4-4-4-4" />
                             </svg>
@@ -397,6 +397,7 @@
                         ${previewHtml}
                         <div class="p-2">
                             <p class="text-xs font-medium truncate">${media.original_name || media.name}</p>
+                            ${media.alt_name ? `<p class="text-xs text-teal-600 truncate" title="Alt: ${media.alt_name}">${media.alt_name}</p>` : '<p class="text-xs text-gray-400 italic">No alt name</p>'}
                         </div>
                         <button type="button" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 remove-media" data-media-id="${media.id}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e81717" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -924,6 +925,7 @@
                 ${previewHtml}
                 <div class="p-2">
                     <p class="text-xs text-center font-medium truncate">${media.original_name || media.name}</p>
+                    <p class="text-xs text-center font-medium text-teal-600 truncate">${media.alt_name}</p>
                 </div>
             </div>
         `;
