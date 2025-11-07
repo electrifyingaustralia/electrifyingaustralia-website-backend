@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EventDetailsResource;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -25,5 +26,15 @@ class ApiEventController extends Controller
             "group_center" => EventResource::collection($events),
             "group_end" => $groupEnd ? new EventResource($groupEnd) : null,
         ]);
+    }
+
+    public function show($slug)
+    {
+        $event = Event::with(['media', 'images'])
+            ->where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        return new EventDetailsResource($event);
     }
 }

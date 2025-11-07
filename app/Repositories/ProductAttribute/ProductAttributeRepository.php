@@ -56,6 +56,11 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
         return $instance;
     }
 
+    public function getByProductIdWithMedia(int $productId): object
+    {
+        return $this->query()->with('media')->where('product_id', $productId)->get();
+    }
+
     public function exists(int | array $id): bool
     {
         if (is_array($id)) {

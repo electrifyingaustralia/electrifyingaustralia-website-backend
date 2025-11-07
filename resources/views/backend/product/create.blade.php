@@ -2,7 +2,7 @@
 @section('contents')
     <div class="flex-1 p-6">
         <div class="max-w-5xl mx-auto">
-            <!-- Breadcrumb and navigation code remains the same -->
+            <!-- Breadcrumb and navigation -->
             <div class="flex justify-between items-center mb-5" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-2">
                     <li class="inline-flex items-center">
@@ -46,7 +46,7 @@
                 @csrf
                 <div class="flex flex-col lg:!flex-row gap-6">
                     <div class="w-full lg:!w-2/3">
-                        <!-- Sticky Headers Table -->
+                        <!-- Main Form Content -->
                         <div class="bg-white p-6 rounded-lg shadow">
 
                             <div class="grid grid-cols-1 gap-6">
@@ -68,13 +68,11 @@
 
                                 <div>
                                     <label for="short_description" class="block text-sm font-medium text-gray-700 mb-2">
-                                        Sort Description
+                                        Short Description
                                     </label>
-
                                     <textarea name="short_description"
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        placeholder="Enter product sort description...">{{ old('short_description') }}</textarea>
-
+                                        placeholder="Enter product short description...">{{ old('short_description') }}</textarea>
                                 </div>
 
                                 <div>
@@ -82,7 +80,7 @@
                                         class="block text-sm font-medium text-gray-700 mb-2">Link</label>
                                     <input type="text" id="product_link" name="product_link"
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        placeholder="Enter product product_link" />
+                                        placeholder="Enter product link" />
                                     @error('product_link')
                                         <p class="!text-red-600 text-sm">{{ $message }}</p>
                                     @enderror
@@ -114,7 +112,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Media Selection -->
+                                <!-- Main Product Media Selection -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Media <span
                                             class="text-red-600 font-bold">*</span></label>
@@ -153,7 +151,6 @@
                                             <input type="hidden" id="selected-media-id" name="media_id" failed
                                                 remove="media_id">
                                             <div failed="media_id"></div>
-
                                         </div>
                                     </div>
 
@@ -161,7 +158,6 @@
                                     <div id="selected-logo-info" class="mt-3 p-3 bg-gray-50 rounded-lg hidden">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center space-x-3">
-                                                <!-- This will be dynamically populated based on file type -->
                                                 <div id="selected-logo-preview-container">
                                                     <img id="selected-logo-preview" src="" alt="Selected media"
                                                         class="w-12 h-12 object-cover rounded hidden">
@@ -198,7 +194,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Right Column - Form -->
+
+                    <!-- Right Column - Sidebar -->
                     <div class="w-full lg:!w-1/3">
                         <div class="bg-white p-6 rounded-lg shadow">
                             <div class="grid grid-cols-1 gap-6">
@@ -228,7 +225,6 @@
                                         @endforeach
                                     </select>
                                     <div failed="product_type_id"></div>
-
                                 </div>
                                 <div>
                                     <label for="is_active"
@@ -331,19 +327,13 @@
 
                         <div id="upload-preview" class="upload-content hidden">
                             <div class="flex flex-col items-center">
-                                <!-- Preview container that will show appropriate content based on file type -->
                                 <div id="preview-container"
                                     class="w-32 h-32 flex items-center justify-center mb-4 rounded-lg bg-gray-100">
-                                    <!-- Image preview (default) -->
                                     <img id="preview-image" src="" alt="Preview"
                                         class="w-full h-full object-contain hidden">
-
-                                    <!-- Video preview -->
                                     <video id="preview-video" class="w-full h-full object-contain hidden" controls>
                                         Your browser does not support the video tag.
                                     </video>
-
-                                    <!-- Document preview icons -->
                                     <div id="preview-document" class="hidden flex flex-col items-center justify-center">
                                         <svg id="preview-icon" xmlns="http://www.w3.org/2000/svg" width="48"
                                             height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -465,13 +455,16 @@
         .remove-attribute {
             transition: color 0.3s ease;
         }
+
+        .attribute-media-preview {
+            min-height: 80px;
+        }
     </style>
 @endpush
 
 @push('scripts')
     <script>
         $(document).ready(function() {
-
             $("[remove]").click(function() {
                 const fields = ["INPUT", "TEXTAREA", "SELECT"];
                 if (fields.includes(this.tagName)) {
@@ -490,6 +483,7 @@
             let mediaLibraryItems = [];
             let isUploading = false;
             let attributeCount = 0;
+            let currentAttributeIndex = null;
 
             // ========== ATTRIBUTES FUNCTIONALITY ==========
             // Add attribute field
@@ -512,7 +506,8 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                        <div class="grid grid-cols-1 gap-4 mb-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Key <span class="text-red-600 font-bold">*</span></label>
                                 <input type="text" name="attributes[${attributeCount}][key]"
@@ -524,6 +519,61 @@
                                 <input type="text" name="attributes[${attributeCount}][value]"
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent attribute-value"
                                     placeholder="e.g., Red, Large, 1.5kg">
+                            </div>
+                        </div>
+
+                        <!-- Media Selection for Attribute -->
+                        <div class="attribute-media-section">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Attribute Media</label>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <!-- Media Preview -->
+                                <div class="w-20 h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center !bg-gray-100 attribute-media-preview"
+                                    data-index="${attributeCount}">
+                                    <div class="text-center text-gray-400">
+                                        <i class="fas fa-image text-lg mb-1"></i>
+                                        <p class="text-xs">No media</p>
+                                    </div>
+                                </div>
+
+                                <!-- Media Actions -->
+                                <div class="flex flex-col justify-center gap-2">
+                                    <button type="button" class="open-attribute-media-library !bg-[#006494] hover:!bg-[#003554] text-white px-3 py-2 rounded-lg text-sm"
+                                        data-index="${attributeCount}">
+                                        <div class="flex items-center gap-x-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M12 3v12"/>
+                                                <path d="m17 8-5-5-5 5"/>
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                            </svg>
+                                            <span>Select Media</span>
+                                        </div>
+                                    </button>
+                                    <input type="hidden" class="attribute-media-id" name="attributes[${attributeCount}][media_id]" data-index="${attributeCount}">
+                                </div>
+                            </div>
+
+                            <!-- Selected Media Info -->
+                            <div class="attribute-selected-media-info mt-3 p-3 bg-white rounded-lg hidden" data-index="${attributeCount}">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="attribute-selected-preview-container">
+                                            <img class="attribute-selected-preview w-12 h-12 object-cover rounded hidden" src="" alt="Selected media">
+                                            <div class="attribute-selected-icon w-12 h-12 flex items-center justify-center bg-gray-200 rounded hidden">
+                                                <svg class="attribute-selected-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="attribute-selected-name text-sm font-medium"></p>
+                                            <p class="attribute-selected-size text-xs text-gray-500"></p>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="remove-attribute-media text-red-600 hover:text-red-800" data-index="${attributeCount}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M18 6 6 18"/>
+                                            <path d="m6 6 12 12"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -560,15 +610,45 @@
                         $item.attr('data-index', newIndex);
                         $item.find('h4').text(`Attribute ${newIndex}`);
                         $item.find('.remove-attribute').data('index', newIndex);
+                        $item.find('.open-attribute-media-library').data('index', newIndex);
+                        $item.find('.remove-attribute-media').data('index', newIndex);
+                        $item.find('.attribute-media-preview').attr('data-index', newIndex);
+                        $item.find('.attribute-media-id').attr('data-index', newIndex);
+                        $item.find('.attribute-selected-media-info').attr('data-index', newIndex);
 
                         // Update input names
                         $item.find('.attribute-key').attr('name', `attributes[${newIndex}][key]`);
                         $item.find('.attribute-value').attr('name', `attributes[${newIndex}][value]`);
+                        $item.find('.attribute-media-id').attr('name', `attributes[${newIndex}][media_id]`);
                     }
                     newIndex++;
                 });
                 attributeCount = newIndex - 1;
             }
+
+            // Open media library for specific attribute
+            $(document).on('click', '.open-attribute-media-library', function() {
+                currentAttributeIndex = $(this).data('index');
+                openMediaLibrary();
+            });
+
+            // Remove attribute media
+            $(document).on('click', '.remove-attribute-media', function() {
+                const index = $(this).data('index');
+                const $attributeMediaPreview = $(`.attribute-media-preview[data-index="${index}"]`);
+                const $attributeMediaId = $(`.attribute-media-id[data-index="${index}"]`);
+                const $attributeMediaInfo = $(`.attribute-selected-media-info[data-index="${index}"]`);
+
+                $attributeMediaPreview.html(`
+                    <div class="text-center text-gray-400">
+                        <i class="fas fa-image text-lg mb-1"></i>
+                        <p class="text-xs">No media</p>
+                    </div>
+                `);
+
+                $attributeMediaId.val('');
+                $attributeMediaInfo.addClass('hidden');
+            });
 
             // ========== UPLOAD TAB FUNCTIONS ==========
             function setupDragAndDrop() {
@@ -597,7 +677,6 @@
                     unhighlight();
                 };
 
-                // Remove existing listeners and add new ones
                 $uploadArea
                     .off('dragenter dragover dragleave drop')
                     .on('dragenter', preventDefaults)
@@ -634,7 +713,7 @@
                         size: file.size,
                         file: file,
                         type: 'upload',
-                        alt_name: '' // Initialize alt_name
+                        alt_name: ''
                     };
 
                     updateUploadButtonState();
@@ -787,7 +866,7 @@
 
                 const formData = new FormData();
                 formData.append('files[]', selectedMedia.file);
-                formData.append('alt_name[]', altName); // Add alt_name to form data
+                formData.append('alt_name[]', altName);
 
                 $.ajax({
                     url: '{{ route('admin.media.store') }}',
@@ -933,7 +1012,6 @@
                 $.each(mediaItems.slice(startIndex), function(index, media) {
                     const actualIndex = startIndex + index;
 
-                    // Your existing media item HTML generation code
                     let previewHtml = '';
                     const fileExtension = media.original_name.split('.').pop().toLowerCase();
 
@@ -950,7 +1028,40 @@
                     </div>
                 `;
                     } else {
-                        // Your existing document type handling...
+                        let bgColor = 'bg-gray-200';
+                        let iconSvg = '';
+
+                        switch (fileExtension) {
+                            case 'pdf':
+                                bgColor = 'bg-red-100';
+                                iconSvg =
+                                    '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                break;
+                            case 'doc':
+                            case 'docx':
+                                bgColor = 'bg-blue-100';
+                                iconSvg =
+                                    '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                break;
+                            case 'xls':
+                            case 'xlsx':
+                                bgColor = 'bg-green-100';
+                                iconSvg =
+                                    '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
+                                break;
+                            default:
+                                bgColor = 'bg-gray-200';
+                                iconSvg =
+                                    '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
+                        }
+
+                        previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center ${bgColor}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide">
+                            ${iconSvg}
+                        </svg>
+                    </div>
+                `;
                     }
 
                     html += `
@@ -1020,7 +1131,7 @@
         `);
             }
 
-            // ========== GENERAL MODAL FUNCTIONS ==========
+            // ========== MEDIA SELECTION FUNCTIONS ==========
             function updateConfirmButtonState() {
                 const $confirmButton = $('#confirm-selection');
                 if (selectedMedia) {
@@ -1074,6 +1185,7 @@
             function closeMediaLibrary() {
                 $('#media-library-modal').addClass('hidden');
                 selectedMedia = null;
+                currentAttributeIndex = null;
                 updateConfirmButtonState();
                 updateUploadButtonState();
                 clearUploadPreview();
@@ -1087,9 +1199,76 @@
                     return;
                 }
 
-                if (selectedMedia.type === 'library') {
+                if (currentAttributeIndex !== null) {
+                    // If we're selecting for an attribute
+                    applySelectedMediaToAttribute();
+                } else if (selectedMedia.type === 'library') {
+                    // If we're selecting for main product media
                     applySelectedMedia();
                 }
+            }
+
+            function applySelectedMediaToAttribute() {
+                if (!selectedMedia || currentAttributeIndex === null) return;
+
+                const $attributeMediaPreview = $(`.attribute-media-preview[data-index="${currentAttributeIndex}"]`);
+                const $attributeMediaId = $(`.attribute-media-id[data-index="${currentAttributeIndex}"]`);
+                const $attributeMediaInfo = $(
+                    `.attribute-selected-media-info[data-index="${currentAttributeIndex}"]`);
+
+                $attributeMediaId.val(selectedMedia.id);
+
+                // Update preview based on media type
+                if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i)) {
+                    $attributeMediaPreview.html(
+                        `<img src="${selectedMedia.url}" alt="${selectedMedia.name}" class="w-full h-full object-cover rounded-lg">`
+                    );
+                } else {
+                    // Handle other file types
+                    let bgColor = 'bg-gray-200';
+                    let iconSvg = '';
+
+                    const fileExtension = selectedMedia.name.split('.').pop().toLowerCase();
+                    switch (fileExtension) {
+                        case 'pdf':
+                            bgColor = 'bg-red-100';
+                            iconSvg =
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                            break;
+                        case 'doc':
+                        case 'docx':
+                            bgColor = 'bg-blue-100';
+                            iconSvg =
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                            break;
+                        case 'xls':
+                        case 'xlsx':
+                            bgColor = 'bg-green-100';
+                            iconSvg =
+                                '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
+                            break;
+                        default:
+                            bgColor = 'bg-gray-200';
+                            iconSvg =
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
+                    }
+
+                    $attributeMediaPreview.html(`
+                        <div class="w-full h-full flex items-center justify-center ${bgColor} rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                ${iconSvg}
+                            </svg>
+                        </div>
+                    `);
+                }
+
+                // Update selected media info
+                $attributeMediaInfo.find('.attribute-selected-name').text(selectedMedia.name);
+                $attributeMediaInfo.find('.attribute-selected-size').text(formatFileSize(selectedMedia.size));
+                $attributeMediaInfo.removeClass('hidden');
+
+                closeMediaLibrary();
+                currentAttributeIndex = null;
             }
 
             function applySelectedMedia() {
@@ -1098,14 +1277,12 @@
                 // Determine file type and show appropriate preview
                 const fileExtension = selectedMedia.name.split('.').pop().toLowerCase();
 
-                if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) ||
-                    (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('image/'))) {
+                if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i)) {
                     // Image files
                     $('#logo-preview').html(
                         `<img src="${selectedMedia.url}" alt="${selectedMedia.name}" class="w-full h-full object-cover rounded-lg">`
                     );
-                } else if (selectedMedia.url.match(/\.(mp4|webm|ogg|mov|avi|wmv)$/i) ||
-                    (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('video/'))) {
+                } else if (selectedMedia.url.match(/\.(mp4|webm|ogg|mov|avi|wmv)$/i)) {
                     // Video files
                     $('#logo-preview').html(`
                 <div class="w-full h-full flex items-center justify-center bg-gray-200 rounded-lg">
@@ -1154,8 +1331,7 @@
                 }
 
                 // Update selected logo info
-                if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) ||
-                    (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('image/'))) {
+                if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i)) {
                     // Show image preview
                     $('#selected-logo-preview').attr('src', selectedMedia.url).removeClass('hidden');
                     $('#selected-logo-icon').addClass('hidden');
@@ -1226,16 +1402,13 @@
             }
 
             function handleFormErrorMessage(xhr) {
-                // Handle errors
                 if (xhr.status === 422) {
-
                     var errors = xhr.responseJSON.errors;
 
                     // Clear previous error messages
                     $('.validation-error-message').remove();
 
                     for (var field in errors) {
-
                         var message =
                             `<p class="!text-red-600 text-sm mt-1 validation-error-message " target="error-${field}">${errors[field][0]}</p>`;
 
@@ -1260,7 +1433,6 @@
                             }
                         }
                     }
-
                 } else {
                     toastr.error('An error occurred. Please try again.');
                 }
@@ -1268,7 +1440,7 @@
                 $('button[type="submit"]').prop('disabled', false).text('Create Product');
             }
 
-            // Event bindings
+            // ========== EVENT BINDINGS ==========
             $('#open-media-library').on('click', openMediaLibrary);
             $('#close-media-library, #cancel-upload, #cancel-media-selection').on('click', closeMediaLibrary);
             $('#upload-tab').on('click', function() {

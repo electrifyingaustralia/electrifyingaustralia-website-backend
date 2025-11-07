@@ -48,6 +48,7 @@ Route::prefix('v1')->group(function () {
 
     // ! Events
     Route::get('events/groups', [ApiEventController::class, 'index']);
+    Route::get('events/{slug}', [ApiEventController::class, 'show']);
 
     // ! Projects
     Route::get('projects', [ApiProjectController::class, 'index']);
