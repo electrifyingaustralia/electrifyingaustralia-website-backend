@@ -18,4 +18,5 @@ interface ProductAttributeRepositoryInterface
     public function delete(int $id): bool;
     public function deleteByProductId(int $productId): bool;
     public function getByProductId(int $productId): object;
+    public function getByProductIdWithMedia(int $productId): object;
 }

@@ -125,6 +125,7 @@ class ProductService implements ProductServiceInterface
                     'product_id' => $productId,
                     'attrs_key' => $attribute['key'],
                     'attrs_value' => $attribute['value'] ?? null,
+                    'media_id' => $attribute['media_id'] ?? null,
                 ]);
             }
         }
@@ -142,7 +143,7 @@ class ProductService implements ProductServiceInterface
     public function findProductWithAttributes(int $id): object
     {
         $product = $this->productRepository->find($id);
-        $product->attributes = $this->productAttributeRepository->getByProductId($id);
+        $product->attributes = $this->productAttributeRepository->getByProductIdWithMedia($id);
 
         return $product;
     }

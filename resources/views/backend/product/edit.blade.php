@@ -147,7 +147,8 @@
                                                             </svg>
                                                         </button>
                                                     </div>
-                                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                                                    <div class="grid grid-cols-1 gap-4 mb-4">
                                                         <div>
                                                             <label class="block text-sm font-medium text-gray-700 mb-2">Key
                                                                 <span class="text-red-600 font-bold">*</span></label>
@@ -165,6 +166,190 @@
                                                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent attribute-value"
                                                                 value="{{ old('attributes.' . ($index + 1) . '.value', $attribute->attrs_value) }}"
                                                                 placeholder="e.g., Red, Large, 1.5kg">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Media Selection for Attribute -->
+                                                    <div class="attribute-media-section">
+                                                        <label
+                                                            class="block text-sm font-medium text-gray-700 mb-2">Attribute
+                                                            Media</label>
+                                                        <div class="flex flex-col sm:flex-row gap-4">
+                                                            <!-- Media Preview -->
+                                                            <div class="w-20 h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50 attribute-media-preview"
+                                                                data-index="{{ $index + 1 }}">
+                                                                @if ($attribute->media)
+                                                                    @if ($attribute->media->is_image)
+                                                                        <img src="{{ $attribute->media->url }}"
+                                                                            alt="{{ $attribute->media->original_name }}"
+                                                                            class="w-full h-full object-scale-down rounded-lg">
+                                                                    @else
+                                                                        @php
+                                                                            $fileExtension = pathinfo(
+                                                                                $attribute->media->original_name,
+                                                                                PATHINFO_EXTENSION,
+                                                                            );
+                                                                            $bgColor = 'bg-gray-200';
+                                                                            $iconSvg = '';
+
+                                                                            switch (strtolower($fileExtension)) {
+                                                                                case 'pdf':
+                                                                                    $bgColor = 'bg-red-100';
+                                                                                    $iconSvg =
+                                                                                        '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                                                                    break;
+                                                                                case 'doc':
+                                                                                case 'docx':
+                                                                                    $bgColor = 'bg-blue-100';
+                                                                                    $iconSvg =
+                                                                                        '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                                                                    break;
+                                                                                case 'xls':
+                                                                                case 'xlsx':
+                                                                                    $bgColor = 'bg-green-100';
+                                                                                    $iconSvg =
+                                                                                        '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
+                                                                                    break;
+                                                                                default:
+                                                                                    $bgColor = 'bg-gray-200';
+                                                                                    $iconSvg =
+                                                                                        '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
+                                                                            }
+                                                                        @endphp
+                                                                        <div
+                                                                            class="w-full h-full flex items-center justify-center {{ $bgColor }} rounded-lg">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none"
+                                                                                stroke="currentColor" stroke-width="2"
+                                                                                stroke-linecap="round"
+                                                                                stroke-linejoin="round" class="lucide">
+                                                                                {!! $iconSvg !!}
+                                                                            </svg>
+                                                                        </div>
+                                                                    @endif
+                                                                @else
+                                                                    <div class="text-center text-gray-400">
+                                                                        <i class="fas fa-image text-lg mb-1"></i>
+                                                                        <p class="text-xs">No media</p>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+
+                                                            <!-- Media Actions -->
+                                                            <div class="flex flex-col justify-center gap-2">
+                                                                <button type="button"
+                                                                    class="open-attribute-media-library !bg-[#006494] hover:!bg-[#003554] text-white px-3 py-2 rounded-lg text-sm"
+                                                                    data-index="{{ $index + 1 }}">
+                                                                    <div class="flex items-center gap-x-2">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16"
+                                                                            viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <path d="M12 3v12" />
+                                                                            <path d="m17 8-5-5-5 5" />
+                                                                            <path
+                                                                                d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                                                        </svg>
+                                                                        <span>Select Media</span>
+                                                                    </div>
+                                                                </button>
+                                                                <input type="hidden" class="attribute-media-id"
+                                                                    name="attributes[{{ $index + 1 }}][media_id]"
+                                                                    value="{{ old('attributes.' . ($index + 1) . '.media_id', $attribute->attrs_media) }}"
+                                                                    data-index="{{ $index + 1 }}">
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Selected Media Info -->
+                                                        <div class="attribute-selected-media-info mt-3 p-3 bg-white rounded-lg {{ $attribute->media ? '' : 'hidden' }}"
+                                                            data-index="{{ $index + 1 }}">
+                                                            @if ($attribute->media)
+                                                                <div class="flex items-center justify-between">
+                                                                    <div class="flex items-center space-x-3">
+                                                                        <div class="attribute-selected-preview-container">
+                                                                            @if ($attribute->media->is_image)
+                                                                                <img class="attribute-selected-preview w-12 h-12 object-scale-down rounded"
+                                                                                    src="{{ $attribute->media->url }}"
+                                                                                    alt="{{ $attribute->media->original_name }}">
+                                                                            @else
+                                                                                @php
+                                                                                    $fileExtension = pathinfo(
+                                                                                        $attribute->media
+                                                                                            ->original_name,
+                                                                                        PATHINFO_EXTENSION,
+                                                                                    );
+                                                                                    $bgColor = 'bg-gray-200';
+                                                                                    $iconSvg = '';
+
+                                                                                    switch (
+                                                                                        strtolower($fileExtension)
+                                                                                    ) {
+                                                                                        case 'pdf':
+                                                                                            $bgColor = 'bg-red-100';
+                                                                                            $iconSvg =
+                                                                                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                                                                            break;
+                                                                                        case 'doc':
+                                                                                        case 'docx':
+                                                                                            $bgColor = 'bg-blue-100';
+                                                                                            $iconSvg =
+                                                                                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                                                                            break;
+                                                                                        case 'xls':
+                                                                                        case 'xlsx':
+                                                                                            $bgColor = 'bg-green-100';
+                                                                                            $iconSvg =
+                                                                                                '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
+                                                                                            break;
+                                                                                        default:
+                                                                                            $bgColor = 'bg-gray-200';
+                                                                                            $iconSvg =
+                                                                                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
+                                                                                    }
+                                                                                @endphp
+                                                                                <div
+                                                                                    class="attribute-selected-icon w-12 h-12 flex items-center justify-center {{ $bgColor }} rounded">
+                                                                                    <svg class="attribute-selected-svg"
+                                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                                        width="20" height="20"
+                                                                                        viewBox="0 0 24 24" fill="none"
+                                                                                        stroke="currentColor"
+                                                                                        stroke-width="2"
+                                                                                        stroke-linecap="round"
+                                                                                        stroke-linejoin="round">
+                                                                                        {!! $iconSvg !!}
+                                                                                    </svg>
+                                                                                </div>
+                                                                            @endif
+                                                                        </div>
+                                                                        <div>
+                                                                            <p
+                                                                                class="attribute-selected-name text-sm font-medium">
+                                                                                {{ $attribute->media->original_name }}</p>
+                                                                            <p
+                                                                                class="attribute-selected-size text-xs text-gray-500">
+                                                                                {{ formatFileSize($attribute->media->file_size) }}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="button"
+                                                                        class="remove-attribute-media text-red-600 hover:text-red-800"
+                                                                        data-index="{{ $index + 1 }}">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16"
+                                                                            viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <path d="M18 6 6 18" />
+                                                                            <path d="m6 6 12 12" />
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -190,7 +375,7 @@
                                             @if ($product->media)
                                                 @if ($product->media->mime_type && str_starts_with($product->media->mime_type, 'image/'))
                                                     <img src="{{ $product->media->url }}" alt="{{ $product->title }}"
-                                                        class="w-full h-full object-cover rounded-lg">
+                                                        class="w-full h-full object-scale-down rounded-lg">
                                                 @elseif($product->media->mime_type && str_starts_with($product->media->mime_type, 'video/'))
                                                     <div
                                                         class="w-full h-full flex items-center justify-center bg-gray-200 rounded-lg">
@@ -640,6 +825,10 @@
         .remove-attribute {
             transition: color 0.3s ease;
         }
+
+        .attribute-media-preview {
+            min-height: 80px;
+        }
     </style>
 @endpush
 
@@ -665,6 +854,7 @@
             let mediaLibraryItems = [];
             let isUploading = false;
             let attributeCount = {{ $product->attributes ? $product->attributes->count() : 0 }};
+            let currentAttributeIndex = null;
 
             // Initialize with existing Media data if available
             @if ($product->media)
@@ -700,7 +890,8 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                        <div class="grid grid-cols-1 gap-4 mb-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Key <span class="text-red-600 font-bold">*</span></label>
                                 <input type="text" name="attributes[${attributeCount}][key]"
@@ -712,6 +903,61 @@
                                 <input type="text" name="attributes[${attributeCount}][value]"
                                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent attribute-value"
                                     placeholder="e.g., Red, Large, 1.5kg">
+                            </div>
+                        </div>
+
+                        <!-- Media Selection for Attribute -->
+                        <div class="attribute-media-section">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Attribute Media</label>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <!-- Media Preview -->
+                                <div class="w-20 h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50 attribute-media-preview"
+                                    data-index="${attributeCount}">
+                                    <div class="text-center text-gray-400">
+                                        <i class="fas fa-image text-lg mb-1"></i>
+                                        <p class="text-xs">No media</p>
+                                    </div>
+                                </div>
+
+                                <!-- Media Actions -->
+                                <div class="flex flex-col justify-center gap-2">
+                                    <button type="button" class="open-attribute-media-library !bg-[#006494] hover:!bg-[#003554] text-white px-3 py-2 rounded-lg text-sm"
+                                        data-index="${attributeCount}">
+                                        <div class="flex items-center gap-x-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M12 3v12"/>
+                                                <path d="m17 8-5-5-5 5"/>
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                            </svg>
+                                            <span>Select Media</span>
+                                        </div>
+                                    </button>
+                                    <input type="hidden" class="attribute-media-id" name="attributes[${attributeCount}][media_id]" data-index="${attributeCount}">
+                                </div>
+                            </div>
+
+                            <!-- Selected Media Info -->
+                            <div class="attribute-selected-media-info mt-3 p-3 bg-gray-50 rounded-lg hidden" data-index="${attributeCount}">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="attribute-selected-preview-container">
+                                            <img class="attribute-selected-preview w-12 h-12 object-cover rounded hidden" src="" alt="Selected media">
+                                            <div class="attribute-selected-icon w-12 h-12 flex items-center justify-center bg-gray-200 rounded hidden">
+                                                <svg class="attribute-selected-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="attribute-selected-name text-sm font-medium"></p>
+                                            <p class="attribute-selected-size text-xs text-gray-500"></p>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="remove-attribute-media text-red-600 hover:text-red-800" data-index="${attributeCount}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M18 6 6 18"/>
+                                            <path d="m6 6 12 12"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -748,15 +994,45 @@
                         $item.attr('data-index', newIndex);
                         $item.find('h4').text(`Attribute ${newIndex}`);
                         $item.find('.remove-attribute').data('index', newIndex);
+                        $item.find('.open-attribute-media-library').data('index', newIndex);
+                        $item.find('.remove-attribute-media').data('index', newIndex);
+                        $item.find('.attribute-media-preview').attr('data-index', newIndex);
+                        $item.find('.attribute-media-id').attr('data-index', newIndex);
+                        $item.find('.attribute-selected-media-info').attr('data-index', newIndex);
 
                         // Update input names
                         $item.find('.attribute-key').attr('name', `attributes[${newIndex}][key]`);
                         $item.find('.attribute-value').attr('name', `attributes[${newIndex}][value]`);
+                        $item.find('.attribute-media-id').attr('name', `attributes[${newIndex}][media_id]`);
                     }
                     newIndex++;
                 });
                 attributeCount = newIndex - 1;
             }
+
+            // Open media library for specific attribute
+            $(document).on('click', '.open-attribute-media-library', function() {
+                currentAttributeIndex = $(this).data('index');
+                openMediaLibrary();
+            });
+
+            // Remove attribute media
+            $(document).on('click', '.remove-attribute-media', function() {
+                const index = $(this).data('index');
+                const $attributeMediaPreview = $(`.attribute-media-preview[data-index="${index}"]`);
+                const $attributeMediaId = $(`.attribute-media-id[data-index="${index}"]`);
+                const $attributeMediaInfo = $(`.attribute-selected-media-info[data-index="${index}"]`);
+
+                $attributeMediaPreview.html(`
+                    <div class="text-center text-gray-400">
+                        <i class="fas fa-image text-lg mb-1"></i>
+                        <p class="text-xs">No media</p>
+                    </div>
+                `);
+
+                $attributeMediaId.val('');
+                $attributeMediaInfo.addClass('hidden');
+            });
 
             // ========== UPLOAD TAB FUNCTIONS ==========
             function setupDragAndDrop() {
@@ -785,7 +1061,6 @@
                     unhighlight();
                 };
 
-                // Remove existing listeners and add new ones
                 $uploadArea
                     .off('dragenter dragover dragleave drop')
                     .on('dragenter', preventDefaults)
@@ -822,7 +1097,7 @@
                         size: file.size,
                         file: file,
                         type: 'upload',
-                        alt_name: '' // Initialize alt_name
+                        alt_name: ''
                     };
 
                     updateUploadButtonState();
@@ -975,7 +1250,7 @@
 
                 const formData = new FormData();
                 formData.append('files[]', selectedMedia.file);
-                formData.append('alt_name[]', altName); // Add alt_name to form data
+                formData.append('alt_name[]', altName);
 
                 $.ajax({
                     url: '{{ route('admin.media.store') }}',
@@ -1121,7 +1396,6 @@
                 $.each(mediaItems.slice(startIndex), function(index, media) {
                     const actualIndex = startIndex + index;
 
-                    // Your existing media item HTML generation code
                     let previewHtml = '';
                     const fileExtension = media.original_name.split('.').pop().toLowerCase();
 
@@ -1138,7 +1412,40 @@
                     </div>
                 `;
                     } else {
-                        // Your existing document type handling...
+                        let bgColor = 'bg-gray-200';
+                        let iconSvg = '';
+
+                        switch (fileExtension) {
+                            case 'pdf':
+                                bgColor = 'bg-red-100';
+                                iconSvg =
+                                    '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                break;
+                            case 'doc':
+                            case 'docx':
+                                bgColor = 'bg-blue-100';
+                                iconSvg =
+                                    '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                                break;
+                            case 'xls':
+                            case 'xlsx':
+                                bgColor = 'bg-green-100';
+                                iconSvg =
+                                    '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
+                                break;
+                            default:
+                                bgColor = 'bg-gray-200';
+                                iconSvg =
+                                    '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
+                        }
+
+                        previewHtml = `
+                    <div class="w-full h-24 flex items-center justify-center ${bgColor}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide">
+                            ${iconSvg}
+                        </svg>
+                    </div>
+                `;
                     }
 
                     html += `
@@ -1209,7 +1516,7 @@
         `);
             }
 
-            // ========== GENERAL MODAL FUNCTIONS ==========
+            // ========== MEDIA SELECTION FUNCTIONS ==========
             function updateConfirmButtonState() {
                 const $confirmButton = $('#confirm-selection');
                 if (selectedMedia) {
@@ -1261,6 +1568,8 @@
 
             function closeMediaLibrary() {
                 $('#media-library-modal').addClass('hidden');
+                selectedMedia = null;
+                currentAttributeIndex = null;
                 updateConfirmButtonState();
                 updateUploadButtonState();
                 clearUploadPreview();
@@ -1274,9 +1583,76 @@
                     return;
                 }
 
-                if (selectedMedia.type === 'library') {
+                if (currentAttributeIndex !== null) {
+                    // If we're selecting for an attribute
+                    applySelectedMediaToAttribute();
+                } else if (selectedMedia.type === 'library') {
+                    // If we're selecting for main product media
                     applySelectedMedia();
                 }
+            }
+
+            function applySelectedMediaToAttribute() {
+                if (!selectedMedia || currentAttributeIndex === null) return;
+
+                const $attributeMediaPreview = $(`.attribute-media-preview[data-index="${currentAttributeIndex}"]`);
+                const $attributeMediaId = $(`.attribute-media-id[data-index="${currentAttributeIndex}"]`);
+                const $attributeMediaInfo = $(
+                    `.attribute-selected-media-info[data-index="${currentAttributeIndex}"]`);
+
+                $attributeMediaId.val(selectedMedia.id);
+
+                // Update preview based on media type
+                if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i)) {
+                    $attributeMediaPreview.html(
+                        `<img src="${selectedMedia.url}" alt="${selectedMedia.name}" class="w-full h-full !object-scale-down rounded-lg">`
+                    );
+                } else {
+                    // Handle other file types
+                    let bgColor = 'bg-gray-200';
+                    let iconSvg = '';
+
+                    const fileExtension = selectedMedia.name.split('.').pop().toLowerCase();
+                    switch (fileExtension) {
+                        case 'pdf':
+                            bgColor = 'bg-red-100';
+                            iconSvg =
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                            break;
+                        case 'doc':
+                        case 'docx':
+                            bgColor = 'bg-blue-100';
+                            iconSvg =
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>';
+                            break;
+                        case 'xls':
+                        case 'xlsx':
+                            bgColor = 'bg-green-100';
+                            iconSvg =
+                                '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/>';
+                            break;
+                        default:
+                            bgColor = 'bg-gray-200';
+                            iconSvg =
+                                '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>';
+                    }
+
+                    $attributeMediaPreview.html(`
+                        <div class="w-full h-full flex items-center justify-center ${bgColor} rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                ${iconSvg}
+                            </svg>
+                        </div>
+                    `);
+                }
+
+                // Update selected media info
+                $attributeMediaInfo.find('.attribute-selected-name').text(selectedMedia.name);
+                $attributeMediaInfo.find('.attribute-selected-size').text(formatFileSize(selectedMedia.size));
+                $attributeMediaInfo.removeClass('hidden');
+
+                closeMediaLibrary();
+                currentAttributeIndex = null;
             }
 
             function applySelectedMedia() {
@@ -1285,14 +1661,12 @@
                 // Determine file type and show appropriate preview
                 const fileExtension = selectedMedia.name.split('.').pop().toLowerCase();
 
-                if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) ||
-                    (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('image/'))) {
+                if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i)) {
                     // Image files
                     $('#logo-preview').html(
-                        `<img src="${selectedMedia.url}" alt="${selectedMedia.name}" class="w-full h-full object-cover rounded-lg">`
+                        `<img src="${selectedMedia.url}" alt="${selectedMedia.name}" class="w-full h-full object-scale-down rounded-lg">`
                     );
-                } else if (selectedMedia.url.match(/\.(mp4|webm|ogg|mov|avi|wmv)$/i) ||
-                    (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('video/'))) {
+                } else if (selectedMedia.url.match(/\.(mp4|webm|ogg|mov|avi|wmv)$/i)) {
                     // Video files
                     $('#logo-preview').html(`
                 <div class="w-full h-full flex items-center justify-center bg-gray-200 rounded-lg">
@@ -1341,8 +1715,7 @@
                 }
 
                 // Update selected logo info
-                if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) ||
-                    (selectedMedia.mime_type && selectedMedia.mime_type.startsWith('image/'))) {
+                if (selectedMedia.url.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i)) {
                     // Show image preview
                     $('#selected-logo-info').html(`
                 <div class="flex items-center justify-between">
@@ -1440,16 +1813,13 @@
             }
 
             function handleFormErrorMessage(xhr) {
-                // Handle errors
                 if (xhr.status === 422) {
-
                     var errors = xhr.responseJSON.errors;
 
                     // Clear previous error messages
                     $('.validation-error-message').remove();
 
                     for (var field in errors) {
-
                         var message =
                             `<p class="!text-red-600 text-sm mt-1 validation-error-message " target="error-${field}">${errors[field][0]}</p>`;
 
@@ -1474,7 +1844,6 @@
                             }
                         }
                     }
-
                 } else {
                     toastr.error('An error occurred. Please try again.');
                 }
