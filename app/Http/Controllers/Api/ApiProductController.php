@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductDetailsResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProductTypeResource;
 use App\Models\Product;
@@ -94,5 +95,15 @@ class ApiProductController extends Controller
             'type' => new ProductTypeResource($type),
             'products' => ProductResource::collection($products)
         ]);
+    }
+
+    public function show($slug)
+    {
+        $product = Product::with(['media', 'brand', 'type', 'attributes.media'])
+            ->where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        return new ProductDetailsResource($product);
     }
 }

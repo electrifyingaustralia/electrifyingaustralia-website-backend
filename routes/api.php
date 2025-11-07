@@ -27,6 +27,7 @@ Route::prefix('v1')->group(function () {
 
     // ! Products
     Route::get('products', [ApiProductController::class, 'index']);
+    Route::get('products/{slug}', [ApiProductController::class, 'show']);
     Route::get('products/types', [ApiProductController::class, 'getProductTypes']);
 
     // ! Benefits
@@ -52,6 +53,7 @@ Route::prefix('v1')->group(function () {
 
     // ! Projects
     Route::get('projects', [ApiProjectController::class, 'index']);
+    Route::get('projects/{slug}', [ApiProjectController::class, 'show']);
 
     // ! Packages
     Route::get('packages', [ApiPackageController::class, 'index']);
