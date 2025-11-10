@@ -522,8 +522,10 @@
                         items: [
                             'heading', '|',
                             'bold', 'italic', 'underline', 'strikethrough', '|',
-                            'link', '|',
+                            'outdent', 'indent', '|',
+                            'link', 'blockQuote', '|',
                             'bulletedList', 'numberedList', '|',
+                            // 'insertTable', 'uploadImage', 'mediaEmbed', '|',
                             'undo', 'redo'
                         ]
                     },
