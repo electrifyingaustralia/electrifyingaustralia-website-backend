@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BlogDetailsResource;
 use App\Http\Resources\BlogResource;
 use App\Models\Blog;
 use Illuminate\Http\Request;
@@ -47,6 +48,16 @@ class ApiBlogController extends Controller
             ->get();
 
         return BlogResource::collection($blogs);
+    }
+
+    public function show($slug)
+    {
+        $blog = Blog::with(['media', 'category'])
+            ->where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        return new BlogDetailsResource($blog);
     }
 
     private function applySearch($query, $searchTerm)

@@ -1,8 +1,5 @@
 @extends('backend.layouts.app')
 @section('contents')
-    @push('styles')
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
-    @endpush
     <div class="flex-1 p-6">
         <div class="max-w-5xl mx-auto">
             <div class="flex justify-between items-center mb-5" aria-label="Breadcrumb">
@@ -103,7 +100,7 @@
                                         Blog Description
                                     </label>
 
-                                    <textarea id="summernote" name="description"
+                                    <textarea id="ckeditor" name="description"
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">{!! old('description', $blog->description) !!}</textarea>
 
                                     @error('description')
@@ -588,16 +585,49 @@
         #alt-name-container {
             transition: all 0.3s ease;
         }
+
+        .ck-editor__editable {
+            min-height: 150px;
+        }
     </style>
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('assets/js/ckeditor.js') }}"></script>
     <script>
         $(document).ready(function() {
             let selectedMedia = null;
             let currentTab = 'upload';
             let mediaLibraryItems = [];
             let isUploading = false;
+            let editor;
+
+            // Initialize CKEditor
+            ClassicEditor
+                .create(document.querySelector('#ckeditor'), {
+                    // CKEditor configuration
+                    toolbar: {
+                        items: [
+                            'heading', '|',
+                            'bold', 'italic', 'underline', 'strikethrough', '|',
+                            'link', '|',
+                            'bulletedList', 'numberedList', '|',
+                            'undo', 'redo'
+                        ]
+                    },
+                    language: 'en',
+                    link: {
+                        addTargetToExternalLinks: true,
+                        defaultProtocol: 'https://'
+                    },
+                    placeholder: 'Write your blog description here...'
+                })
+                .then(newEditor => {
+                    editor = newEditor;
+                })
+                .catch(error => {
+                    console.error('Error initializing CKEditor:', error);
+                });
 
             // Initialize with existing media data if available
             @if ($blog->media)
@@ -1323,8 +1353,9 @@
             $('#blog-form').on('submit', function(e) {
                 e.preventDefault();
 
-                // Update Summernote content before form submission
-                $('#summernote').val($('#summernote').summernote('code'));
+                if (editor) {
+                    editor.updateSourceElement();
+                }
 
                 var form = $(this);
                 var formData = new FormData(this);
@@ -1375,26 +1406,6 @@
             // Initialize on page load
             updateConfirmButtonState();
             updateUploadButtonState();
-        });
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#summernote').summernote({
-                placeholder: 'Write your blog description here...',
-                tabsize: 2,
-                height: 100,
-                toolbar: [
-                    // basic editing tools
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['insert', ['link']], //
-                    ['view', ['codeview', 'help']]
-                ]
-            });
         });
     </script>
 @endpush

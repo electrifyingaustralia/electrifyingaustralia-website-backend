@@ -70,7 +70,7 @@
                                     </label>
 
                                     <textarea name="title" remove="title"
-                                        class="summernote w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">{{ old('title', $hero->title) }}</textarea>
+                                        class="ckeditor w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">{{ old('title', $hero->title) }}</textarea>
                                     <div failed="title"></div>
                                 </div>
 
@@ -80,7 +80,7 @@
                                     </label>
 
                                     <textarea name="subtitle" remove="subtitle"
-                                        class="summernote w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">{{ old('subtitle', $hero->subtitle) }}</textarea>
+                                        class="ckeditor w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">{{ old('subtitle', $hero->subtitle) }}</textarea>
                                     <div failed="subtitle"></div>
                                 </div>
 
@@ -495,10 +495,15 @@
         #alt-name-container {
             transition: all 0.3s ease;
         }
+
+        .ck-editor__editable {
+            min-height: 150px;
+        }
     </style>
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('assets/js/ckeditor.js') }}"></script>
     <script>
         $(document).ready(function() {
 
@@ -519,6 +524,35 @@
             let currentTab = 'upload';
             let mediaLibraryItems = [];
             let isUploading = false;
+            let editors = [];
+
+            // Initialize all CKEditor instances
+            document.querySelectorAll('.ckeditor').forEach((element, index) => {
+                ClassicEditor
+                    .create(element, {
+                        toolbar: {
+                            items: [
+                                'heading', '|',
+                                'bold', 'italic', 'underline', 'strikethrough', '|',
+                                'link', '|',
+                                'bulletedList', 'numberedList', '|',
+                                'undo', 'redo'
+                            ]
+                        },
+                        language: 'en',
+                        link: {
+                            addTargetToExternalLinks: true,
+                            defaultProtocol: 'https://'
+                        },
+                        // placeholder: 'Write your blog description here...'
+                    })
+                    .then(newEditor => {
+                        editors[index] = newEditor;
+                    })
+                    .catch(error => {
+                        console.error('Error initializing CKEditor:', error);
+                    });
+            });
 
             // Initialize with existing media data if available
             @if ($hero->media)
@@ -1266,6 +1300,12 @@
             $('#hero-form').on('submit', function(e) {
                 e.preventDefault();
 
+                editors.forEach(editor => {
+                    if (editor) {
+                        editor.updateSourceElement();
+                    }
+                });
+
                 var form = $(this);
                 var formData = new FormData(this);
 
@@ -1308,7 +1348,7 @@
             updateUploadButtonState();
         });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
     <script>
         $(document).ready(function() {
             $('.summernote').summernote({
@@ -1327,5 +1367,5 @@
                 ]
             });
         });
-    </script>
+    </script> --}}
 @endpush

@@ -38,6 +38,7 @@ Route::prefix('v1')->group(function () {
 
     // ! Blogs
     Route::get('blogs', [ApiBlogController::class, 'index']);
+    Route::get('blogs/{slug}', [ApiBlogController::class, 'show']);
     Route::get('blog-categories', [ApiBlogCategoryController::class, 'index']);
     Route::get('blog-categories/{slug}/blogs', [ApiBlogCategoryController::class, 'getBlogsByCategory']);
 

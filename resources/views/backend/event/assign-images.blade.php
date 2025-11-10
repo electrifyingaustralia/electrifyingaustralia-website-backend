@@ -354,8 +354,24 @@
                 return bytes.toFixed(1) + ' ' + units[u];
             }
 
+            // Show loading state in selected images
+            function showSelectedImagesLoading() {
+                const $selectedList = $('#selected-images-list');
+                const $noImagesMessage = $('#no-images-message');
+
+                $noImagesMessage.addClass('hidden');
+                $selectedList.html(`
+                <div class="col-span-full text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-blue-500 text-2xl mb-2"></i>
+                    <p class="text-gray-500">Loading images...</p>
+                </div>
+            `);
+            }
+
             // Load existing event images
             function loadEventImages() {
+                showSelectedImagesLoading();
+
                 $.ajax({
                     url: '{{ route('admin.event.images', $event->id) }}',
                     method: 'GET',
@@ -363,9 +379,13 @@
                         selectedMediaItems = data || [];
                         renderSelectedImages();
                         updateMediaIdsInput();
+
+                        // Sync modal selections with current selections when opening modal
+                        modalSelectedMedia = [...selectedMediaItems];
                     },
                     error: function(error) {
                         console.error('Error loading event images:', error);
+                        renderSelectedImages(); // This will show no images message
                     }
                 });
             }
@@ -389,21 +409,21 @@
                     const previewHtml = isImage ?
                         `<img src="${media.url}" alt="${media.original_name || media.name}" class="w-full h-24 object-scale-down rounded">` :
                         `<div class="w-full h-24 flex items-center justify-center bg-gray-200 rounded">
-                    <i class="fas fa-file text-xl text-gray-600"></i>
-                </div>`;
+                <i class="fas fa-file text-xl text-gray-600"></i>
+            </div>`;
 
                     $selectedList.append(`
-                    <div class="media-item bg-white rounded-lg overflow-hidden shadow relative" data-media-id="${media.id}">
-                        ${previewHtml}
-                        <div class="p-2">
-                            <p class="text-xs font-medium truncate">${media.original_name || media.name}</p>
-                            ${media.alt_name ? `<p class="text-xs text-teal-600 truncate" title="Alt: ${media.alt_name}">${media.alt_name}</p>` : '<p class="text-xs text-gray-400 italic">No alt name</p>'}
-                        </div>
-                        <button type="button" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 remove-media" data-media-id="${media.id}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e81717" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                        </button>
+                <div class="media-item bg-white rounded-lg overflow-hidden shadow relative" data-media-id="${media.id}">
+                    ${previewHtml}
+                    <div class="p-2">
+                        <p class="text-xs font-medium truncate">${media.original_name || media.name}</p>
+                        ${media.alt_name ? `<p class="text-xs text-teal-600 truncate" title="Alt: ${media.alt_name}">${media.alt_name}</p>` : '<p class="text-xs text-gray-400 italic">No alt name</p>'}
                     </div>
-                `);
+                    <button type="button" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 remove-media" data-media-id="${media.id}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e81717" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </button>
+                </div>
+            `);
                 });
             }
 
@@ -430,6 +450,9 @@
                 selectedMediaItems = selectedMediaItems.filter(item => item.id !== mediaId);
                 renderSelectedImages();
                 updateMediaIdsInput();
+
+                // Also remove from modal selections
+                removeMediaFromModalSelection(mediaId);
             }
 
             // ========== UPLOAD PREVIEW & UPLOAD TAB FUNCTIONS ==========
@@ -503,49 +526,49 @@
                             `<img src="${media.url}" alt="${media.name}" class="w-full h-16 object-cover rounded">`;
                     } else if (file.type && file.type.startsWith('video/')) {
                         previewHtml = `
-                        <div class="w-full h-16 flex items-center justify-center bg-gray-200 rounded">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
-                                <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
-                                <rect x="2" y="6" width="14" height="12" rx="2"/>
-                            </svg>
-                        </div>
-                    `;
+                    <div class="w-full h-16 flex items-center justify-center bg-gray-200 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
+                            <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
+                            <rect x="2" y="6" width="14" height="12" rx="2"/>
+                        </svg>
+                    </div>
+                `;
                     } else if (['pdf'].includes(fileExtension)) {
                         previewHtml = `
-                        <div class="w-full h-16 flex items-center justify-center bg-red-100 rounded">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-red-600">
-                                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                            </svg>
-                        </div>
-                    `;
+                    <div class="w-full h-16 flex items-center justify-center bg-red-100 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-red-600">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        </svg>
+                    </div>
+                `;
                     } else {
                         previewHtml = `
-                        <div class="w-full h-16 flex items-center justify-center bg-gray-200 rounded">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file text-gray-600">
-                                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                            </svg>
-                        </div>
-                    `;
+                    <div class="w-full h-16 flex items-center justify-center bg-gray-200 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file text-gray-600">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                        </svg>
+                    </div>
+                `;
                     }
 
                     $filesGrid.append(`
-                    <div class="file-preview-item relative bg-white rounded-lg border border-gray-200 p-2">
-                        <div class="file-preview">
-                            ${previewHtml}
-                        </div>
-                        <div class="mt-1">
-                            <p class="text-xs font-medium truncate" title="${media.name}">${media.name}</p>
-                            <p class="text-xs text-gray-500">${humanFileSize(media.size || 0)}</p>
-                        </div>
-                        <button type="button" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1 remove-single-file" data-file-index="${index}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
-                            </svg>
-                        </button>
+                <div class="file-preview-item relative bg-white rounded-lg border border-gray-200 p-2">
+                    <div class="file-preview">
+                        ${previewHtml}
                     </div>
-                `);
+                    <div class="mt-1">
+                        <p class="text-xs font-medium truncate" title="${media.name}">${media.name}</p>
+                        <p class="text-xs text-gray-500">${humanFileSize(media.size || 0)}</p>
+                    </div>
+                    <button type="button" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1 remove-single-file" data-file-index="${index}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            `);
                 });
 
                 // Add event listeners for remove buttons
@@ -763,11 +786,11 @@
 
                 if (!loadMore) {
                     $mediaContent.html(`
-                    <div class="text-center py-12">
-                        <i class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i>
-                        <p class="mt-2 text-gray-600">Loading media library...</p>
-                    </div>
-                `);
+                <div class="text-center py-12">
+                    <i class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i>
+                    <p class="mt-2 text-gray-600">Loading media library...</p>
+                </div>
+            `);
                     currentPage = 1;
                     mediaLibraryItems = [];
                     hasMorePages = true;
@@ -777,8 +800,8 @@
                     // Show loading indicator at the bottom
                     if ($('#load-more-media').length) {
                         $('#load-more-media').prop('disabled', true).html(`
-                        <i class="fas fa-spinner fa-spin mr-2"></i> Loading...
-                    `);
+                    <i class="fas fa-spinner fa-spin mr-2"></i> Loading...
+                `);
                     }
                 }
 
@@ -862,73 +885,73 @@
                             `<img src="${media.url}" alt="${media.original_name || media.name}" class="w-full h-24 object-scale-down">`;
                     } else if (media.mime_type && media.mime_type.startsWith('video/')) {
                         previewHtml = `
-                <div class="w-full h-24 flex items-center justify-center bg-gray-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
-                        <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
-                        <rect x="2" y="6" width="14" height="12" rx="2"/>
-                    </svg>
-                </div>
-            `;
+            <div class="w-full h-24 flex items-center justify-center bg-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-video text-gray-600">
+                    <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
+                    <rect x="2" y="6" width="14" height="12" rx="2"/>
+                </svg>
+            </div>
+        `;
                     } else if (['pdf'].includes(fileExtension)) {
                         previewHtml = `
-                <div class="w-full h-24 flex items-center justify-center bg-red-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-red-600">
-                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                        <path d="M10 9H8"/>
-                        <path d="M16 13H8"/>
-                        <path d="M16 17H8"/>
-                    </svg>
-                </div>
-            `;
+            <div class="w-full h-24 flex items-center justify-center bg-red-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-red-600">
+                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                    <path d="M10 9H8"/>
+                    <path d="M16 13H8"/>
+                    <path d="M16 17H8"/>
+                </svg>
+            </div>
+        `;
                     } else if (['doc', 'docx'].includes(fileExtension)) {
                         previewHtml = `
-                <div class="w-full h-24 flex items-center justify-center bg-blue-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-blue-600">
-                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                        <path d="M10 9H8"/>
-                        <path d="M16 13H8"/>
-                        <path d="M16 17H8"/>
-                    </svg>
-                </div>
-            `;
+            <div class="w-full h-24 flex items-center justify-center bg-blue-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-blue-600">
+                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                    <path d="M10 9H8"/>
+                    <path d="M16 13H8"/>
+                    <path d="M16 17H8"/>
+                </svg>
+            </div>
+        `;
                     } else if (['xls', 'xlsx'].includes(fileExtension)) {
                         previewHtml = `
-                <div class="w-full h-24 flex items-center justify-center bg-green-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-table text-green-600">
-                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
-                        <path d="M3 9h18"/>
-                        <path d="M3 15h18"/>
-                        <path d="M9 3v18"/>
-                        <path d="M15 3v18"/>
-                    </svg>
-                </div>
-            `;
+            <div class="w-full h-24 flex items-center justify-center bg-green-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-table text-green-600">
+                    <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                    <path d="M3 9h18"/>
+                    <path d="M3 15h18"/>
+                    <path d="M9 3v18"/>
+                    <path d="M15 3v18"/>
+                </svg>
+            </div>
+        `;
                     } else {
                         previewHtml = `
-                <div class="w-full h-24 flex items-center justify-center bg-gray-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file text-gray-600">
-                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                    </svg>
-                </div>
-            `;
+            <div class="w-full h-24 flex items-center justify-center bg-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file text-gray-600">
+                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                </svg>
+            </div>
+        `;
                     }
 
                     html += `
-            <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md ${isSelected ? 'selected' : ''}"
-                data-media-id="${media.id}">
-                <div class="checkbox-container">
-                    <input type="checkbox" class="media-checkbox" data-media-id="${media.id}" ${isSelected ? 'checked' : ''}>
-                </div>
-                ${previewHtml}
-                <div class="p-2">
-                    <p class="text-xs text-center font-medium truncate">${media.original_name || media.name}</p>
-                    <p class="text-xs text-center font-medium text-teal-600 truncate">${media.alt_name}</p>
-                </div>
+        <div class="media-item bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md ${isSelected ? 'selected' : ''}"
+            data-media-id="${media.id}">
+            <div class="checkbox-container">
+                <input type="checkbox" class="media-checkbox" data-media-id="${media.id}" ${isSelected ? 'checked' : ''}>
             </div>
-        `;
+            ${previewHtml}
+            <div class="p-2">
+                <p class="text-xs text-center font-medium truncate">${media.original_name || media.name}</p>
+                <p class="text-xs text-center font-medium text-teal-600 truncate">${media.alt_name}</p>
+            </div>
+        </div>
+    `;
                 });
 
                 if (!append) {
@@ -970,20 +993,20 @@
                 if (hasMorePages && mediaLibraryItems.length > 0) {
                     if ($loadMoreBtn.length === 0) {
                         $mediaContent.after(`
-                        <div class="text-center mt-6">
-                            <button id="load-more-media" class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
-                                <i class="fas fa-plus mr-2"></i> Load More Media
-                            </button>
-                        </div>
-                    `);
+                    <div class="text-center mt-6">
+                        <button id="load-more-media" class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
+                            <i class="fas fa-plus mr-2"></i> Load More Media
+                        </button>
+                    </div>
+                `);
 
                         $('#load-more-media').on('click', function() {
                             loadMediaLibrary(currentSearchTerm, true);
                         });
                     } else {
                         $loadMoreBtn.prop('disabled', false).html(`
-                        <i class="fas fa-plus mr-2"></i> Load More Media
-                    `);
+                    <i class="fas fa-plus mr-2"></i> Load More Media
+                `);
                     }
                 } else {
                     $loadMoreBtn.remove();
@@ -991,35 +1014,35 @@
                     // Show "No more media" message if we have some items but no more pages
                     if (mediaLibraryItems.length > 0 && !hasMorePages) {
                         $mediaContent.after(`
-                        <div class="text-center mt-4 py-4 text-gray-500">
-                            <p>No more media to load</p>
-                        </div>
-                    `);
+                    <div class="text-center mt-4 py-4 text-gray-500">
+                        <p>No more media to load</p>
+                    </div>
+                `);
                     }
                 }
             }
 
             function showNoMediaMessage() {
                 $('#media-library-content').html(`
-                <div class="text-center py-12">
-                    <i class="fas fa-folder-open text-gray-400 text-4xl mb-4"></i>
-                    <h3 class="text-lg font-medium text-gray-700">No media files found</h3>
-                    <p class="text-gray-500 mt-2">Upload images to use as media</p>
-                </div>
-            `);
+            <div class="text-center py-12">
+                <i class="fas fa-folder-open text-gray-400 text-4xl mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-700">No media files found</h3>
+                <p class="text-gray-500 mt-2">Upload images to use as media</p>
+            </div>
+        `);
             }
 
             function showErrorLoadingMedia() {
                 $('#media-library-content').html(`
-                <div class="text-center py-12">
-                    <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
-                    <h3 class="text-lg font-medium text-gray-700">Error loading media</h3>
-                    <p class="text-gray-500 mt-2">Please try again</p>
-                    <button onclick="loadMediaLibrary()" class="mt-4 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg">
-                        Retry
-                    </button>
-                </div>
-            `);
+            <div class="text-center py-12">
+                <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-700">Error loading media</h3>
+                <p class="text-gray-500 mt-2">Please try again</p>
+                <button onclick="loadMediaLibrary()" class="mt-4 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg">
+                    Retry
+                </button>
+            </div>
+        `);
             }
 
             function toggleMediaSelection(mediaId) {
@@ -1092,26 +1115,27 @@
                 switchTab('upload');
                 setupDragAndDrop();
 
+                // Sync modal selections with current selections when opening modal
+                modalSelectedMedia = [...selectedMediaItems];
+
                 // Pre-load the media library in the background
                 if (mediaLibraryItems.length === 0) {
                     loadMediaLibrary();
+                } else {
+                    // If media library is already loaded, re-render to show current selections
+                    renderMediaLibrary(mediaLibraryItems, false);
                 }
             }
 
             function closeMediaLibrary() {
                 $('#media-library-modal').addClass('hidden');
                 clearUploadPreview();
-                // Reset modal selections when closing
-                modalSelectedMedia = [];
+                // Don't reset modal selections when closing - keep them for next time
             }
 
             function confirmMediaSelection() {
-                selectedMediaItems = selectedMediaItems.filter(item => {
-                    return !mediaLibraryItems.some(lib => lib.id === item.id);
-                });
-
-                // Add current modal selections
-                selectedMediaItems = selectedMediaItems.concat(modalSelectedMedia);
+                // Replace current selections with modal selections
+                selectedMediaItems = [...modalSelectedMedia];
 
                 renderSelectedImages();
                 updateMediaIdsInput();
