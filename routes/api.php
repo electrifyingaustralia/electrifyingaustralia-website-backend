@@ -27,6 +27,7 @@ Route::prefix('v1')->group(function () {
 
     // ! Products
     Route::get('products', [ApiProductController::class, 'index']);
+    Route::get('products/{slug}', [ApiProductController::class, 'show']);
     Route::get('products/types', [ApiProductController::class, 'getProductTypes']);
 
     // ! Benefits
@@ -37,6 +38,7 @@ Route::prefix('v1')->group(function () {
 
     // ! Blogs
     Route::get('blogs', [ApiBlogController::class, 'index']);
+    Route::get('blogs/{slug}', [ApiBlogController::class, 'show']);
     Route::get('blog-categories', [ApiBlogCategoryController::class, 'index']);
     Route::get('blog-categories/{slug}/blogs', [ApiBlogCategoryController::class, 'getBlogsByCategory']);
 
@@ -52,6 +54,7 @@ Route::prefix('v1')->group(function () {
 
     // ! Projects
     Route::get('projects', [ApiProjectController::class, 'index']);
+    Route::get('projects/{slug}', [ApiProjectController::class, 'show']);
 
     // ! Packages
     Route::get('packages', [ApiPackageController::class, 'index']);

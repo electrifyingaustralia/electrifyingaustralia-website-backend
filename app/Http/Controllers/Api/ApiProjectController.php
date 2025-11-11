@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProjectDetailsResource;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -44,5 +45,14 @@ class ApiProjectController extends Controller
         // dd(DB::getQueryLog());
 
         return ProjectResource::collection($projects);
+    }
+
+    public function show($slug)
+    {
+        $project = Project::with(['media', 'images', 'type'])
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        return new ProjectDetailsResource($project);
     }
 }

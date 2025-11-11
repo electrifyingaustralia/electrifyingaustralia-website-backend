@@ -1,8 +1,5 @@
 @extends('backend.layouts.app')
 @section('contents')
-    @push('styles')
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
-    @endpush
     <div class="flex-1 p-6">
         <div class="max-w-5xl mx-auto">
             <!-- Breadcrumb and navigation code remains the same -->
@@ -73,7 +70,7 @@
                                         Event Description
                                     </label>
 
-                                    <textarea id="summernote" name="description"
+                                    <textarea id="ckeditor" name="description"
                                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">{{ old('description') }}</textarea>
 
                                     @error('description')
@@ -370,10 +367,15 @@
         #alt-name-container {
             transition: all 0.3s ease;
         }
+
+        .ck-editor__editable {
+            min-height: 150px;
+        }
     </style>
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('assets/js/ckeditor.js') }}"></script>
     <script>
         $(document).ready(function() {
 
@@ -394,6 +396,37 @@
             let currentTab = 'upload';
             let mediaLibraryItems = [];
             let isUploading = false;
+
+            // Initialize CKEditor
+            let editor;
+
+            ClassicEditor
+                .create(document.querySelector('#ckeditor'), {
+                    // CKEditor configuration
+                    toolbar: {
+                        items: [
+                            'heading', '|',
+                            'bold', 'italic', 'underline', 'strikethrough', '|',
+                            'outdent', 'indent', '|',
+                            'link', 'blockQuote', '|',
+                            'bulletedList', 'numberedList', '|',
+                            // 'insertTable', 'uploadImage', 'mediaEmbed', '|',
+                            'undo', 'redo'
+                        ]
+                    },
+                    language: 'en',
+                    link: {
+                        addTargetToExternalLinks: true,
+                        defaultProtocol: 'https://'
+                    },
+                    placeholder: 'Write your event description here...'
+                })
+                .then(newEditor => {
+                    editor = newEditor;
+                })
+                .catch(error => {
+                    console.error('Error initializing CKEditor:', error);
+                });
 
             // ========== UPLOAD TAB FUNCTIONS ==========
             function setupDragAndDrop() {
@@ -1107,6 +1140,11 @@
             $('#event-form').on('submit', function(e) {
                 e.preventDefault();
 
+
+                if (editor) {
+                    editor.updateSourceElement();
+                }
+
                 var form = $(this);
                 var formData = new FormData(this);
 
@@ -1140,25 +1178,6 @@
                         handleFormErrorMessage(error);
                     }
                 });
-            });
-        });
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#summernote').summernote({
-                placeholder: 'Write your Event description here...',
-                tabsize: 2,
-                height: 100,
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['insert', ['link']], //
-                    ['view', ['codeview', 'help']]
-                ]
             });
         });
     </script>
