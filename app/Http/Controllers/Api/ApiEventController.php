@@ -14,7 +14,8 @@ class ApiEventController extends Controller
     {
         $allEvents = Event::with('media')
             ->where('is_active', true)
-            ->inRandomOrder()
+            // ->inRandomOrder()
+            ->limit(20)
             ->get();
 
         $groupStart = $allEvents->shift();
