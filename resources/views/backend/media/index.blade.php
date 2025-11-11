@@ -542,13 +542,23 @@
                         </svg>
                     </button>
 
-                    <!-- View button at top right corner -->
-                    <button class="view-media absolute top-2 right-2 p-2 bg-white rounded-full text-gray-800 hover:bg-gray-100 shadow-md transition-colors" data-url="${media.url}" title="View file">
+                    <!-- Copy URL button at bottom left corner -->
+                    <button class="copy-url absolute top-2 right-2 p-2 bg-white rounded-full text-gray-800 hover:bg-gray-100 shadow-md transition-colors" data-url="${media.url}" title="Copy URL">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 17.929H6A4 4 0 0 1 2 13.93v-1a4 4 0 0 1 4-4h1"/>
+                            <path d="M16 6.072h2a4 4 0 0 1 4 4v1a4 4 0 0 1-4 4h-1"/>
+                            <path d="M8 12h8"/>
+                        </svg>
+                    </button>
+
+                    <!-- View button at top right corner
+                    <button class="view-media absolute bottom-2 left-2 p-2 bg-white rounded-full text-gray-800 hover:bg-gray-100 shadow-md transition-colors" data-url="${media.url}" title="View file">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/>
                             <circle cx="12" cy="12" r="3"/>
                         </svg>
                     </button>
+                    -->
 
                     <!-- Delete button at bottom right corner -->
                     <button class="delete-media absolute bottom-2 right-2 p-2 !bg-red-600 rounded-full text-white hover:bg-red-700 shadow-md transition-colors" data-id="${media.id}" title="Delete file">
@@ -578,12 +588,12 @@
                 });
 
                 // Add event listeners to view buttons
-                document.querySelectorAll('.view-media').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const url = this.getAttribute('data-url');
-                        window.open(url, '_blank');
-                    });
-                });
+                // document.querySelectorAll('.view-media').forEach(button => {
+                //     button.addEventListener('click', function() {
+                //         const url = this.getAttribute('data-url');
+                //         window.open(url, '_blank');
+                //     });
+                // });
 
                 // Add event listeners to edit alt name buttons
                 document.querySelectorAll('.edit-alt-name').forEach(button => {
@@ -594,6 +604,72 @@
                         editAltNameModal.classList.remove('hidden');
                     });
                 });
+
+                // Add event listeners to copy URL buttons
+                document.querySelectorAll('.copy-url').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const url = this.getAttribute('data-url');
+                        copyToClipboard(url);
+                    });
+                });
+            }
+
+            function copyToClipboard(text) {
+                // Create a temporary textarea element
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+
+                // Select and copy the text
+                textarea.select();
+                textarea.setSelectionRange(0, 99999); // For mobile devices
+
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        showCopySuccessFeedback();
+                    } else {
+                        console.error('Failed to copy text');
+                    }
+                } catch (err) {
+                    console.error('Error copying text: ', err);
+                }
+
+                // Clean up
+                document.body.removeChild(textarea);
+            }
+
+            function showCopySuccessFeedback() {
+                // Create toast notification
+                const toast = document.createElement('div');
+                toast.className =
+                    'fixed top-4 right-4 bg-[#B2FBD2] text-black px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300 ease-in-out';
+                toast.textContent = 'Image URL copied successfully!';
+
+                // Add styles for the toast
+                toast.style.maxWidth = '300px';
+                toast.style.wordWrap = 'break-word';
+
+                document.body.appendChild(toast);
+
+                // Animate in
+                setTimeout(() => {
+                    toast.style.opacity = '1';
+                    toast.style.transform = 'translateY(0)';
+                }, 10);
+
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        if (document.body.contains(toast)) {
+                            document.body.removeChild(toast);
+                        }
+                    }, 300);
+                }, 3000);
             }
 
             function saveAltName() {
@@ -645,22 +721,22 @@
                         <div class="flex space-x-2">
                             ${data.current_page > 1 ?
                                 `<button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm transition-colors pagination-link" data-page="${data.current_page - 1}">
-                                                                Previous
-                                                            </button>` :
+                                                                                                                                                            Previous
+                                                                                                                                                        </button>` :
                                 `<span class="px-3 py-1 border border-gray-300 rounded-lg text-gray-400 cursor-not-allowed text-sm">
-                                                                Previous
-                                                            </span>`
+                                                                                                                                                            Previous
+                                                                                                                                                        </span>`
                             }
 
                             ${generatePageNumbers(data)}
 
                             ${data.current_page < data.last_page ?
                                 `<button class="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm transition-colors pagination-link" data-page="${data.current_page + 1}">
-                                                                Next
-                                                            </button>` :
+                                                                                                                                                            Next
+                                                                                                                                                        </button>` :
                                 `<span class="px-3 py-1 border border-gray-300 rounded-lg text-gray-400 cursor-not-allowed text-sm">
-                                                                Next
-                                                            </span>`
+                                                                                                                                                            Next
+                                                                                                                                                        </span>`
                             }
                         </div>
                     </div>
