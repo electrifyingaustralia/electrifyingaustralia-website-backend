@@ -133,11 +133,36 @@ class ProductService implements ProductServiceInterface
 
     private function updateProductAttributes(int $productId, array $attributes): void
     {
-        // First, delete all existing attributes for this product
+        // First, get existing attributes to preserve their media IDs
+        $existingAttributes = $this->productAttributeRepository->getByProductId($productId);
+
+        // Create a map of existing attributes by key for quick lookup
+        $existingAttributesMap = [];
+        foreach ($existingAttributes as $existingAttr) {
+            $existingAttributesMap[$existingAttr->attrs_key] = $existingAttr;
+        }
+
+        // Delete all existing attributes for this product
         $this->productAttributeRepository->deleteByProductId($productId);
 
-        // Then create new ones
-        $this->createProductAttributes($productId, $attributes);
+        // Then create new ones, preserving media IDs where possible
+        foreach ($attributes as $attribute) {
+            if (!empty($attribute['key'])) {
+                $mediaId = $attribute['media_id'] ?? null;
+
+                // If no media_id provided in the update, check if we had one previously
+                if (empty($mediaId) && isset($existingAttributesMap[$attribute['key']])) {
+                    $mediaId = $existingAttributesMap[$attribute['key']]->media_id;
+                }
+
+                $this->productAttributeRepository->create([
+                    'product_id' => $productId,
+                    'attrs_key' => $attribute['key'],
+                    'attrs_value' => $attribute['value'] ?? null,
+                    'media_id' => $mediaId, // Use preserved or new media_id
+                ]);
+            }
+        }
     }
 
     public function findProductWithAttributes(int $id): object

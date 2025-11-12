@@ -258,7 +258,7 @@
                                                                 </button>
                                                                 <input type="hidden" class="attribute-media-id"
                                                                     name="attributes[{{ $index + 1 }}][media_id]"
-                                                                    value="{{ old('attributes.' . ($index + 1) . '.media_id', $attribute->attrs_media) }}"
+                                                                    value="{{ old('attributes.' . ($index + 1) . '.media_id', $attribute->media_id) }}"
                                                                     data-index="{{ $index + 1 }}">
                                                             </div>
                                                         </div>
