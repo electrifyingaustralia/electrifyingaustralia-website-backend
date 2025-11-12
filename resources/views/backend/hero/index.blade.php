@@ -117,9 +117,11 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 max-w-[15rem] truncate">{!! $hero->title !!}</td>
+                                    <td class="px-6 py-4 max-w-[15rem] truncate">
+                                        {{ strip_tags($hero->title ?? 'No title') }}
+                                    </td>
                                     <td class="px-6 py-4 max-w-[10rem] truncate">
-                                        {!! $hero->subtitle ? Str::limit($hero->subtitle, 50) : 'No subtitle' !!}
+                                        {{ strip_tags($hero->subtitle ?? 'No subtitle') }}
                                     </td>
                                     <td class="px-6 py-4">
                                         <span
@@ -229,8 +231,7 @@
         function closeDeleteModal() {
             document.getElementById('delete-modal').classList.add('hidden');
         }
-    </script>
-    <script>
+
         function openVideoModal(videoUrl) {
             const modal = document.getElementById('video-modal');
             const video = document.getElementById('modal-video');

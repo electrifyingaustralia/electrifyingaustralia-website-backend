@@ -84,8 +84,14 @@
                                         Blog Description
                                     </label>
 
-                                    <textarea id="ckeditor" name="description" remove="description"
-                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">{{ old('description') }}</textarea>
+                                    @include('backend.components.ckeditor', [
+                                        'name' => 'description',
+                                        'value' => old('description'),
+                                        'height' => 400,
+                                        'toolbar' => 'full',
+                                        'class' =>
+                                            'w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent',
+                                    ])
                                     <div failed="description"></div>
                                 </div>
                                 <div>
@@ -447,15 +453,10 @@
         #alt-name-container {
             transition: all 0.3s ease;
         }
-
-        .ck-editor__editable {
-            min-height: 150px;
-        }
     </style>
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/ckeditor.js') }}"></script>
     <script>
         $(document).ready(function() {
 
@@ -476,37 +477,6 @@
             let currentTab = 'upload';
             let mediaLibraryItems = [];
             let isUploading = false;
-
-            // Initialize CKEditor
-            let editor;
-
-            ClassicEditor
-                .create(document.querySelector('#ckeditor'), {
-                    // CKEditor configuration
-                    toolbar: {
-                        items: [
-                            'heading', '|',
-                            'bold', 'italic', 'underline', 'strikethrough', '|',
-                            'outdent', 'indent', '|',
-                            'link', 'blockQuote', '|',
-                            'bulletedList', 'numberedList', '|',
-                            // 'insertTable', 'uploadImage', 'mediaEmbed', '|',
-                            'undo', 'redo'
-                        ]
-                    },
-                    language: 'en',
-                    link: {
-                        addTargetToExternalLinks: true,
-                        defaultProtocol: 'https://'
-                    },
-                    placeholder: 'Write your blog description here...'
-                })
-                .then(newEditor => {
-                    editor = newEditor;
-                })
-                .catch(error => {
-                    console.error('Error initializing CKEditor:', error);
-                });
 
             // ========== UPLOAD TAB FUNCTIONS ==========
             function setupDragAndDrop() {
@@ -1220,8 +1190,8 @@
             $('#blog-form').on('submit', function(e) {
                 e.preventDefault();
 
-                if (editor) {
-                    editor.updateSourceElement();
+                for (var instanceName in CKEDITOR.instances) {
+                    CKEDITOR.instances[instanceName].updateElement();
                 }
 
                 var form = $(this);

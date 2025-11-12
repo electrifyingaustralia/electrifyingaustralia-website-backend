@@ -57,8 +57,14 @@
                                         Hero title <span class="text-red-600 font-bold">*</span>
                                     </label>
 
-                                    <textarea name="title" remove="title"
-                                        class="ckeditor w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">{{ old('title') }}</textarea>
+                                    @include('backend.components.ckeditor', [
+                                        'name' => 'title',
+                                        'value' => old('title'),
+                                        'height' => 150,
+                                        'toolbar' => 'basic',
+                                        'class' =>
+                                            'w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent',
+                                    ])
                                     <div failed="title"></div>
                                 </div>
 
@@ -68,8 +74,14 @@
                                         Hero Subtitle <span class="text-red-600 font-bold">*</span>
                                     </label>
 
-                                    <textarea name="subtitle" remove="subtitle"
-                                        class="ckeditor w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">{{ old('subtitle') }}</textarea>
+                                    @include('backend.components.ckeditor', [
+                                        'name' => 'subtitle',
+                                        'value' => old('subtitle'),
+                                        'height' => 150,
+                                        'toolbar' => 'basic',
+                                        'class' =>
+                                            'w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent',
+                                    ])
                                     <div failed="subtitle"></div>
                                 </div>
 
@@ -370,15 +382,10 @@
         #alt-name-container {
             transition: all 0.3s ease;
         }
-
-        .ck-editor__editable {
-            min-height: 150px;
-        }
     </style>
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('assets/js/ckeditor.js') }}"></script>
     <script>
         $(document).ready(function() {
 
@@ -399,37 +406,6 @@
             let currentTab = 'upload';
             let mediaLibraryItems = [];
             let isUploading = false;
-
-            let editors = [];
-
-            // Initialize all CKEditor instances
-            document.querySelectorAll('.ckeditor').forEach((element, index) => {
-                ClassicEditor
-                    .create(element, {
-                        toolbar: {
-                            items: [
-                                'heading', '|',
-                                'bold', 'italic', 'underline', 'strikethrough', '|',
-                                'outdent', 'indent', '|',
-                                'link', 'blockQuote', '|',
-                                'bulletedList', 'numberedList', '|',
-                                // 'insertTable', 'uploadImage', 'mediaEmbed', '|',
-                                'undo', 'redo'
-                            ]
-                        },
-                        language: 'en',
-                        link: {
-                            addTargetToExternalLinks: true,
-                            defaultProtocol: 'https://'
-                        },
-                    })
-                    .then(newEditor => {
-                        editors[index] = newEditor;
-                    })
-                    .catch(error => {
-                        console.error('Error initializing CKEditor:', error);
-                    });
-            });
 
             // ========== UPLOAD TAB FUNCTIONS ==========
             function setupDragAndDrop() {
@@ -1143,11 +1119,11 @@
             $('#hero-form').on('submit', function(e) {
                 e.preventDefault();
 
-                editors.forEach(editor => {
-                    if (editor) {
-                        editor.updateSourceElement();
+                if (typeof CKEDITOR !== 'undefined') {
+                    for (var instanceName in CKEDITOR.instances) {
+                        CKEDITOR.instances[instanceName].updateElement();
                     }
-                });
+                }
 
                 var form = $(this);
                 var formData = new FormData(this);
