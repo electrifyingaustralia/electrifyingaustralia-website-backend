@@ -50,7 +50,7 @@ class ApiProductController extends Controller
             ->when($request->filled('search') || $request->filled('type'), function ($q) use ($request) {
                 $q->where(function ($query) use ($request) {
                     if ($request->filled('search')) {
-                        $query->where('name', 'LIKE', "%{$request->get('search')}%");
+                        $query->where('products.name', 'LIKE', "%{$request->get('search')}%");
                     }
                     if ($request->filled('type')) {
                         $query->orWhereHas('type', function ($typeQuery) use ($request) {
