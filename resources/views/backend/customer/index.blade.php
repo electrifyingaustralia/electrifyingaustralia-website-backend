@@ -97,7 +97,18 @@
                                         <div class="text-gray-500 text-xs">{{ $customer->subCategory->category ?? '' }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 capitalize">{{ $customer->type ?? 'N/A' }}</td>
+                                    @php
+                                        $typesColors = [
+                                            'quotation' => ' text-blue-800',
+                                            'contact' => ' text-green-800',
+                                            'service' => ' text-red-800',
+                                            'subscribe' => ' text-slate-800',
+                                        ];
+                                        $typeColor = $typesColors[$customer->type] ?? 'text-gray-800';
+                                    @endphp
+                                    <td class="px-6 py-4 capitalize font-bold {{ $typeColor }}">
+                                        {{ $customer->type ?? 'N/A' }}
+                                    </td>
                                     <td class="px-6 py-4">
                                         @php
                                             $statusColors = [
@@ -119,7 +130,7 @@
                                                 class="w-5 h-5 fill-green-500 hover:fill-green-700" viewBox="0 0 24 24">
                                                 <path
                                                     d="M12 5c-7.633 0-11 7-11 7s3.367 7 11 7 11-7 11-7-3.367-7-11-7zm0 12c-4.411 0-7.757-3.134-9.223-5
-                                                                                                                                                        1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z" />
+                                                                                                                                                                                                                                                            1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z" />
                                                 <circle cx="12" cy="12" r="3" />
                                             </svg>
                                         </a>

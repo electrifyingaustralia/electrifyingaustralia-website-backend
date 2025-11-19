@@ -27,4 +27,9 @@ class Customer extends Model
     {
         return trim($this->first_name . ' ' . $this->last_name);
     }
+
+    public function customerServices()
+    {
+        return $this->hasMany(CustomerService::class);
+    }
 }

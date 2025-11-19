@@ -37,7 +37,7 @@ class CustomerController extends Controller
             ]);
         }
 
-        $customer->load(['category', 'subCategory', 'answers.question']);
+        $customer->load(['category', 'subCategory', 'answers.question', 'customerServices']);
         $editMode = $request->has('edit') && $request->edit === 'true';
 
         return view('backend.customer.show', compact('customer', 'editMode'));

@@ -119,7 +119,7 @@ class ApiQuotationController extends Controller
             SendQuotationNotificationJob::dispatch($customer);
 
             return response()->json([
-                'message' => 'Customer quotation submitted successful!',
+                'message' => 'Customer quotation submitted successfully!',
             ]);
         } catch (Exception $e) {
             DB::rollBack();
