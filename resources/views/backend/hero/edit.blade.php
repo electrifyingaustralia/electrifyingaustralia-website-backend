@@ -36,7 +36,7 @@
                                     d="m1 9 4-4-4-4" />
                             </svg>
                             <span
-                                class="ml-1 text-lg font-medium text-gray-500 md:ml-2 truncate lg:!max-w-[15rem]">{!! $hero->title !!}</span>
+                                class="ml-1 text-lg font-medium text-gray-500 md:ml-2 truncate lg:!max-w-[15rem]">{{ strip_tags($hero->title) }}</span>
                         </div>
                     </li>
                 </ol>

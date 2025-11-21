@@ -93,7 +93,7 @@
                               <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
                               <circle cx="12" cy="13" r="2" />
                           </svg>
-                          <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Customer Quotation</span>
+                          <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Customer Quotation & Service</span>
                       </a>
                   </li>
 

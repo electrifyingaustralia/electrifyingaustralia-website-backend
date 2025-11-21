@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Jobs;
+
+use App\Mail\ServiceSubmittedMail;
+use App\Models\CustomerService;
+use App\Models\SettingOption;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
+
+
+
+class SendServiceNotificationJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public $customerService;
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(CustomerService $customerService)
+    {
+        $this->customerService = $customerService;
+    }
+
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
+    {
+        $adminEmail = SettingOption::getValue("admin_email", "example@gmail.com");
+        $bcc = SettingOption::getValue("admin_bcc", "");
+        $cc = SettingOption::getValue("admin_cc", "");
+
+        $mail = Mail::to($adminEmail);
+
+        if ($cc != "") $mail = $mail->cc(explode(",", $cc));
+        if ($bcc != "") $mail = $mail->bcc(explode(",", $bcc));
+
+        $mail->send(new ServiceSubmittedMail($this->customerService));
+    }
+}

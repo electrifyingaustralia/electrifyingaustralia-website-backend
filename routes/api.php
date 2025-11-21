@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ApiBlogCategoryController;
 use App\Http\Controllers\Api\ApiBlogController;
 use App\Http\Controllers\Api\ApiBrandController;
 use App\Http\Controllers\Api\ApiCustomerController;
+use App\Http\Controllers\Api\ApiCustomerServiceController;
 use App\Http\Controllers\Api\ApiEventController;
 use App\Http\Controllers\Api\ApiFaqController;
 use App\Http\Controllers\Api\ApiHeroController;
@@ -75,4 +76,5 @@ Route::prefix('v1')->group(function () {
 
     // ! Customers
     Route::post('/customers', [ApiCustomerController::class, 'store']);
+    Route::post('/customer-services', [ApiCustomerServiceController::class, 'store']);
 });
