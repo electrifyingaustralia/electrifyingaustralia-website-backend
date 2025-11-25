@@ -140,7 +140,7 @@ elseif (!empty($questionOptions)) {
                                         <label for="question_group" class="block text-sm font-medium text-gray-700 my-3">
                                             Question Group Title
                                         </label>
-                                        <input type="text" id="question_group" name="question_group" required
+                                        <input type="text" id="question_group" name="question_group"
                                             class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                             placeholder="Enter question group title"
                                             value="{{ old('question_group', $question->question_group) }}" />

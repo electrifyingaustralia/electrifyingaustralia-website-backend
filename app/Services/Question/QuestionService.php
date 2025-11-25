@@ -25,7 +25,7 @@ class QuestionService implements QuestionServiceInterface
                 'slug' => Str::slug($data['question']),
                 'is_required' => $data['is_required'],
                 'question_tag' => $data['question_tag'],
-                'question_group' => $data['question_group'] ?? Str::random(),
+                'question_group' => $data['question_group'] ?? $data['question'],
             ]);
 
             // Add options
@@ -54,7 +54,7 @@ class QuestionService implements QuestionServiceInterface
                 'slug' => Str::slug($data['question']),
                 'is_required' => $data['is_required'],
                 'question_tag' => $data['question_tag'],
-                'question_group' => $data['question_group'] ?? Str::random(),
+                'question_group' => $data['question_group'] ?? $data['question'],
             ]);
 
             // Remove existing options
