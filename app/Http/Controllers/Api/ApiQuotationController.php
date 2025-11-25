@@ -36,7 +36,7 @@ class ApiQuotationController extends Controller
 
         $questions = QuotationSection::with(["questions", "questions.options"])->findOrFail($id);
 
-        return $questions->questions;
+        return $questions->questions->groupBy("question_group");
     }
 
     public function saveCustomerQuotation(Request $request)
