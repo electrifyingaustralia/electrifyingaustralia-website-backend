@@ -16,6 +16,7 @@ class ApiEventController extends Controller
             ->where('is_active', true)
             // ->inRandomOrder()
             ->limit(20)
+            ->latest()
             ->get();
 
         $groupStart = $allEvents->shift();
