@@ -3,7 +3,7 @@
 return [
     'paths' => ['api/*'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'https://api.electrifyingaustralia.com.au,https://www.electrifyingaustralia.com.au,https://electrifyingaustralia.com.au')),
+    'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://172.16.181.231:3000')),
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
