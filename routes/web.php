@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', 'https://electrifyingaustralia.com.au');
 
 
-Route::domain('admin.electrifyingaustralia.com.au')->prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
 
     // !Login & Logout
     Route::controller(AdminAuthController::class)->group(function () {
