@@ -28,10 +28,10 @@ use App\Http\Controllers\Backend\TeamController;
 use App\Http\Controllers\SettingOptionController;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/admin/login');
+Route::redirect('/', 'https://electrifyingaustralia.com.au');
 
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::domain('admin.electrifyingaustralia.com.au')->prefix('admin')->name('admin.')->group(function () {
 
     // !Login & Logout
     Route::controller(AdminAuthController::class)->group(function () {
