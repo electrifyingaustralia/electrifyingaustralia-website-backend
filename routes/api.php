@@ -18,7 +18,7 @@ use App\Http\Controllers\Api\ApiStickyHeaderController;
 use App\Http\Controllers\Api\ApiTeamController;
 use Illuminate\Support\Facades\Route;
 
-Route::domain("api.electrifyingaustralia.com.au")->prefix('v1')->group(function () {
+Route::domain("electrifyingaustralia.com.au")->prefix('v1')->group(function () {
 
     // ! Heroes
     Route::get('heroes', [ApiHeroController::class, 'index']);
