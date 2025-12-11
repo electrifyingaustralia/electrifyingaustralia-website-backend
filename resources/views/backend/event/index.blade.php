@@ -127,7 +127,7 @@
                                                     viewBox="0 0 24 24">
                                                     <path
                                                         d="M12 5c-7.633 0-11 7-11 7s3.367 7 11 7 11-7 11-7-3.367-7-11-7zm0 12c-4.411 0-7.757-3.134-9.223-5
-                                                                                                1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z" />
+                                                                                                    1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z" />
                                                     <circle cx="12" cy="12" r="3" />
                                                 </svg>
                                             </a>
@@ -213,7 +213,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit"
-                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200">Delete</button>
+                        class="px-4 py-2 !bg-red-600 text-white rounded-lg hover:!bg-red-700 transition-colors duration-200">Delete</button>
                 </form>
             </div>
         </div>

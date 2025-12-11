@@ -79,36 +79,85 @@
                         <tbody class="divide-y divide-gray-200">
                             @forelse($heroes as $hero)
                                 <tr>
-                                    <td class=" px-5 py-4 font-medium text-gray-900">
+                                    <td class="px-6 py-4">
                                         <div class="flex items-center">
                                             @if (optional($hero->media)->url)
+                                                @php
+                                                    $url = $hero->media->url;
+                                                    $fileType = $hero->media->file_type; // 'video' or 'image'
+                                                @endphp
+
                                                 <div class="flex items-center space-x-2">
-                                                    <div class="relative group !cursor-pointer"
-                                                        onclick="openVideoModal('{{ $hero->media->url }}')">
+                                                    @if ($fileType === 'video')
+                                                        <!-- Video thumbnail -->
+                                                        <div class="relative group !cursor-pointer"
+                                                            onclick="openVideoModal('{{ $url }}')">
+                                                            <div
+                                                                class="w-20 h-12 bg-gray-200 rounded flex items-center justify-center">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="lucide lucide-video text-gray-600">
+                                                                    <path
+                                                                        d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5" />
+                                                                    <rect x="2" y="6" width="14" height="12"
+                                                                        rx="2" />
+                                                                </svg>
+                                                            </div>
+                                                            <div class="absolute inset-0 flex items-center justify-center">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="28"
+                                                                    height="28" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="text-white lucide lucide-play-circle bg-teal-600 rounded-full p-1">
+                                                                    <circle cx="12" cy="12" r="10" />
+                                                                    <polygon points="10 8 16 12 10 16 10 8" />
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    @elseif($fileType === 'image')
+                                                        <!-- Image thumbnail -->
+                                                        <div class="relative group !cursor-pointer"
+                                                            onclick="openImageModal('{{ $url }}')">
+                                                            <div
+                                                                class="w-20 h-12 bg-gray-200 rounded overflow-hidden flex items-center justify-center">
+                                                                <img src="{{ $url }}" alt="Hero Image"
+                                                                    class="w-full h-full object-cover hover:opacity-90 transition-opacity">
+                                                            </div>
+                                                            <div
+                                                                class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                                <div class="bg-black/50 rounded p-1">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                        height="20" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="white" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="lucide lucide-maximize-2">
+                                                                        <polyline points="15 3 21 3 21 9" />
+                                                                        <polyline points="9 21 3 21 3 15" />
+                                                                        <line x1="21" y1="3"
+                                                                            x2="14" y2="10" />
+                                                                        <line x1="3" y1="21"
+                                                                            x2="10" y2="14" />
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                        <!-- Unknown file type -->
                                                         <div
                                                             class="w-20 h-12 bg-gray-200 rounded flex items-center justify-center">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                 height="24" viewBox="0 0 24 24" fill="none"
                                                                 stroke="currentColor" stroke-width="2"
                                                                 stroke-linecap="round" stroke-linejoin="round"
-                                                                class="lucide lucide-video text-gray-600">
+                                                                class="lucide lucide-file text-gray-600">
                                                                 <path
-                                                                    d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5" />
-                                                                <rect x="2" y="6" width="14" height="12"
-                                                                    rx="2" />
+                                                                    d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                                                                <path d="M14 2v4a2 2 0 0 0 2 2h4" />
                                                             </svg>
                                                         </div>
-                                                        <div class="absolute inset-0 flex items-center justify-center">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="28"
-                                                                height="28" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="text-white lucide lucide-play-circle bg-teal-600 rounded-full p-1">
-                                                                <circle cx="12" cy="12" r="10" />
-                                                                <polygon points="10 8 16 12 10 16 10 8" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
+                                                    @endif
                                                 </div>
                                             @else
                                                 <div class="flex items-center space-x-3">
@@ -218,10 +267,28 @@
             </video>
         </div>
     </div>
+
+    <!-- Image Modal -->
+    <div id="image-modal"
+        class="fixed inset-0 bg-black/30 bg-opacity-75 flex items-center justify-center hidden z-50 p-4">
+        <div class="bg-black rounded-lg w-full max-w-4xl relative">
+            <button onclick="closeImageModal()" class="absolute -top-10 right-0 text-white hover:text-gray-300 z-10">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="lucide lucide-x">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                </svg>
+            </button>
+            <img id="modal-image" class="w-full h-auto rounded-lg max-h-[85vh] object-contain" src=""
+                alt="Full size image">
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
     <script>
+        // Delete modal functions
         function confirmDelete(id) {
             const form = document.getElementById('delete-form');
             form.action = `/admin/hero/${id}`;
@@ -232,6 +299,7 @@
             document.getElementById('delete-modal').classList.add('hidden');
         }
 
+        // Video modal functions
         function openVideoModal(videoUrl) {
             const modal = document.getElementById('video-modal');
             const video = document.getElementById('modal-video');
@@ -254,17 +322,48 @@
             modal.classList.add('hidden');
         }
 
-        // Close modal when clicking outside
-        document.getElementById('video-modal').addEventListener('click', (e) => {
+        // Image modal functions
+        function openImageModal(imageUrl) {
+            const modal = document.getElementById('image-modal');
+            const image = document.getElementById('modal-image');
+
+            image.src = imageUrl;
+            modal.classList.remove('hidden');
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('image-modal');
+            const image = document.getElementById('modal-image');
+
+            image.src = '';
+            modal.classList.add('hidden');
+        }
+
+        // Close modals when clicking outside
+        document.getElementById('video-modal')?.addEventListener('click', (e) => {
             if (e.target.id === 'video-modal') {
                 closeVideoModal();
             }
         });
 
-        // Close modal with Escape key
+        document.getElementById('image-modal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'image-modal') {
+                closeImageModal();
+            }
+        });
+
+        document.getElementById('delete-modal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'delete-modal') {
+                closeDeleteModal();
+            }
+        });
+
+        // Close modals with Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeVideoModal();
+                closeImageModal();
+                closeDeleteModal();
             }
         });
     </script>
