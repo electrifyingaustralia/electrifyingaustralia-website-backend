@@ -12,4 +12,9 @@ class Package extends Model
     {
         return $this->hasMany(PackageFeature::class);
     }
+
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
 }

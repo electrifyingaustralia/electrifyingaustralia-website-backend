@@ -17,15 +17,39 @@ class QuotationValidationRequest extends FormRequest
 
         if ($action === 'contact') {
             return [
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:255',
-                'message' => 'nullable|string',
+                'first_name' => [
+                    'required',
+                    'string',
+                    'max:255'
+                ],
+                'last_name' => [
+                    'required',
+                    'string',
+                    'max:255'
+                ],
+                'email' => [
+                    'required',
+                    'email',
+                    'max:255'
+                ],
+                'phone' => [
+                    'required',
+                    'string',
+                    'max:255'
+                ],
+                'message' => [
+                    'nullable',
+                    'string'
+                ],
             ];
         }
 
         return [
+            'package_id' => [
+                'nullable',
+                'integer',
+                'exists:packages,id'
+            ],
             'email' => 'required|email|max:255',
         ];
     }
