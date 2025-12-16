@@ -13,8 +13,45 @@ class QuotationValidationRequest extends FormRequest
 
     public function rules(): array
     {
-        $action = $this->input('action');
+        if ($this->filled('package_id')) {
+            return [
+                'package_id' => [
+                    'required',
+                    'integer',
+                    'exists:packages,id'
+                ],
 
+                'first_name' => [
+                    'required',
+                    'string',
+                    'max:255'
+                ],
+
+                'last_name' => [
+                    'required',
+                    'string',
+                    'max:255'
+                ],
+
+                'email' => [
+                    'required',
+                    'email',
+                    'max:255'
+                ],
+
+                'phone' => [
+                    'required',
+                    'string',
+                    'max:255'
+                ],
+
+                'message' => [
+                    'nullable',
+                    'string'
+                ],
+            ];
+        }
+        $action = $this->input('action');
         if ($action === 'contact') {
             return [
                 'first_name' => [
@@ -22,21 +59,25 @@ class QuotationValidationRequest extends FormRequest
                     'string',
                     'max:255'
                 ],
+
                 'last_name' => [
                     'required',
                     'string',
                     'max:255'
                 ],
+
                 'email' => [
                     'required',
                     'email',
                     'max:255'
                 ],
+
                 'phone' => [
                     'required',
                     'string',
                     'max:255'
                 ],
+
                 'message' => [
                     'nullable',
                     'string'
@@ -45,12 +86,11 @@ class QuotationValidationRequest extends FormRequest
         }
 
         return [
-            'package_id' => [
-                'nullable',
-                'integer',
-                'exists:packages,id'
+            'email' => [
+                'required',
+                'email',
+                'max:255'
             ],
-            'email' => 'required|email|max:255',
         ];
     }
 }

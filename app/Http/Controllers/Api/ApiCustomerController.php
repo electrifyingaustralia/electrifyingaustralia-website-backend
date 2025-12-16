@@ -16,10 +16,10 @@ class ApiCustomerController extends Controller
         $data = $request->validated();
 
         // $data["type"] = isset($data["first_name"]) ? "contact" : "subscribe";
-        if (isset($data["first_name"])) {
-            $data["type"] = "contact";
-        } elseif (isset($data["package_id"])) {
+        if (isset($data["package_id"])) {
             $data["type"] = "package";
+        } elseif (isset($data["first_name"])) {
+            $data["type"] = "contact";
         } else {
             $data["type"] = "subscribe";
         }
