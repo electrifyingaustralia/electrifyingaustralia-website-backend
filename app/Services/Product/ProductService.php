@@ -11,7 +11,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-
 class ProductService implements ProductServiceInterface
 {
     public function __construct(
@@ -92,14 +91,11 @@ class ProductService implements ProductServiceInterface
 
             $data['slug'] = Str::slug($data['name']);
 
-            // Extract attributes from data before updating product
             $attributes = $data['attributes'] ?? [];
-            unset($data['attributes']); // Remove attributes from product data
+            unset($data['attributes']);
 
-            // Update the product
             $product = $this->productRepository->update($id, $data);
 
-            // Update attributes if they exist
             if (isset($attributes)) {
                 $this->updateProductAttributes($product->id, $attributes);
             }
@@ -125,7 +121,6 @@ class ProductService implements ProductServiceInterface
                     'product_id' => $productId,
                     'attrs_key' => $attribute['key'],
                     'attrs_value' => $attribute['value'] ?? null,
-                    'media_id' => $attribute['media_id'] ?? null,
                 ]);
             }
         }
@@ -133,33 +128,21 @@ class ProductService implements ProductServiceInterface
 
     private function updateProductAttributes(int $productId, array $attributes): void
     {
-        // First, get existing attributes to preserve their media IDs
         $existingAttributes = $this->productAttributeRepository->getByProductId($productId);
 
-        // Create a map of existing attributes by key for quick lookup
         $existingAttributesMap = [];
         foreach ($existingAttributes as $existingAttr) {
             $existingAttributesMap[$existingAttr->attrs_key] = $existingAttr;
         }
 
-        // Delete all existing attributes for this product
         $this->productAttributeRepository->deleteByProductId($productId);
 
-        // Then create new ones, preserving media IDs where possible
         foreach ($attributes as $attribute) {
             if (!empty($attribute['key'])) {
-                $mediaId = $attribute['media_id'] ?? null;
-
-                // If no media_id provided in the update, check if we had one previously
-                if (empty($mediaId) && isset($existingAttributesMap[$attribute['key']])) {
-                    $mediaId = $existingAttributesMap[$attribute['key']]->media_id;
-                }
-
                 $this->productAttributeRepository->create([
                     'product_id' => $productId,
                     'attrs_key' => $attribute['key'],
                     'attrs_value' => $attribute['value'] ?? null,
-                    'media_id' => $mediaId, // Use preserved or new media_id
                 ]);
             }
         }
@@ -168,8 +151,28 @@ class ProductService implements ProductServiceInterface
     public function findProductWithAttributes(int $id): object
     {
         $product = $this->productRepository->find($id);
-        $product->attributes = $this->productAttributeRepository->getByProductIdWithMedia($id);
+        $product->attributes = $this->productAttributeRepository->getByProductId($id);
 
         return $product;
+    }
+
+    public function attachImageToProduct(int $productId, int $mediaId): void
+    {
+        $this->productRepository->attachImage($productId, $mediaId);
+    }
+
+    public function detachImageFromProduct(int $productId, int $mediaId): void
+    {
+        $this->productRepository->detachImage($productId, $mediaId);
+    }
+
+    public function syncProductImages(int $productId, array $mediaIds): void
+    {
+        $this->productRepository->syncImages($productId, $mediaIds);
+    }
+
+    public function getProductImages(int $productId)
+    {
+        return $this->productRepository->getImages($productId);
     }
 }

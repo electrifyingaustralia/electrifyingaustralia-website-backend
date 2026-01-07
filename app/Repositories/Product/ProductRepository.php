@@ -87,4 +87,28 @@ class ProductRepository implements ProductRepositoryInterface
 
         return $q;
     }
+
+    public function attachImage(int $productId, int $mediaId): void
+    {
+        $product = $this->find($productId);
+        $product->images()->attach($mediaId);
+    }
+
+    public function detachImage(int $productId, int $mediaId): void
+    {
+        $product = $this->find($productId);
+        $product->images()->detach($mediaId);
+    }
+
+    public function syncImages(int $productId, array $mediaIds): void
+    {
+        $product = $this->find($productId);
+        $product->images()->sync($mediaIds);
+    }
+
+    public function getImages(int $productId)
+    {
+        $product = $this->find($productId);
+        return $product->images;
+    }
 }

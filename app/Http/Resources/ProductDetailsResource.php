@@ -50,10 +50,15 @@ class ProductDetailsResource extends JsonResource
                     return [
                         'key' => $attribute->attrs_key,
                         'value' => $attribute->attrs_value,
-                        'media' => $attribute->media ? [
-                            'media_url' => getAssetFileUrl("media", $attribute->media->file_name, disk: $attribute->media->disk),
-                            'alt_name' => $attribute->media->alt_name,
-                        ] : null,
+                    ];
+                });
+            }),
+
+            'images' => $this->whenLoaded("images", function ($images) {
+                return $images->map(function ($image) {
+                    return [
+                        'media_url' => getAssetFileUrl("media", $image->file_name, disk: $image->disk),
+                        'alt_name' => $image->alt_name,
                     ];
                 });
             }),

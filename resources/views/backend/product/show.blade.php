@@ -71,15 +71,14 @@
                             <p class="text-gray-700 bg-gray-50 p-4 rounded-lg">{{ $product->short_description }}</p>
                         </div>
 
-                        <!-- Product Attributes Section with Media -->
+                        <!-- Product Attributes Section -->
                         @if ($product->attributes && $product->attributes->count() > 0)
                             <div class="mt-6">
                                 <h3 class="text-lg font-semibold text-gray-800 mb-3">Product Attributes</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     @foreach ($product->attributes as $attribute)
                                         <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                                            <div class="flex justify-between mb-3">
-                                                {{-- <div class=""> --}}
+                                            <div class="mb-3">
                                                 <h4 class="text-sm font-medium text-gray-900 mb-1">
                                                     <span class="text-sm text-gray-600">Key:</span>
                                                     {{ $attribute->attrs_key }}
@@ -88,92 +87,7 @@
                                                     <span class="text-sm text-gray-600">Value:</span>
                                                     {{ $attribute->attrs_value ?? 'Not specified' }}
                                                 </p>
-                                                {{-- </div> --}}
                                             </div>
-
-                                            <!-- Attribute Media Display -->
-                                            @if ($attribute->media)
-                                                <div
-                                                    class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
-                                                    <div class="">
-                                                        <p class="text-xs font-medium text-gray-500 mb-2">Attribute Media:
-                                                        </p>
-                                                    </div>
-                                                    <div class="flex items-center justify-between space-x-3">
-                                                        @if ($attribute->media->is_image)
-                                                            <div class="flex-shrink-0">
-                                                                <img src="{{ $attribute->media->url }}"
-                                                                    alt="{{ $attribute->media->alt_name }}"
-                                                                    class="w-16 h-16 object-scale-down rounded-lg border border-gray-200">
-                                                            </div>
-                                                        @elseif($attribute->media->is_video)
-                                                            <div
-                                                                class="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="text-gray-400">
-                                                                    <path
-                                                                        d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5" />
-                                                                    <rect x="2" y="6" width="14" height="12"
-                                                                        rx="2" />
-                                                                </svg>
-                                                            </div>
-                                                        @else
-                                                            <div
-                                                                class="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
-                                                                @php
-                                                                    $fileExtension = pathinfo(
-                                                                        $attribute->media->original_name,
-                                                                        PATHINFO_EXTENSION,
-                                                                    );
-                                                                @endphp
-                                                                <div class="text-center">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                        height="20" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="text-gray-400 mx-auto">
-                                                                        <path
-                                                                            d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-                                                                        <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                                                                    </svg>
-                                                                    <span
-                                                                        class="text-xs text-gray-500 mt-1 block">{{ strtoupper($fileExtension) }}</span>
-                                                                </div>
-                                                            </div>
-                                                        @endif
-                                                        {{-- <div class="flex-1 min-w-0">
-                                                            <p class="text-sm font-medium text-gray-900 truncate">
-                                                                {{ $attribute->media->original_name }}
-                                                            </p>
-                                                            <p class="text-xs text-gray-500">
-                                                                {{ $attribute->media->file_size ? formatFileSize($attribute->media->file_size) : 'Unknown size' }}
-                                                            </p>
-                                                            @if ($attribute->media->alt_name)
-                                                                <p class="text-xs text-gray-400 mt-1 truncate">
-                                                                    Alt: {{ $attribute->media->alt_name }}
-                                                                </p>
-                                                            @endif
-                                                        </div> --}}
-                                                    </div>
-                                                </div>
-                                            @else
-                                                <div class="mt-3 pt-3 border-t border-gray-100">
-                                                    <div class="flex items-center justify-center py-2">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                            height="16" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" class="text-gray-400 mr-2">
-                                                            <path
-                                                                d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-                                                            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                                                        </svg>
-                                                        <span class="text-xs text-gray-500">No media attached</span>
-                                                    </div>
-                                                </div>
-                                            @endif
                                         </div>
                                     @endforeach
                                 </div>
@@ -229,8 +143,18 @@
                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Product Details</h3>
 
                             <div class="mb-4">
-                                <img src="{{ optional($product->media)->url }}" alt="Solar Panel"
-                                    class="w-full h-48 object-scale-down rounded-lg">
+                                @if ($product->media)
+                                    <img src="{{ $product->media->url }}" alt="{{ $product->name }}"
+                                        class="w-full h-48 object-scale-down rounded-lg">
+                                @else
+                                    <div class="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="space-y-3">
@@ -249,11 +173,13 @@
                                     <p class="text-gray-800">{{ $product->type->name }}</p>
                                 </div>
 
-                                <div>
-                                    <p class="text-sm text-gray-600">Product Link</p>
-                                    <a href="{{ $product->product_link }}" target="_blank"
-                                        class="text-teal-600 hover:text-teal-800 break-words">{{ $product->product_link }}</a>
-                                </div>
+                                @if ($product->product_link)
+                                    <div>
+                                        <p class="text-sm text-gray-600">Product Link</p>
+                                        <a href="{{ $product->product_link }}" target="_blank"
+                                            class="text-teal-600 hover:text-teal-800 break-words">{{ $product->product_link }}</a>
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="mt-6 pt-4 border-t border-gray-200">
@@ -276,15 +202,3 @@
         </div>
     </div>
 @endsection
-
-@push('styles')
-    <style>
-        .attribute-media-preview {
-            transition: all 0.3s ease;
-        }
-
-        .attribute-media-preview:hover {
-            transform: scale(1.05);
-        }
-    </style>
-@endpush

@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductAttribute extends Model
+class ProductImage extends Model
 {
+    protected $table = 'product_images';
     protected $guarded = [];
 
     public function product()
@@ -13,8 +14,8 @@ class ProductAttribute extends Model
         return $this->belongsTo(Product::class);
     }
 
-    // public function media()
-    // {
-    //     return $this->belongsTo(MediaLibrary::class, 'media_id');
-    // }
+    public function media()
+    {
+        return $this->belongsTo(MediaLibrary::class);
+    }
 }

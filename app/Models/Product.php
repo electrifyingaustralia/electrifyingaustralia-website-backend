@@ -30,4 +30,10 @@ class Product extends Model
     {
         return $this->hasMany(ProductAttribute::class);
     }
+
+    public function images()
+    {
+        return $this->belongsToMany(MediaLibrary::class, 'product_images', 'product_id', 'media_id')
+            ->withTimestamps();
+    }
 }

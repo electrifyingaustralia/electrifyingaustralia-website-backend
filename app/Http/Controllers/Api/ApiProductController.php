@@ -99,7 +99,7 @@ class ApiProductController extends Controller
 
     public function show($slug)
     {
-        $product = Product::with(['media', 'brand', 'type', 'attributes.media'])
+        $product = Product::with(['media', 'brand', 'type', 'attributes', 'images'])
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();

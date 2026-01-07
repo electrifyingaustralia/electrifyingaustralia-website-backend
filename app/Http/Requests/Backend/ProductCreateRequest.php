@@ -74,10 +74,10 @@ class ProductCreateRequest extends BaseRequest
                 'max:255'
             ],
 
-            'attributes.*.media_id' => [
-                'nullable',
-                'exists:media_libraries,id'
-            ],
+            // 'attributes.*.media_id' => [
+            //     'nullable',
+            //     'exists:media_libraries,id'
+            // ],
 
         ];
     }
