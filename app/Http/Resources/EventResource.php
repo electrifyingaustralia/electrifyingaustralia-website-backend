@@ -20,7 +20,7 @@ class EventResource extends JsonResource
                     'alt_name' => $media->alt_name,
                 ];
             }),
-            'is_active' => $this->is_active,
+            // 'is_active' => $this->is_active,
         ];
     }
 }
