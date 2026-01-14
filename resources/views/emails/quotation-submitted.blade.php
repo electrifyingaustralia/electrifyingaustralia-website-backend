@@ -116,6 +116,36 @@
             font-size: 12px;
             font-weight: 600;
         }
+
+        /* New styles for package section */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .feature-check {
+            color: #10b981;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .best-deal-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
     </style>
 </head>
 
@@ -206,6 +236,46 @@
                 </table>
             </div>
 
+            @if ($customer->package)
+                <div class="section">
+                    <div class="section-title">
+                        Selected Package
+                        @if ($customer->package->is_best_deal)
+                            <span class="best-deal-badge">🔥 Best Deal</span>
+                        @endif
+                    </div>
+                    <table>
+                        <tr>
+                            <td class="label">Package Name</td>
+                            <td class="value">
+                                <strong>{{ $customer->package->name }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label">Package Description</td>
+                            <td class="value">
+                                {{ $customer->package->subtitle }}
+                            </td>
+                        </tr>
+                        @if ($customer->package->features->count() > 0)
+                            <tr>
+                                <td class="label">Package Features</td>
+                                <td class="value">
+                                    <ul class="feature-list">
+                                        @foreach ($customer->package->features as $feature)
+                                            <li class="feature-item">
+                                                <span class="feature-check">✓</span>
+                                                {{ $feature->feature }}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                            </tr>
+                        @endif
+                    </table>
+                </div>
+            @endif
+
             <div class="section">
                 <div class="section-title">Quotation Summary</div>
                 <table>
@@ -217,7 +287,15 @@
                     </tr>
                     <tr>
                         <td class="label">Quotation Type</td>
-                        <td class="value">{{ $customer->type ?? 'General' }}</td>
+                        <td class="value">
+                            @if ($customer->package)
+                                <span class="badge" style="background: #10b981; color: white;">
+                                    Package: {{ $customer->package->name }}
+                                </span>
+                            @else
+                                {{ $customer->type ?? 'General' }}
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <td class="label">Status</td>
@@ -275,14 +353,6 @@
                                 </tr>
                             @endif
                         @endforeach
-
-                        {{-- @if ($customer->answers->count() > 3)
-                            <tr>
-                                <td colspan="2" style="text-align: center; padding-top: 15px;">
-                                    <em>... and {{ $customer->answers->count() - 3 }} more questions</em>
-                                </td>
-                            </tr>
-                        @endif --}}
                     </table>
                 </div>
             @endif

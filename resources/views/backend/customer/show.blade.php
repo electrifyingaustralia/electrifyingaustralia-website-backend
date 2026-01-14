@@ -152,6 +152,19 @@
                             <p class="text-gray-900">{{ $customer->subCategory->category ?? 'N/A' }}</p>
                         </div>
                         <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Package</label>
+                            @if ($customer->package)
+                                <p class="text-gray-900 font-medium">{{ $customer->package->name }}</p>
+                                @if ($customer->package->is_best_deal)
+                                    <span class="text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full">
+                                        Best Deal
+                                    </span>
+                                @endif
+                            @else
+                                <p class="text-gray-500">N/A</p>
+                            @endif
+                        </div>
+                        <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
                             <p class="text-gray-900">{{ $customer->type ?? 'N/A' }}</p>
                         </div>
@@ -173,13 +186,52 @@
                             <label class="block text-sm font-medium text-gray-700 mb-1">Submitted On</label>
                             <p class="text-gray-900">{{ $customer->created_at->format('M d, Y \a\t h:i A') }}</p>
                         </div>
-                        <div>
+                        <div class="md:col-span-2 lg:col-span-3">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
                             <p class="text-gray-900">{{ $customer->message ?? 'N/A' }}</p>
                         </div>
                     </div>
                 @endif
             </div>
+
+            {{-- Package Information Section --}}
+            @if ($customer->package)
+                <div class="bg-white rounded-lg shadow mb-6">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold text-gray-800">Selected Package Details</h2>
+                        @if ($customer->package->is_best_deal)
+                            <span class="inline-block mt-1 px-3 py-1 text-sm bg-amber-100 text-amber-800 rounded-full">
+                                🔥 Best Deal Package
+                            </span>
+                        @endif
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-6">
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $customer->package->name }}</h3>
+                            <p class="text-gray-600">{{ $customer->package->subtitle }}</p>
+                        </div>
+
+                        @if ($customer->package->features->count() > 0)
+                            <div>
+                                <h4 class="font-medium text-gray-700 mb-3">Package Features</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    @foreach ($customer->package->features as $feature)
+                                        <div class="flex items-start">
+                                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="text-gray-700">{{ $feature->feature }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endif
 
             {{-- Quotation Answers --}}
             @if ($customer->answers->count() > 0)

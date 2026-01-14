@@ -31,7 +31,7 @@
             <!-- Search and Filters -->
             <div class="bg-white p-4 rounded-lg shadow mb-6">
                 <form action="{{ route('admin.customer.all') }}" method="GET">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div>
                             <input type="text" name="search" value="{{ request('search') }}"
                                 placeholder="Search by name, email or phone..."
@@ -45,6 +45,17 @@
                                 <option value="viewed" {{ request('status') == 'viewed' ? 'selected' : '' }}>Viewed
                                 </option>
                                 <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled
+                                </option>
+                            </select>
+                        </div>
+                        <div>
+                            <select name="type" class="w-full p-2 border !border-gray-300 rounded-lg">
+                                <option value="">All Types</option>
+                                <option value="contact" {{ request('type') == 'contact' ? 'selected' : '' }}>Contact
+                                </option>
+                                <option value="subscribe" {{ request('type') == 'subscribe' ? 'selected' : '' }}>Subscribe
+                                </option>
+                                <option value="package" {{ request('type') == 'package' ? 'selected' : '' }}>Package
                                 </option>
                             </select>
                         </div>
@@ -75,6 +86,7 @@
                                 <th class="px-6 py-3">Customer</th>
                                 <th class="px-6 py-3">Contact</th>
                                 <th class="px-6 py-3">Category</th>
+                                <th class="px-6 py-3">Package</th>
                                 <th class="px-6 py-3">Type</th>
                                 <th class="px-6 py-3">Status</th>
                                 <th class="px-6 py-3">Date</th>
@@ -97,12 +109,25 @@
                                         <div class="text-gray-500 text-xs">{{ $customer->subCategory->category ?? '' }}
                                         </div>
                                     </td>
+                                    <td class="px-6 py-4">
+                                        @if ($customer->package)
+                                            <div class="font-medium text-gray-900">{{ $customer->package->name }}</div>
+                                            @if ($customer->package->is_best_deal)
+                                                <span class="text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full">
+                                                    Best Deal
+                                                </span>
+                                            @endif
+                                        @else
+                                            <span class="text-gray-400">---</span>
+                                        @endif
+                                    </td>
                                     @php
                                         $typesColors = [
                                             'quotation' => ' text-blue-800',
                                             'contact' => ' text-green-800',
                                             'service' => ' text-red-800',
                                             'subscribe' => ' text-slate-800',
+                                            'package' => ' text-purple-800',
                                         ];
                                         $typeColor = $typesColors[$customer->type] ?? 'text-gray-800';
                                     @endphp
@@ -130,7 +155,7 @@
                                                 class="w-5 h-5 fill-green-500 hover:fill-green-700" viewBox="0 0 24 24">
                                                 <path
                                                     d="M12 5c-7.633 0-11 7-11 7s3.367 7 11 7 11-7 11-7-3.367-7-11-7zm0 12c-4.411 0-7.757-3.134-9.223-5
-                                                                                                                                                                                                                                                            1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z" />
+                                                                                                                                                                                                                                                                            1.466-1.866 4.812-5 9.223-5s7.757 3.134 9.223 5c-1.466 1.866-4.812 5-9.223 5z" />
                                                 <circle cx="12" cy="12" r="3" />
                                             </svg>
                                         </a>
@@ -150,7 +175,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="px-6 py-4 text-center font-medium text-gray-700">
+                                    <td colspan="8" class="px-6 py-4 text-center font-medium text-gray-700">
                                         <div class="flex flex-col items-center justify-center gap-x-4 py-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"

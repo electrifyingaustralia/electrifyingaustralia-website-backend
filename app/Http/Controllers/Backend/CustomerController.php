@@ -10,7 +10,7 @@ class CustomerController extends Controller
 {
     public function index(Request $request)
     {
-        $customers = Customer::with(['category', 'subCategory'])
+        $customers = Customer::with(['category', 'subCategory', 'package'])
             ->latest()
             ->when($request->search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
@@ -37,7 +37,7 @@ class CustomerController extends Controller
             ]);
         }
 
-        $customer->load(['category', 'subCategory', 'answers.question', 'customerServices']);
+        $customer->load(['category', 'subCategory', 'answers.question', 'customerServices', 'package.features']);
         $editMode = $request->has('edit') && $request->edit === 'true';
 
         return view('backend.customer.show', compact('customer', 'editMode'));
@@ -54,6 +54,7 @@ class CustomerController extends Controller
     public function destroy(Customer $customer)
     {
         $customer->delete();
+
 
         return redirect()->route('admin.customer.all')
             ->with('success', 'Customer quotation deleted successfully.');
