@@ -50,7 +50,8 @@ Route::prefix('v1')->group(function () {
     Route::get('solution-cards', [ApiSolutionCardController::class, 'index']);
 
     // ! Events
-    Route::get('events/groups', [ApiEventController::class, 'index']);
+    Route::get('events', [ApiEventController::class, 'index']);
+    Route::get('events/groups', [ApiEventController::class, 'group']);
     Route::get('events/{slug}', [ApiEventController::class, 'show']);
 
     // ! Projects

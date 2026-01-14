@@ -16,4 +16,8 @@ interface ProductRepositoryInterface
     public function update(int $id, array $data): object;
     public function exists(int $id): bool;
     public function delete(int $id): bool;
+    public function attachImage(int $productId, int $mediaId): void;
+    public function detachImage(int $productId, int $mediaId): void;
+    public function syncImages(int $productId, array $mediaIds): void;
+    public function getImages(int $productId);
 }

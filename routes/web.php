@@ -236,6 +236,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/product/{id}',  'show')->name('show');
             Route::put('/product/{id}',  'update')->name('update');
             Route::delete('/product/{id}',  'destroy')->name('delete');
+
+            Route::get('/product/{id}/assign-images',  'assignImages')->name('assign-images');
+            Route::post('/product/{id}/store-images',  'storeImages')->name('store-images');
+            Route::get('/product/{id}/images',  'getProductImages')->name('images');
         });
 
         // ! Quotation

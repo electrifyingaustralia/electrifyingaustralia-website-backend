@@ -79,4 +79,32 @@ class ProductController extends Controller
         $this->productService->deleteProduct($id);
         return redirect()->route('admin.product.all')->with('success', 'Product Deleted Successfully!');
     }
+
+    public function assignImages($id)
+    {
+        $product = $this->productService->findProduct($id);
+        return view('backend.product.assign-images', compact('product'));
+    }
+
+    public function storeImages(Request $request, $id)
+    {
+        $request->validate([
+            'media_ids' => 'required|array',
+            'media_ids.*' => 'exists:media_libraries,id'
+        ]);
+
+        $this->productService->syncProductImages($id, $request->media_ids);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Images assigned successfully',
+            'redirect' => route('admin.product.all')
+        ]);
+    }
+
+    public function getProductImages($id)
+    {
+        $images = $this->productService->getProductImages($id);
+        return response()->json($images);
+    }
 }
