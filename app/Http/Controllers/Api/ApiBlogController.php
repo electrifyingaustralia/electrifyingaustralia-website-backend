@@ -44,7 +44,7 @@ class ApiBlogController extends Controller
             }, function ($q) {
                 return $q->limit(10);
             })
-            ->orderBy("blogs.created_at")
+            ->orderBy("blogs.created_at", "DESC")
             ->get();
 
         return BlogResource::collection($blogs);
