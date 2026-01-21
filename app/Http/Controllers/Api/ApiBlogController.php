@@ -19,6 +19,9 @@ class ApiBlogController extends Controller
             "blogs.subtitle as blog_subtitle",
             "blogs.short_description as blog_short_description",
             "blogs.reading_time as blog_reading_time",
+            "blogs.meta_title as blog_meta_title",
+            "blogs.meta_description as blog_meta_description",
+            "blogs.keywords as blog_keywords",
             //Blog Categories Table
             "blog_categories.name as blog_category_name",
             "blog_categories.slug as blog_category_slug",

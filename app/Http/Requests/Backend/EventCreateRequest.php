@@ -34,6 +34,21 @@ class EventCreateRequest extends BaseRequest
                 'required',
                 'boolean',
             ],
+
+            'meta_title' => [
+                'nullable',
+                'string'
+            ],
+
+            'meta_description' => [
+                'nullable',
+                'string'
+            ],
+
+            'keywords' => [
+                'nullable',
+                'string'
+            ],
         ];
     }
 }

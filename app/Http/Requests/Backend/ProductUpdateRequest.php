@@ -80,6 +80,21 @@ class ProductUpdateRequest extends BaseRequest
             //     'nullable',
             //     'exists:media_libraries,id'
             // ],
+
+            'meta_title' => [
+                'nullable',
+                'string'
+            ],
+
+            'meta_description' => [
+                'nullable',
+                'string'
+            ],
+
+            'keywords' => [
+                'nullable',
+                'string'
+            ],
         ];
     }
 }

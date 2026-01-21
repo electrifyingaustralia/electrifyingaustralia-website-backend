@@ -190,6 +190,24 @@
                                             </button>
                                         </div>
                                     </div>
+                                    <!-- Form Actions -->
+                                    <div class="mt-4 flex justify-end space-x-3">
+                                        <button type="submit"
+                                            class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
+                                            <div class="flex items-center gap-x-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="lucide lucide-save-icon lucide-save">
+                                                    <path
+                                                        d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+                                                    <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
+                                                    <path d="M7 3v4a1 1 0 0 0 1 1h7" />
+                                                </svg>
+                                                <span>Create Product</span>
+                                            </div>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -244,23 +262,48 @@
                                         <option value="0" selected>No</option>
                                     </select>
                                 </div>
-                                <!-- Form Actions -->
-                                <div class="mt-4 flex justify-end space-x-3">
-                                    <button type="submit"
-                                        class="!bg-teal-600 hover:!bg-teal-700 text-white px-6 py-2 rounded-lg">
-                                        <div class="flex items-center gap-x-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="lucide lucide-save-icon lucide-save">
-                                                <path
-                                                    d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
-                                                <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
-                                                <path d="M7 3v4a1 1 0 0 0 1 1h7" />
-                                            </svg>
-                                            <span>Create Product</span>
-                                        </div>
-                                    </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 bg-white p-6 rounded-lg shadow border border-gray-200">
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="meta_title" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Meta Title
+                                    </label>
+                                    <input type="text" id="meta_title" name="meta_title"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                        placeholder="Enter meta title for search engines" value="{{ old('meta_title') }}">
+                                    @error('meta_title')
+                                        <p class="!text-red-600 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <label for="meta_description" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Meta Description
+                                    </label>
+                                    <textarea id="meta_description" name="meta_description" rows="2"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                        placeholder="Enter meta description for search engines">{{ old('meta_description') }}</textarea>
+
+                                    @error('meta_description')
+                                        <p class="!text-red-600 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <label for="keywords" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Keywords
+                                        <span class="text-xs text-gray-500">(Comma separated)</span>
+                                    </label>
+                                    <input type="text" id="keywords" name="keywords"
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                        placeholder="e.g., laptop, gaming, portable, lightweight"
+                                        value="{{ old('keywords') }}">
+                                    @error('keywords')
+                                        <p class="!text-red-600 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
