@@ -44,7 +44,7 @@
             <form id="event-form" action="{{ route('admin.event.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="flex flex-col lg:!flex-row gap-6">
-                    <div class="w-full">
+                    <div class="w-full lg:!w-2/3">
                         <!-- Sticky Headers Table -->
                         <div class="bg-white p-6 rounded-lg shadow">
 
@@ -186,6 +186,55 @@
                                         <span>Create Event</span>
                                     </div>
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Column - Sidebar -->
+                    <div class="w-full lg:!w-1/3">
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <div class="grid grid-cols-1 gap-6">
+                                <div class="space-y-4">
+                                    <div>
+                                        <label for="meta_title" class="block text-sm font-medium text-gray-700 mb-2">
+                                            Meta Title
+                                        </label>
+                                        <input type="text" id="meta_title" name="meta_title"
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                            placeholder="Enter meta title for search engines"
+                                            value="{{ old('meta_title') }}">
+                                        @error('meta_title')
+                                            <p class="!text-red-600 text-sm mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div>
+                                        <label for="meta_description"
+                                            class="block text-sm font-medium text-gray-700 mb-2">
+                                            Meta Description
+                                        </label>
+                                        <textarea id="meta_description" name="meta_description" rows="2"
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                            placeholder="Enter meta description for search engines">{{ old('meta_description') }}</textarea>
+
+                                        @error('meta_description')
+                                            <p class="!text-red-600 text-sm mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div>
+                                        <label for="keywords" class="block text-sm font-medium text-gray-700 mb-2">
+                                            Keywords
+                                            <span class="text-xs text-gray-500">(Comma separated)</span>
+                                        </label>
+                                        <input type="text" id="keywords" name="keywords"
+                                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                            placeholder="e.g., laptop, gaming, portable, lightweight"
+                                            value="{{ old('keywords') }}">
+                                        @error('keywords')
+                                            <p class="!text-red-600 text-sm mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

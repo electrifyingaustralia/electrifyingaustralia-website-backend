@@ -14,6 +14,9 @@ class EventResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'subtitle' => $this->subtitle,
+            'meta_title'        => $this->meta_title,
+            'meta_description'  => $this->meta_description,
+            'keywords'          => $this->keywords,
             'media' => $this->whenLoaded("media", function ($media) {
                 return [
                     'media_url' => getAssetFileUrl("media", $media->file_name, disk: $media->disk),

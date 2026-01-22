@@ -30,6 +30,7 @@ Route::prefix('v1')->group(function () {
     Route::get('products', [ApiProductController::class, 'index']);
     Route::get('products/types', [ApiProductController::class, 'getProductTypes']);
     Route::get('products/{slug}', [ApiProductController::class, 'show']);
+    Route::get('products/{slug}/suggested', [ApiProductController::class, 'getSuggestedProducts']);
 
     // ! Benefits
     Route::get('benefits', [ApiBenefitController::class, 'index']);

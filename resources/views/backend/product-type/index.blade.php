@@ -123,10 +123,51 @@
                                 <input type="text" id="name" name="name"
                                     value="{{ old('name', $typeToEdit->name ?? '') }}"
                                     class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
-                                    placeholder="Enter your product type here..." />
+                                    placeholder="Enter product type name" />
                                 @error('name')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                 @enderror
+                            </div>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="meta_title" class="block text-xs font-medium text-gray-700 mb-1">
+                                        Meta Title
+                                    </label>
+                                    <input type="text" id="meta_title" name="meta_title"
+                                        value="{{ old('meta_title', $typeToEdit->meta_title ?? '') }}"
+                                        class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
+                                        placeholder="Enter meta title" maxlength="60" />
+                                    @error('meta_title')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <label for="meta_description" class="block text-xs font-medium text-gray-700 mb-1">
+                                        Meta Description
+                                    </label>
+                                    <textarea id="meta_description" name="meta_description" rows="2"
+                                        class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
+                                        placeholder="Enter meta description" maxlength="160">{{ old('meta_description', $typeToEdit->meta_description ?? '') }}</textarea>
+                                    @error('meta_description')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <label for="keywords" class="block text-xs font-medium text-gray-700 mb-1">
+                                        Keywords
+                                        <span class="text-xs text-gray-500">(Comma separated)</span>
+                                    </label>
+                                    <input type="text" id="keywords" name="keywords"
+                                        value="{{ old('keywords', $typeToEdit->keywords ?? '') }}"
+                                        class="w-full p-2 text-sm border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500"
+                                        placeholder="e.g., electronics, gadgets, tech" />
+                                    @error('keywords')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
 
                             <div class="flex justify-end mt-6">

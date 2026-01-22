@@ -38,6 +38,21 @@ class EventUpdateRequest extends FormRequest
                 'required',
                 'boolean',
             ],
+
+            'meta_title' => [
+                'nullable',
+                'string'
+            ],
+
+            'meta_description' => [
+                'nullable',
+                'string'
+            ],
+
+            'keywords' => [
+                'nullable',
+                'string'
+            ],
         ];
     }
 }
