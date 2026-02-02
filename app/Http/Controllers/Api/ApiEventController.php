@@ -29,7 +29,7 @@ class ApiEventController extends Controller
         $allEvents = Event::with('media')
             ->where('is_active', true)
             // ->inRandomOrder()
-            ->limit(20)
+            ->limit(5)
             ->latest()
             ->get();
 
