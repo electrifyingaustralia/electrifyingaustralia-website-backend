@@ -5,6 +5,7 @@ FROM php:8.4-fpm
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
+    curl \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
@@ -15,18 +16,24 @@ RUN apt-get update && apt-get install -y \
 # Step 3: Install PHP extensions required for Laravel
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Step 4: Set working directory
+# Step 4: Install Composer globally
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Step 5: Set working directory
 WORKDIR /var/www
 
-# Step 5: Copy project files including vendor
+# Step 6: Copy project files
 COPY . .
 
-# Step 6: Set permissions
+# Step 7: Install Laravel dependencies via Composer
+RUN composer install --no-dev --optimize-autoloader
+
+# Step 8: Set permissions
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
-# Step 7: Expose port
+# Step 9: Expose port
 EXPOSE 8000
 
-# Step 8: Start Laravel dev server
+# Step 10: Start Laravel dev server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
