@@ -100,7 +100,7 @@ jobs:
       #     cluster: ${{ env.ECS_CLUSTER }}
       #     wait-for-service-stability: true
 
-      - name: Attach latest revision and force deploy
+      - name: Attach latest revision and deploy with zero downtime
         run: |
           LATEST=$(aws ecs describe-task-definition \
             --task-definition ${{ env.TASK_DEFINITION_NAME }} \
@@ -111,4 +111,5 @@ jobs:
             --cluster $ECS_CLUSTER \
             --service $ECS_SERVICE \
             --task-definition $LATEST \
-            --force-new-deployment
+            --desired-count 2 \
+            --deployment-configuration "maximumPercent=200,minimumHealthyPercent=100"
