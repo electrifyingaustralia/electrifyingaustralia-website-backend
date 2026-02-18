@@ -13,7 +13,7 @@ env:
   TASK_DEFINITION: task-definition.json
   CONTAINER_NAME: backend
   BUILD_IMAGE: new-build:latest
-  IMAGE: 328211722603.dkr.ecr.ap-southeast-1.amazonaws.com/electrifyingaustralia/backend:latest
+  ECR_IMAGE: 328211722603.dkr.ecr.ap-southeast-1.amazonaws.com/electrifyingaustralia/backend:latest
 
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
 
       - name: Add New Tag to Docker Image
         run: |
-          docker tag $BUILD_IMAGE $IMAGE
+          docker tag $BUILD_IMAGE $ECR_IMAGE
 
       - name: Show All Docker Images
         run: |
@@ -52,3 +52,21 @@ jobs:
         run: |
           sleep 10
           curl -I http://localhost:8080/admin/login/
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Push Docker Image to Amazon ECR
+        run: |
+          docker push $ECR_IMAGE
+
+      - name: Successfully Deploy
+        run: echo "✅ Docker image built and pushed to Amazon ECR successfully!"
