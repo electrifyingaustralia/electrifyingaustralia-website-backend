@@ -1,7 +1,6 @@
-# Step 1: Official PHP-FPM image
 FROM php:8.4-fpm
 
-# Step 2: Install system dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -13,27 +12,33 @@ RUN apt-get update && apt-get install -y \
     zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Step 3: Install PHP extensions required for Laravel
+# Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Step 4: Install Composer globally
+# Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Step 5: Set working directory
+# Set working directory
 WORKDIR /var/www
 
-# Step 6: Copy project files
+# Copy project files
 COPY . .
 
-# Step 7: Install Laravel dependencies via Composer
-RUN composer install --no-dev --optimize-autoloader
+# Create .env file if it doesn't exist
+RUN if [ ! -f .env ]; then cp .env.example .env || echo "No .env.example found"; fi
 
-# Step 8: Set permissions
+# Install dependencies with scripts disabled
+RUN php /usr/local/bin/composer install --no-dev --optimize-autoloader --no-scripts
+
+# Generate key and run post-install scripts
+RUN php artisan key:generate --force || true
+RUN php /usr/local/bin/composer run-script post-autoload-dump || true
+
+# Set permissions
 RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage
+    && chmod -R 755 /var/www/storage \
+    && chmod -R 755 /var/www/bootstrap/cache
 
-# Step 9: Expose port
 EXPOSE 8000
 
-# Step 10: Start Laravel dev server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

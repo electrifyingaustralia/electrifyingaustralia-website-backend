@@ -36,13 +36,17 @@ jobs:
         run: |
           docker images
 
+      - name: Show All Docker Containers (PS)
+        run: |
+          docker ps -a
+
       - name: RUN Docker Image in Container
         run: |
-          docker run -d -p 8080:8000 $IMAGE
+          docker run -d -p 8080:8000 $BUILD_IMAGE
 
       - name: Container Logs
         run: |
-          docker logs $(docker ps -q --filter ancestor=$IMAGE)
+          docker logs $(docker ps -q --filter ancestor=$BUILD_IMAGE)
 
       - name: Ping Container
         run: |
