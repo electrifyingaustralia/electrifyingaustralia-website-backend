@@ -35,7 +35,7 @@ class BlogCreateRequest extends BaseRequest
             ],
 
             'media_id' => [
-                'nullable',
+                'required',
                 'exists:media_libraries,id',
             ],
 

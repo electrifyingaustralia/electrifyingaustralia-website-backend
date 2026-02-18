@@ -129,7 +129,7 @@
 
                                 <!-- Media Selection -->
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Blog Media</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Blog Media <span class="text-red-600 font-bold">*</span></label>
 
                                     <div class="flex flex-col sm:flex-row gap-4">
                                         <!-- Media Preview -->
