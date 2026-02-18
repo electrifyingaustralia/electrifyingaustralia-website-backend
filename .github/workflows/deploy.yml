@@ -99,9 +99,15 @@ jobs:
       #     cluster: ${{ env.ECS_CLUSTER }}
       #     wait-for-service-stability: true
 
-      - name: Force new deployment
+      - name: Attach latest revision and force deploy
         run: |
+          LATEST=$(aws ecs describe-task-definition \
+            --task-definition backend \
+            --query "taskDefinition.taskDefinitionArn" \
+            --output text)
+
           aws ecs update-service \
             --cluster $ECS_CLUSTER \
             --service $ECS_SERVICE \
+            --task-definition $LATEST \
             --force-new-deployment
