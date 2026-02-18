@@ -68,6 +68,12 @@ jobs:
         run: |
           docker push $ECR_IMAGE
 
+      - name: Download current task definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition $ECS_SERVICE \
+            --query taskDefinition > task-definition.json
+
       - name: Create new task definition revision with new image
         id: task-def-new
         uses: aws-actions/amazon-ecs-render-task-definition@v1
