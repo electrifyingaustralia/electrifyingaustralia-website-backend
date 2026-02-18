@@ -1,105 +1,33 @@
-name: Electrifying Australia Full Deploy 14
+name: Electrifying Australia Backend Deployment CI/CD.
+
 
 on:
   push:
     branches: [deploy]
 
+
+env:
+  AWS_REGION: ap-southeast-1
+  ECS_CLUSTER: electrifyingaustralia-cluster
+  ECS_SERVICE: backend-service
+  TASK_DEFINITION: task-definition.json
+  CONTAINER_NAME: backend
+  BUILD_IMAGE: new-build:latest
+  IMAGE: 328211722603.dkr.ecr.ap-southeast-1.amazonaws.com/electrifyingaustralia/backend:latest
+
+
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout the repository
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
-      # 2️⃣ Deploy files to the server
-      - name: Sync code to server
-        uses: easingthemes/ssh-deploy@v5.0.0
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          ARGS: "-avzr --delete"
-          SOURCE: "."
-          REMOTE_HOST: ${{ vars.SERVER_HOST_IP }}
-          REMOTE_USER: ${{ vars.SERVER_HOST_USER }}
-          TARGET: "${{ vars.ROOT_DIR_PATH }}/"
+      - name: Build Docker Image
+        run: |
+          docker build -t $BUILD_IMAGE .
 
-      # 3️⃣ Install dependencies & build frontend
-      - name: Install Node & Build Frontend
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ vars.SERVER_HOST_IP }}
-          username: ${{ vars.SERVER_HOST_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd ${{ vars.ROOT_DIR_PATH }}
-
-            echo "📦 Installing Node packages..."
-            npm install
-
-            echo "🏗 Building Next.js frontend..."
-            npm run build
-
-      # 4️⃣ Setup Laravel backend
-      - name: Setup Laravel
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ vars.SERVER_HOST_IP }}
-          username: ${{ vars.SERVER_HOST_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd ${{ vars.ROOT_DIR_PATH }}
-
-            echo "⚙️ Copying env file..."
-            cp -f .env.example .env
-
-            echo "📦 Installing PHP dependencies..."
-            composer install --no-interaction --prefer-dist --optimize-autoloader
-
-            echo "🔑 Generating app key..."
-            php artisan key:generate
-
-            echo "🛠 Running migrations..."
-            php artisan migrate --force
-
-            echo "🚀 Running seeders..."
-            php artisan db:seed --class=AdminSeeder --force
-
-            echo "🧹 Optimizing Laravel..."
-            php artisan optimize:clear
-
-            echo "🔗 Creating storage symlink..."
-            php artisan storage:link
-
-            echo "🔧 Setting permissions..."
-            sudo chown -R www-data:www-data storage bootstrap/cache
-            sudo chmod -R 775 storage bootstrap/cache
-
-      # 5️⃣ Supervisor reload & queue restart
-      - name: Reload Supervisor & Restart Queue
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ vars.SERVER_HOST_IP }}
-          username: ${{ vars.SERVER_HOST_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd ${{ vars.ROOT_DIR_PATH }}
-
-            echo "📄 Copying Supervisor config..."
-            sudo cp -f supervisor-queue.conf /etc/supervisor/conf.d/laravel-electrifying-australia-queue.conf
-
-            echo "🔁 Reloading Supervisor..."
-            sudo supervisorctl reread
-            sudo supervisorctl update
-            sudo supervisorctl restart laravel-electrifying-australia-queue:*
-
-      # 6️⃣ Restart Nginx server
-      - name: Restart Nginx
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ vars.SERVER_HOST_IP }}
-          username: ${{ vars.SERVER_HOST_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            echo "🔄 Restarting Nginx..."
-            sudo systemctl restart nginx
+      - name: Add New Tag to Docker Image
+        run: |
+          docker tag $BUILD_IMAGE $IMAGE
