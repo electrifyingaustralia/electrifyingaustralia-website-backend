@@ -8,8 +8,8 @@ on:
 
 env:
   AWS_REGION: ap-southeast-1
-  ECS_CLUSTER: electrifyingaustralia-cluster
-  ECS_SERVICE: backend-service
+  ECS_CLUSTER: ElectrifyingAustralia-ECS
+  ECS_SERVICE: Electrifying-Australia-Backend-service-bm4jlvvs
   TASK_DEFINITION: task-definition.json
   CONTAINER_NAME: backend
   BUILD_IMAGE: new-build:latest
@@ -68,5 +68,19 @@ jobs:
         run: |
           docker push $ECR_IMAGE
 
-      - name: Successfully Deploy
-        run: echo "✅ Docker image built and pushed to Amazon ECR successfully!"
+      - name: Create new task definition revision with new image
+        id: task-def-new
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ env.ECR_IMAGE }}
+
+
+      - name: Deploy to ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def-new.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
