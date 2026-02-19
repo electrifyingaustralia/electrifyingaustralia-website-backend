@@ -28,7 +28,7 @@ COPY . .
 RUN if [ ! -f .env ]; then cp .env.example .env || echo "No .env.example found"; fi
 
 # Install dependencies with scripts disabled
-RUN php /usr/local/bin/composer install --no-dev --optimize-autoloader --no-scripts
+RUN php /usr/local/bin/composer install --optimize-autoloader --no-scripts
 
 # Generate key and run post-install scripts
 RUN php artisan key:generate --force || true
