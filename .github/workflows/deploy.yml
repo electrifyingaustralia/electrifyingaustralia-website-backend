@@ -14,7 +14,7 @@ env:
   CONTAINER_NAME: Electrifying-Australia-Backend
   TASK_DEFINITION_NAME: Electrifying-Australia-Backend
   BUILD_IMAGE: new-build:latest
-  ECR_IMAGE: 328211722603.dkr.ecr.ap-southeast-1.amazonaws.com/electrifyingaustralia/backend:1235
+  ECR_IMAGE: 328211722603.dkr.ecr.ap-southeast-1.amazonaws.com/electrifyingaustralia/backend:latest
 
 
 jobs:
@@ -66,9 +66,9 @@ jobs:
           aws ecr get-login-password --region ap-southeast-1 \
           | docker login --username AWS --password-stdin 328211722603.dkr.ecr.ap-southeast-1.amazonaws.com
 
-      - name: Push Docker Image to Amazon ECR
-        run: |
-          docker push $ECR_IMAGE
+      # - name: Push Docker Image to Amazon ECR
+      #   run: |
+      #     docker push $ECR_IMAGE
 
       - name: Download current task definition
         run: |
