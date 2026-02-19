@@ -14,7 +14,7 @@ env:
   CONTAINER_NAME: Electrifying-Australia-Backend
   TASK_DEFINITION_NAME: Electrifying-Australia-Backend
   BUILD_IMAGE: new-build:latest
-  ECR_IMAGE: 328211722603.dkr.ecr.ap-southeast-1.amazonaws.com/electrifyingaustralia/backend:latest
+  ECR_IMAGE: 328211722603.dkr.ecr.ap-southeast-1.amazonaws.com/electrifyingaustralia/backend:1235
 
 
 jobs:
@@ -37,13 +37,14 @@ jobs:
         run: |
           docker images
 
-      - name: Show All Docker Containers (PS)
-        run: |
-          docker ps -a
-
       - name: RUN Docker Image in Container
         run: |
           docker run -d -p 8080:8000 $BUILD_IMAGE
+
+      - name: Show All Docker Containers (PS)
+        run: |
+          sleep 10
+          docker ps -a
 
       - name: Container Logs
         run: |
@@ -51,7 +52,6 @@ jobs:
 
       - name: Ping Container
         run: |
-          sleep 10
           curl -I http://localhost:8080/admin/login/
 
       - name: Configure AWS Credentials
