@@ -113,4 +113,5 @@ jobs:
             --service $ECS_SERVICE \
             --task-definition $LATEST \
             --desired-count 2 \
-            --deployment-configuration "maximumPercent=200,minimumHealthyPercent=100"
+            --deployment-configuration "maximumPercent=200,minimumHealthyPercent=100" \
+            --force-new-deployment
