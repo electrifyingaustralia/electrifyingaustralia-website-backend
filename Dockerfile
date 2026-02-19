@@ -12,16 +12,20 @@ RUN apt-get update && apt-get install -y \
     zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y supervisor
+
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+
 # Set working directory
 WORKDIR /var/www
 
 # Copy project files
+
 COPY . .
 
 # Create .env file if it doesn't exist
@@ -39,6 +43,10 @@ RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \
     && chmod -R 755 /var/www/bootstrap/cache
 
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["/usr/bin/supervisord"]
+
+# CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
