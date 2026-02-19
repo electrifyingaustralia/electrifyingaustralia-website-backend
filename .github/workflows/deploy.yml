@@ -27,7 +27,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build --platform linux/amd64 -t $BUILD_IMAGE .
+          docker buildx build --platform linux/amd64 -t $BUILD_IMAGE --load .
 
       - name: Add New Tag to Docker Image
         run: |
