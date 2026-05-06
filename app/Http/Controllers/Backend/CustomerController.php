@@ -10,7 +10,7 @@ class CustomerController extends Controller
 {
     public function index(Request $request)
     {
-        $customers = Customer::with(['category', 'subCategory', 'package'])
+        $customers = Customer::with(['category', 'subCategory', 'package', 'quotationForms'])
             ->latest()
             ->when($request->search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
@@ -37,7 +37,7 @@ class CustomerController extends Controller
             ]);
         }
 
-        $customer->load(['category', 'subCategory', 'answers.question', 'customerServices', 'package.features']);
+        $customer->load(['category', 'subCategory', 'answers.question', 'customerServices', 'package.features', 'quotationForms']);
         $editMode = $request->has('edit') && $request->edit === 'true';
 
         return view('backend.customer.show', compact('customer', 'editMode'));

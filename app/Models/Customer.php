@@ -37,4 +37,9 @@ class Customer extends Model
     {
         return $this->belongsTo(Package::class);
     }
+
+    public function quotationForms()
+    {
+        return $this->hasMany(CustomerQuotationForm::class, 'customer_id');
+    }
 }

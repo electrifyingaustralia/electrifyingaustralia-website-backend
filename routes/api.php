@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\ApiQuotationController;
 use App\Http\Controllers\Api\ApiSolutionCardController;
 use App\Http\Controllers\Api\ApiStickyHeaderController;
 use App\Http\Controllers\Api\ApiTeamController;
+use App\Http\Controllers\Backend\CustomerQuotationFormController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -71,12 +72,14 @@ Route::prefix('v1')->group(function () {
     Route::get('faqs/questions', [ApiFaqController::class, 'getFaqByType']);
 
     // !Quotation
-    Route::get('quotation/categories', [ApiQuotationController::class, 'index']);
-    Route::get('quotation/category/{id}', [ApiQuotationController::class, 'findSubcategories']);
-    Route::get('quotation/questions', [ApiQuotationController::class, 'findQuestions']);
-    Route::post('quotation/save', [ApiQuotationController::class, 'saveCustomerQuotation']);
+    // Route::get('quotation/categories', [ApiQuotationController::class, 'index']);
+    // Route::get('quotation/category/{id}', [ApiQuotationController::class, 'findSubcategories']);
+    // Route::get('quotation/questions', [ApiQuotationController::class, 'findQuestions']);
+    // Route::post('quotation/save', [ApiQuotationController::class, 'saveCustomerQuotation']);
 
     // ! Customers
     Route::post('/customers', [ApiCustomerController::class, 'store']);
     Route::post('/customer-services', [ApiCustomerServiceController::class, 'store']);
+
+    Route::post('/customer-quotation-forms', [CustomerQuotationFormController::class, 'store']);
 });

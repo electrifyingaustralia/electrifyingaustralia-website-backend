@@ -218,7 +218,7 @@
                       </a>
                   </li>
 
-                  <li class="relative mb-2">
+                  <!-- <li class="relative mb-2">
                       <a href="{{ route('admin.quotation.all') }}"
                           class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.quotation*') || request()->routeIs('admin.question*') ? '!text-teal-500 bg-teal-50' : '' }}">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -232,7 +232,7 @@
                           </svg>
                           <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Quotation</span>
                       </a>
-                  </li>
+                  </li> -->
 
                   <li class="relative mb-2">
                       <a href="{{ route('admin.sticky-header.all') }}"
@@ -406,137 +406,137 @@
                           </li>
                           {{-- <li>
                               <a href="{{ route('admin.project-category.all') }}"
-                                  class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.project-category*') ? '!text-teal-500 bg-teal-50' : '' }}">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder">
-                                      <path
-                                          d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
-                                  </svg>
-                                  <span class="pl-3 group-data-[sidebar-size=sm]:hidden">Project Categories</span>
-                              </a>
-                          </li> --}}
-                          <li>
-                              <a href="{{ route('admin.project-type.all') }}"
-                                  class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.project-type*') ? '!text-teal-500 bg-teal-50' : '' }}">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder">
-                                      <path
-                                          d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
-                                  </svg>
-                                  <span class="pl-3 group-data-[sidebar-size=sm]:hidden">Project Type</span>
-                              </a>
-                          </li>
-                          <li>
-                              <a href="{{ route('admin.project.create') }}"
-                                  class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.project.create') ? '!text-teal-500 bg-teal-50' : '' }}">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                      stroke-linecap="round" stroke-linejoin="round"
-                                      class="lucide lucide-plus-circle">
-                                      <circle cx="12" cy="12" r="10" />
-                                      <path d="M8 12h8" />
-                                      <path d="M12 8v8" />
-                                  </svg>
-                                  <span class="pl-3 group-data-[sidebar-size=sm]:hidden">Add Project</span>
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
-
-                  <li class="relative mb-2">
-                      <a href="{{ route('admin.package.all') }}"
-                          class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.package*') ? '!text-teal-500 bg-teal-50' : '' }}">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                              stroke-linejoin="round" class="lucide lucide-package-icon lucide-package">
+                          class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.project-category*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder">
                               <path
-                                  d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" />
-                              <path d="M12 22V12" />
-                              <polyline points="3.29 7 12 12 20.71 7" />
-                              <path d="m7.5 4.27 9 5.15" />
+                                  d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
                           </svg>
-                          <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Packages</span>
+                          <span class="pl-3 group-data-[sidebar-size=sm]:hidden">Project Categories</span>
+                          </a>
+                  </li> --}}
+                  <li>
+                      <a href="{{ route('admin.project-type.all') }}"
+                          class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.project-type*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder">
+                              <path
+                                  d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                          </svg>
+                          <span class="pl-3 group-data-[sidebar-size=sm]:hidden">Project Type</span>
                       </a>
                   </li>
+                  <li>
+                      <a href="{{ route('admin.project.create') }}"
+                          class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.project.create') ? '!text-teal-500 bg-teal-50' : '' }}">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round"
+                              class="lucide lucide-plus-circle">
+                              <circle cx="12" cy="12" r="10" />
+                              <path d="M8 12h8" />
+                              <path d="M12 8v8" />
+                          </svg>
+                          <span class="pl-3 group-data-[sidebar-size=sm]:hidden">Add Project</span>
+                      </a>
+                  </li>
+              </ul>
+              </li>
 
-                  <li class="relative mb-2 group/product">
-                      <a href="javascript:void(0);"
-                          class="flex items-center justify-between px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.faq*') || request()->routeIs('admin.faq-type*') ? '!text-teal-500 bg-teal-50' : '' }}">
-                          <div class="flex items-center">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              <li class="relative mb-2">
+                  <a href="{{ route('admin.package.all') }}"
+                      class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.package*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" class="lucide lucide-package-icon lucide-package">
+                          <path
+                              d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" />
+                          <path d="M12 22V12" />
+                          <polyline points="3.29 7 12 12 20.71 7" />
+                          <path d="m7.5 4.27 9 5.15" />
+                      </svg>
+                      <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Packages</span>
+                  </a>
+              </li>
+
+              <li class="relative mb-2 group/product">
+                  <a href="javascript:void(0);"
+                      class="flex items-center justify-between px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.faq*') || request()->routeIs('admin.faq-type*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                      <div class="flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round"
+                              class="lucide lucide-circle-question-mark-icon lucide-circle-question-mark">
+                              <circle cx="12" cy="12" r="10" />
+                              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                              <path d="M12 17h.01" />
+                          </svg>
+                          <span class="pl-4 group-data-[sidebar-size=sm]:hidden">FAQ</span>
+                      </div>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-chevron-down transform transition-transform duration-200 group-[.active]/product:rotate-180">
+                          <path d="m6 9 6 6 6-6" />
+                      </svg>
+                  </a>
+
+                  <!-- Faq Submenu -->
+                  <ul
+                      class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 transition-all duration-300 group-[.active]/product:max-h-40">
+                      <li>
+                          <a href="{{ route('admin.faq.all') }}"
+                              class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.faq.all') ? '!text-teal-500 bg-teal-50' : '' }}">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                  stroke-linecap="round" stroke-linejoin="round"
-                                  class="lucide lucide-circle-question-mark-icon lucide-circle-question-mark">
-                                  <circle cx="12" cy="12" r="10" />
-                                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                                  <path d="M12 17h.01" />
+                                  stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list">
+                                  <line x1="8" x2="21" y1="6" y2="6" />
+                                  <line x1="8" x2="21" y1="12" y2="12" />
+                                  <line x1="8" x2="21" y1="18" y2="18" />
+                                  <line x1="3" x2="3.01" y1="6" y2="6" />
+                                  <line x1="3" x2="3.01" y1="12" y2="12" />
+                                  <line x1="3" x2="3.01" y1="18" y2="18" />
                               </svg>
-                              <span class="pl-4 group-data-[sidebar-size=sm]:hidden">FAQ</span>
-                          </div>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                              stroke-linejoin="round"
-                              class="lucide lucide-chevron-down transform transition-transform duration-200 group-[.active]/product:rotate-180">
-                              <path d="m6 9 6 6 6-6" />
-                          </svg>
-                      </a>
-
-                      <!-- Faq Submenu -->
-                      <ul
-                          class="ml-6 mt-1 space-y-1 overflow-hidden max-h-0 transition-all duration-300 group-[.active]/product:max-h-40">
-                          <li>
-                              <a href="{{ route('admin.faq.all') }}"
-                                  class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.faq.all') ? '!text-teal-500 bg-teal-50' : '' }}">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list">
-                                      <line x1="8" x2="21" y1="6" y2="6" />
-                                      <line x1="8" x2="21" y1="12" y2="12" />
-                                      <line x1="8" x2="21" y1="18" y2="18" />
-                                      <line x1="3" x2="3.01" y1="6" y2="6" />
-                                      <line x1="3" x2="3.01" y1="12" y2="12" />
-                                      <line x1="3" x2="3.01" y1="18" y2="18" />
-                                  </svg>
-                                  <span class="pl-3 group-data-[sidebar-size=sm]:hidden">All Faq</span>
-                              </a>
-                          </li>
-                          <li>
-                              <a href="{{ route('admin.faq-type.all') }}"
-                                  class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.faq-type*') ? '!text-teal-500 bg-teal-50' : '' }}">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                      stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder">
-                                      <path
-                                          d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
-                                  </svg>
-                                  <span class="pl-3 group-data-[sidebar-size=sm]:hidden">Faq Types</span>
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
-                  <li class="relative mb-2">
-                      <a href="{{ route('admin.settings.all') }}"
-                          class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.settings*') ? '!text-teal-500 bg-teal-50' : '' }}">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                              stroke-linejoin="round" class="lucide lucide-file-cog-icon lucide-file-cog">
-                              <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                              <path d="m2.305 15.53.923-.382" />
-                              <path d="m3.228 12.852-.924-.383" />
-                              <path d="M4.677 21.5a2 2 0 0 0 1.313.5H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v2.5" />
-                              <path d="m4.852 11.228-.383-.923" />
-                              <path d="m4.852 16.772-.383.924" />
-                              <path d="m7.148 11.228.383-.923" />
-                              <path d="m7.53 17.696-.382-.924" />
-                              <path d="m8.772 12.852.923-.383" />
-                              <path d="m8.772 15.148.923.383" />
-                              <circle cx="6" cy="14" r="3" />
-                          </svg>
-                          <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Mail Settings</span>
-                      </a>
-                  </li>
+                              <span class="pl-3 group-data-[sidebar-size=sm]:hidden">All Faq</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="{{ route('admin.faq-type.all') }}"
+                              class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.faq-type*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                  stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder">
+                                  <path
+                                      d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                              </svg>
+                              <span class="pl-3 group-data-[sidebar-size=sm]:hidden">Faq Types</span>
+                          </a>
+                      </li>
+                  </ul>
+              </li>
+              <li class="relative mb-2">
+                  <a href="{{ route('admin.settings.all') }}"
+                      class="flex items-center px-4 py-2 text-sm font-medium text-slate-500 hover:!text-teal-500 hover:!bg-teal-50 rounded-md group mx-2 {{ request()->routeIs('admin.settings*') ? '!text-teal-500 bg-teal-50' : '' }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" class="lucide lucide-file-cog-icon lucide-file-cog">
+                          <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                          <path d="m2.305 15.53.923-.382" />
+                          <path d="m3.228 12.852-.924-.383" />
+                          <path d="M4.677 21.5a2 2 0 0 0 1.313.5H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v2.5" />
+                          <path d="m4.852 11.228-.383-.923" />
+                          <path d="m4.852 16.772-.383.924" />
+                          <path d="m7.148 11.228.383-.923" />
+                          <path d="m7.53 17.696-.382-.924" />
+                          <path d="m8.772 12.852.923-.383" />
+                          <path d="m8.772 15.148.923.383" />
+                          <circle cx="6" cy="14" r="3" />
+                      </svg>
+                      <span class="pl-4 group-data-[sidebar-size=sm]:hidden">Mail Settings</span>
+                  </a>
+              </li>
               </ul>
           </div>
       </div>
