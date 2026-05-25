@@ -18,6 +18,19 @@ spec:
         image: nginx:alpine # We use temporary Nginx for now; Jenkins will update this later!
         ports:
         - containerPort: 80
+        env: # 👈 Just add this database connection block right here!
+        - name: DB_CONNECTION
+          value: "mysql"
+        - name: DB_HOST
+          value: "mysql-service" # Connects directly to your cluster's database service
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_DATABASE
+          value: "YOUR_DATABASE_NAME" # 👈 Change this to your database name
+        - name: DB_USERNAME
+          value: "laravel_user"
+        - name: DB_PASSWORD
+          value: "YOUR_DATABASE_PASSWORD" # 👈 Change this to your database password
 ---
 apiVersion: v1
 kind: Service
