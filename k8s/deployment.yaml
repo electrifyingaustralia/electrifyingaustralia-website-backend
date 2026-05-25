@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: electrifying-backend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: electrifying-backend
+  template:
+    metadata:
+      labels:
+        app: electrifying-backend
+    spec:
+      containers:
+      - name: backend
+        image: nginx:alpine # We use temporary Nginx for now; Jenkins will update this later!
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: electrifying-backend-service
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: electrifying-backend
